@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maison Pain — Padaria Artesanal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Lato:wght@300;400;700&family=Cormorant+Garamond:ital,wght@0,300;1,300;1,400&display=swap" rel="stylesheet">
+
+<!-- ============================================================
+     DESIGN SYSTEM — MAISON PAIN LP TEMPLATE
+     Versão: 1.0 | Para uso com Codex / qualquer builder
+     ============================================================
+
+     PALETA DE CORES
+     ─────────────────────────────────────────────────
+     --color-espresso:     #1A0F08   → Textos principais, fundos dark
+     --color-brown:        #3D2010   → Headings sobre fundo claro
+     --color-caramel:      #C8722A   → CTA principal, destaques
+     --color-caramel-light:#E8943E   → Hover, variações
+     --color-gold:         #D4A04A   → Detalhes dourados, ícones premium
+     --color-wheat:        #F2D49B   → Badges, highlights suaves
+     --color-cream:        #FDF6E9   → Background principal
+     --color-cream-dark:   #F5ECD6   → Background seções alternadas
+     --color-ivory:        #FFFDF7   → Cards, superfícies elevadas
+     --color-text-dark:    #2C1808   → Corpo de texto
+     --color-text-mid:     #7A5232   → Subheadings, legendas
+     --color-text-light:   #B08A60   → Placeholders, textos secundários
+
+     TIPOGRAFIA
+     ─────────────────────────────────────────────────
+     Display:  Playfair Display (serif) — 700/500 — Títulos de seção
+     Italic:   Cormorant Garamond italic — 300/400 — Taglines, citações
+     Body:     Lato — 300/400/700 — Corpo, navegação, botões
+     Scale:    12 / 14 / 16 / 18 / 24 / 32 / 48 / 64 / 80 px
+
+     ESPAÇAMENTO (base 8px)
+     ─────────────────────────────────────────────────
+     --space-xs: 4px   --space-sm: 8px   --space-md: 16px
+     --space-lg: 24px  --space-xl: 48px  --space-2xl: 80px
+     --space-3xl: 120px
+
+     BORDER RADIUS
+     ─────────────────────────────────────────────────
+     --radius-sm: 4px   --radius-md: 8px   --radius-lg: 16px
+     --radius-xl: 32px  --radius-pill: 999px  --radius-circle: 50%
+
+     SOMBRAS
+     ─────────────────────────────────────────────────
+     --shadow-sm:  0 2px 8px rgba(26,15,8,.06)
+     --shadow-md:  0 4px 20px rgba(26,15,8,.10)
+     --shadow-lg:  0 12px 40px rgba(26,15,8,.14)
+     --shadow-xl:  0 24px 64px rgba(26,15,8,.18)
+
+     BREAKPOINTS
+     ─────────────────────────────────────────────────
+     Mobile:  < 640px
+     Tablet:  640px – 1024px
+     Desktop: > 1024px
+
+     COMPONENTES PRINCIPAIS
+     ─────────────────────────────────────────────────
+     .btn-primary   → CTA principal, fundo caramel
+     .btn-outline   → CTA secundário, borda caramel
+     .btn-ghost     → Terciário, sem borda
+     .badge         → Pill de destaque dourado
+     .card-product  → Card de produto com hover
+     .section-label → Label de seção em maiúsculo
+     .divider-ornament → Separador ornamental
+
+     SEÇÕES DO LP (ordem)
+     ─────────────────────────────────────────────────
+     01. Navbar fixo
+     02. Hero — full screen com imagem
+     03. Features strip — 3 ícones rápidos
+     04. About — história da padaria
+     05. Products — grid de produtos
+     06. Services — serviços diferenciados
+     07. Gallery — mosaico de fotos
+     08. Testimonials — depoimentos
+     09. CTA — pedido/contato
+     10. Footer
+     ============================================================ -->
+
+<style>
+/* ─── RESET & BASE ─────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: 'Lato', sans-serif;
+  font-weight: 400;
+  background: #FDF6E9;
+  color: #2C1808;
+  overflow-x: hidden;
+  line-height: 1.7;
+}
+img { display: block; width: 100%; height: 100%; object-fit: cover; }
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+
+/* ─── CSS VARIABLES ─────────────────────────────── */
+:root {
+  --color-espresso:     #1A0F08;
+  --color-brown:        #3D2010;
+  --color-caramel:      #C8722A;
+  --color-caramel-light:#E8943E;
+  --color-gold:         #D4A04A;
+  --color-wheat:        #F2D49B;
+  --color-cream:        #FDF6E9;
+  --color-cream-dark:   #F5ECD6;
+  --color-ivory:        #FFFDF7;
+  --color-text-dark:    #2C1808;
+  --color-text-mid:     #7A5232;
+  --color-text-light:   #B08A60;
+  --shadow-sm:          0 2px 8px rgba(26,15,8,.06);
+  --shadow-md:          0 4px 20px rgba(26,15,8,.10);
+  --shadow-lg:          0 12px 40px rgba(26,15,8,.14);
+  --shadow-xl:          0 24px 64px rgba(26,15,8,.18);
+  --radius-sm: 4px; --radius-md: 8px; --radius-lg: 16px;
+  --radius-xl: 32px; --radius-pill: 999px;
+  --space-xs: 4px; --space-sm: 8px; --space-md: 16px;
+  --space-lg: 24px; --space-xl: 48px; --space-2xl: 80px;
+  --space-3xl: 120px;
+  --container: 1180px;
+  --transition: 0.3s cubic-bezier(.4,0,.2,1);
+}
+
+/* ─── LAYOUT HELPERS ─────────────────────────────── */
+.container { max-width: var(--container); margin: 0 auto; padding: 0 24px; }
+.section { padding: var(--space-3xl) 0; }
+.section-alt { background: var(--color-cream-dark); }
+
+/* ─── TYPOGRAPHY ─────────────────────────────────── */
+.display { font-family: 'Playfair Display', serif; }
+.italic-tagline {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-weight: 300; font-size: 1.2rem; letter-spacing: .02em;
+  color: var(--color-text-mid);
+}
+.section-label {
+  font-family: 'Lato', sans-serif; font-weight: 700;
+  font-size: 0.7rem; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--color-caramel); margin-bottom: 12px; display: block;
+}
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; line-height: 1.15;
+  color: var(--color-brown); margin-bottom: 16px;
+}
+.section-subtitle {
+  font-size: 1.05rem; color: var(--color-text-mid); max-width: 540px; line-height: 1.7;
+}
+
+/* ─── ORNAMENT DIVIDER ───────────────────────────── */
+.divider-ornament {
+  display: flex; align-items: center; gap: 16px; margin: 20px 0;
+}
+.divider-ornament::before, .divider-ornament::after {
+  content: ''; flex: 1; height: 1px; background: var(--color-wheat);
+}
+.divider-ornament span {
+  color: var(--color-gold); font-size: 1.2rem; opacity: .7;
+}
+
+/* ─── BUTTONS ─────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 14px 32px; border-radius: var(--radius-pill);
+  font-family: 'Lato', sans-serif; font-weight: 700;
+  font-size: 0.85rem; letter-spacing: .1em; text-transform: uppercase;
+  cursor: pointer; transition: var(--transition); border: 2px solid transparent;
+}
+.btn-primary {
+  background: var(--color-caramel); color: #fff;
+  box-shadow: 0 4px 20px rgba(200,114,42,.35);
+}
+.btn-primary:hover {
+  background: var(--color-caramel-light);
+  box-shadow: 0 8px 28px rgba(200,114,42,.5); transform: translateY(-2px);
+}
+.btn-outline {
+  background: transparent; color: var(--color-caramel);
+  border-color: var(--color-caramel);
+}
+.btn-outline:hover {
+  background: var(--color-caramel); color: #fff;
+  box-shadow: 0 4px 20px rgba(200,114,42,.3);
+}
+.btn-outline-white {
+  background: transparent; color: #fff; border-color: rgba(255,255,255,.6);
+}
+.btn-outline-white:hover { background: rgba(255,255,255,.12); }
+
+/* ─── BADGE ─────────────────────────────────────── */
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--color-wheat); color: var(--color-brown);
+  padding: 6px 16px; border-radius: var(--radius-pill);
+  font-size: 0.75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+}
+.badge-caramel { background: var(--color-caramel); color: #fff; }
+.badge-dark { background: var(--color-brown); color: var(--color-wheat); }
+
+/* ─── 01. NAVBAR ─────────────────────────────────── */
+.navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  padding: 20px 0; transition: var(--transition);
+}
+.navbar.scrolled {
+  background: rgba(253,246,233,.96); backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-sm); padding: 14px 0;
+}
+.navbar-inner {
+  display: flex; align-items: center; justify-content: space-between;
+}
+.navbar-logo {
+  font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700;
+  color: #fff; transition: var(--transition); line-height: 1;
+}
+.navbar-logo span { color: var(--color-wheat); }
+.navbar.scrolled .navbar-logo { color: var(--color-brown); }
+.navbar.scrolled .navbar-logo span { color: var(--color-caramel); }
+.navbar-nav { display: flex; align-items: center; gap: 36px; }
+.navbar-nav a {
+  font-size: 0.8rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  color: rgba(255,255,255,.85); transition: var(--transition); position: relative;
+}
+.navbar-nav a::after {
+  content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1.5px;
+  background: var(--color-wheat); transition: var(--transition);
+}
+.navbar-nav a:hover { color: #fff; }
+.navbar-nav a:hover::after { width: 100%; }
+.navbar.scrolled .navbar-nav a { color: var(--color-text-mid); }
+.navbar.scrolled .navbar-nav a::after { background: var(--color-caramel); }
+.navbar.scrolled .navbar-nav a:hover { color: var(--color-caramel); }
+.navbar-cta {
+  font-size: 0.75rem; padding: 11px 26px;
+}
+
+/* ─── 02. HERO ─────────────────────────────────────── */
+.hero {
+  position: relative; min-height: 100vh;
+  display: flex; align-items: center;
+  background: var(--color-espresso); overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    /* Overlay escuro gradiente */
+    linear-gradient(105deg, rgba(26,15,8,.85) 0%, rgba(61,32,16,.7) 45%, rgba(26,15,8,.55) 100%);
+}
+/* Imagem de fundo — trocar src pela foto real da padaria */
+.hero-bg-img {
+  position: absolute; inset: 0; z-index: -1;
+  background-image: url('https://images.unsplash.com/photo-1509440159596-0249088772ff?w=1600&q=80');
+  background-size: cover; background-position: center 30%;
+  filter: saturate(0.8);
+}
+.hero-grain {
+  position: absolute; inset: 0; z-index: 1; opacity: .06;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.hero-content {
+  position: relative; z-index: 2;
+  padding: 120px 0 80px;
+}
+.hero-badge { margin-bottom: 24px; }
+.hero-tagline {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-size: clamp(1.2rem, 2.5vw, 1.6rem); font-weight: 300;
+  color: var(--color-wheat); margin-bottom: 16px; letter-spacing: .03em;
+  display: block;
+}
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 7vw, 6.5rem); font-weight: 700; line-height: 1.0;
+  color: #fff; margin-bottom: 24px;
+}
+.hero-title em {
+  font-style: italic; color: var(--color-wheat);
+  display: block; font-size: .85em;
+}
+.hero-description {
+  font-size: 1.1rem; color: rgba(255,255,255,.75); max-width: 500px;
+  line-height: 1.8; margin-bottom: 40px; font-weight: 300;
+}
+.hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+.hero-scroll-cue {
+  position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); z-index: 2;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  color: rgba(255,255,255,.5); font-size: 0.7rem; letter-spacing: .15em; text-transform: uppercase;
+  animation: scrollBounce 2s ease-in-out infinite;
+}
+.hero-scroll-cue::after {
+  content: ''; width: 1px; height: 48px;
+  background: linear-gradient(to bottom, rgba(255,255,255,.4), transparent);
+}
+@keyframes scrollBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(6px); }
+}
+.hero-stats {
+  display: flex; gap: 40px; margin-top: 60px; padding-top: 40px;
+  border-top: 1px solid rgba(255,255,255,.12);
+}
+.hero-stat-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem; font-weight: 700; color: var(--color-wheat); line-height: 1;
+}
+.hero-stat-label {
+  font-size: 0.75rem; color: rgba(255,255,255,.5);
+  letter-spacing: .1em; text-transform: uppercase; margin-top: 4px;
+}
+
+/* ─── 03. FEATURES STRIP ─────────────────────────── */
+.features-strip {
+  background: var(--color-brown); padding: 0;
+}
+.features-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+}
+.feature-item {
+  display: flex; align-items: center; gap: 20px;
+  padding: 32px 40px; position: relative;
+}
+.feature-item:not(:last-child)::after {
+  content: ''; position: absolute; right: 0; top: 20%; bottom: 20%;
+  width: 1px; background: rgba(255,255,255,.1);
+}
+.feature-icon {
+  width: 48px; height: 48px; min-width: 48px; border-radius: var(--radius-md);
+  background: rgba(212,160,74,.15); display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem;
+}
+.feature-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 4px;
+}
+.feature-text { font-size: 0.82rem; color: rgba(255,255,255,.55); line-height: 1.5; }
+
+/* ─── 04. ABOUT ──────────────────────────────────── */
+.about-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+}
+.about-images {
+  position: relative; height: 560px;
+}
+.about-img-main {
+  position: absolute; top: 0; left: 0; width: 72%; height: 80%;
+  border-radius: var(--radius-lg); overflow: hidden;
+  box-shadow: var(--shadow-xl);
+}
+.about-img-secondary {
+  position: absolute; bottom: 0; right: 0; width: 52%; height: 52%;
+  border-radius: var(--radius-lg); overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  border: 6px solid var(--color-cream);
+}
+.about-accent {
+  position: absolute; top: -16px; right: 20%; width: 80px; height: 80px;
+  border-radius: var(--radius-circle);
+  background: var(--color-wheat); opacity: .3; z-index: -1;
+}
+.about-years-badge {
+  position: absolute; top: 40%; left: 55%;
+  width: 90px; height: 90px; border-radius: var(--radius-circle);
+  background: var(--color-caramel); display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  color: #fff; box-shadow: var(--shadow-lg); z-index: 2;
+}
+.about-years-num {
+  font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; line-height: 1;
+}
+.about-years-text { font-size: 0.6rem; letter-spacing: .12em; text-transform: uppercase; opacity: .8; }
+.about-body { font-size: 1rem; color: var(--color-text-mid); line-height: 1.9; margin-bottom: 20px; }
+.about-signature {
+  font-family: 'Cormorant Garamond', serif; font-style: italic;
+  font-size: 2rem; font-weight: 300; color: var(--color-caramel); margin: 24px 0 8px;
+}
+.about-founder-role { font-size: 0.8rem; color: var(--color-text-light); letter-spacing: .08em; }
+
+/* ─── 05. PRODUCTS ───────────────────────────────── */
+.products-header {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  margin-bottom: 56px;
+}
+.products-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+}
+.card-product {
+  background: var(--color-ivory); border-radius: var(--radius-lg);
+  overflow: hidden; box-shadow: var(--shadow-sm);
+  transition: var(--transition); cursor: pointer;
+}
+.card-product:hover {
+  transform: translateY(-8px); box-shadow: var(--shadow-lg);
+}
+.card-product-img {
+  height: 220px; position: relative; overflow: hidden;
+}
+.card-product-img img { transition: transform .5s ease; }
+.card-product:hover .card-product-img img { transform: scale(1.06); }
+.card-product-badge {
+  position: absolute; top: 12px; left: 12px;
+}
+.card-product-body { padding: 20px; }
+.card-product-category {
+  font-size: 0.7rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--color-caramel); margin-bottom: 6px; display: block;
+}
+.card-product-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem; font-weight: 700; color: var(--color-brown); margin-bottom: 8px; line-height: 1.2;
+}
+.card-product-desc { font-size: 0.82rem; color: var(--color-text-mid); line-height: 1.6; margin-bottom: 16px; }
+.card-product-footer { display: flex; justify-content: space-between; align-items: center; }
+.card-product-price {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem; font-weight: 700; color: var(--color-caramel);
+}
+.card-product-price small { font-family: 'Lato', sans-serif; font-size: 0.7rem; font-weight: 400; margin-left: 1px; }
+.btn-add {
+  width: 36px; height: 36px; border-radius: var(--radius-circle);
+  background: var(--color-caramel); color: #fff; border: none;
+  font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: var(--transition);
+}
+.btn-add:hover { background: var(--color-caramel-light); transform: scale(1.1); }
+
+/* ─── 06. SERVICES ───────────────────────────────── */
+.services-section { background: var(--color-espresso); }
+.services-section .section-title { color: var(--color-wheat); }
+.services-section .section-subtitle { color: rgba(255,255,255,.55); }
+.services-section .section-label { color: var(--color-gold); }
+.services-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+  margin-top: 64px; border-radius: var(--radius-lg); overflow: hidden;
+}
+.service-card {
+  background: rgba(255,255,255,.04); padding: 48px 36px;
+  border: 1px solid rgba(255,255,255,.07); transition: var(--transition);
+  cursor: pointer;
+}
+.service-card:hover {
+  background: rgba(255,255,255,.08); border-color: rgba(212,160,74,.3);
+}
+.service-icon {
+  font-size: 2.4rem; margin-bottom: 24px; display: block;
+  width: 64px; height: 64px; display: flex; align-items: center; justify-content: center;
+  background: rgba(212,160,74,.1); border-radius: var(--radius-md);
+}
+.service-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem; font-weight: 700; color: #fff; margin-bottom: 12px;
+}
+.service-desc { font-size: 0.9rem; color: rgba(255,255,255,.5); line-height: 1.7; }
+.service-link {
+  display: inline-flex; align-items: center; gap: 8px; margin-top: 24px;
+  font-size: 0.8rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--color-gold); transition: var(--transition);
+}
+.service-link:hover { gap: 12px; color: var(--color-wheat); }
+
+/* ─── 07. GALLERY ────────────────────────────────── */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 240px);
+  gap: 12px; margin-top: 64px;
+  border-radius: var(--radius-lg); overflow: hidden;
+}
+.gallery-item {
+  overflow: hidden; cursor: pointer; position: relative;
+}
+.gallery-item img { transition: transform .5s ease; }
+.gallery-item:hover img { transform: scale(1.08); }
+.gallery-item::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(26,15,8,.5) 0%, transparent 50%);
+  opacity: 0; transition: var(--transition);
+}
+.gallery-item:hover::after { opacity: 1; }
+.gallery-item.tall { grid-row: span 2; }
+.gallery-item.wide { grid-column: span 2; }
+
+/* ─── 08. TESTIMONIALS ───────────────────────────── */
+.testimonials-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 64px;
+}
+.testimonial-card {
+  background: var(--color-ivory); border-radius: var(--radius-lg);
+  padding: 36px 32px; box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-wheat); transition: var(--transition);
+}
+.testimonial-card:hover { box-shadow: var(--shadow-md); transform: translateY(-4px); }
+.testimonial-stars { display: flex; gap: 4px; margin-bottom: 20px; }
+.star { color: var(--color-gold); font-size: 1rem; }
+.testimonial-text {
+  font-family: 'Cormorant Garamond', serif; font-style: italic;
+  font-size: 1.15rem; font-weight: 300; line-height: 1.7;
+  color: var(--color-text-dark); margin-bottom: 24px;
+}
+.testimonial-text::before { content: '"'; font-size: 2rem; color: var(--color-wheat); line-height: 0; vertical-align: -0.5em; margin-right: 4px; }
+.testimonial-footer { display: flex; align-items: center; gap: 14px; border-top: 1px solid var(--color-cream-dark); padding-top: 20px; }
+.testimonial-avatar {
+  width: 44px; height: 44px; border-radius: var(--radius-circle); overflow: hidden;
+  background: var(--color-wheat); flex-shrink: 0;
+}
+.testimonial-name { font-weight: 700; font-size: 0.9rem; color: var(--color-brown); }
+.testimonial-date { font-size: 0.75rem; color: var(--color-text-light); margin-top: 2px; }
+
+/* ─── 09. CTA SECTION ────────────────────────────── */
+.cta-section {
+  background:
+    linear-gradient(135deg, var(--color-brown) 0%, var(--color-espresso) 60%);
+  position: relative; overflow: hidden;
+}
+.cta-section::before {
+  content: ''; position: absolute; right: -80px; top: -80px;
+  width: 400px; height: 400px; border-radius: var(--radius-circle);
+  background: rgba(212,160,74,.08);
+}
+.cta-section::after {
+  content: ''; position: absolute; left: -40px; bottom: -120px;
+  width: 280px; height: 280px; border-radius: var(--radius-circle);
+  background: rgba(200,114,42,.1);
+}
+.cta-inner {
+  position: relative; z-index: 1; text-align: center; max-width: 640px; margin: 0 auto;
+}
+.cta-section .section-label { text-align: center; display: block; color: var(--color-gold); }
+.cta-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 700; color: #fff; line-height: 1.15;
+  margin-bottom: 16px;
+}
+.cta-title em { font-style: italic; color: var(--color-wheat); }
+.cta-subtitle { color: rgba(255,255,255,.6); font-size: 1rem; margin-bottom: 40px; line-height: 1.7; }
+.cta-form { display: flex; gap: 12px; max-width: 480px; margin: 0 auto; }
+.cta-input {
+  flex: 1; padding: 14px 24px; border-radius: var(--radius-pill);
+  border: 1.5px solid rgba(255,255,255,.2);
+  background: rgba(255,255,255,.08);
+  color: #fff; font-size: 0.9rem; font-family: 'Lato', sans-serif;
+  outline: none; transition: var(--transition);
+}
+.cta-input::placeholder { color: rgba(255,255,255,.4); }
+.cta-input:focus { border-color: var(--color-gold); background: rgba(255,255,255,.12); }
+.cta-guarantee {
+  font-size: 0.78rem; color: rgba(255,255,255,.4); margin-top: 16px;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+
+/* ─── 10. FOOTER ─────────────────────────────────── */
+.footer {
+  background: var(--color-espresso); padding: 80px 0 40px;
+}
+.footer-grid {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 60px; margin-bottom: 60px;
+}
+.footer-logo {
+  font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700;
+  color: #fff; margin-bottom: 16px; display: block;
+}
+.footer-logo span { color: var(--color-wheat); }
+.footer-desc { font-size: 0.9rem; color: rgba(255,255,255,.45); line-height: 1.8; max-width: 260px; margin-bottom: 28px; }
+.footer-socials { display: flex; gap: 12px; }
+.footer-social-btn {
+  width: 38px; height: 38px; border-radius: var(--radius-md);
+  background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(255,255,255,.5); font-size: 0.9rem; transition: var(--transition); cursor: pointer;
+}
+.footer-social-btn:hover { background: var(--color-caramel); border-color: var(--color-caramel); color: #fff; }
+.footer-col-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: 24px;
+}
+.footer-links { display: flex; flex-direction: column; gap: 12px; }
+.footer-links a {
+  font-size: 0.88rem; color: rgba(255,255,255,.45); transition: var(--transition);
+}
+.footer-links a:hover { color: var(--color-wheat); padding-left: 4px; }
+.footer-contact-item { display: flex; gap: 12px; margin-bottom: 16px; }
+.footer-contact-icon {
+  width: 20px; color: var(--color-gold); font-size: 0.9rem; flex-shrink: 0; margin-top: 2px;
+}
+.footer-contact-text { font-size: 0.85rem; color: rgba(255,255,255,.45); line-height: 1.6; }
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,.08); padding-top: 32px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.footer-copy { font-size: 0.78rem; color: rgba(255,255,255,.3); }
+.footer-legal { display: flex; gap: 24px; }
+.footer-legal a { font-size: 0.78rem; color: rgba(255,255,255,.3); transition: var(--transition); }
+.footer-legal a:hover { color: rgba(255,255,255,.6); }
+
+/* ─── ANIMATIONS ─────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeup { animation: fadeUp .7s ease both; }
+.delay-1 { animation-delay: .1s; }
+.delay-2 { animation-delay: .2s; }
+.delay-3 { animation-delay: .3s; }
+.delay-4 { animation-delay: .4s; }
+
+/* ─── RESPONSIVE ──────────────────────────────────── */
+@media (max-width: 1024px) {
+  .about-grid { grid-template-columns: 1fr; gap: 48px; }
+  .about-images { height: 400px; }
+  .products-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+}
+@media (max-width: 768px) {
+  .navbar-nav { display: none; }
+  .features-grid { grid-template-columns: 1fr; }
+  .feature-item::after { display: none; }
+  .services-grid { grid-template-columns: 1fr; }
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(4, 180px); }
+  .gallery-item.tall, .gallery-item.wide { grid-row: auto; grid-column: auto; }
+  .testimonials-grid { grid-template-columns: 1fr; }
+  .cta-form { flex-direction: column; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+  .products-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+}
+@media (max-width: 480px) {
+  .hero-title { font-size: 2.8rem; }
+  .hero-stats { flex-wrap: wrap; gap: 24px; }
+  .products-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<a href="../" style="position:fixed;left:16px;bottom:16px;z-index:9999;padding:10px 13px;border-radius:999px;background:rgba(26,15,8,.9);color:#FDF6E9;border:1px solid rgba(212,160,74,.45);font:700 12px Lato,system-ui,sans-serif;text-decoration:none;box-shadow:0 10px 28px rgba(26,15,8,.22)">Kynovia / Modelos</a>
+
+<!-- ─── 01. NAVBAR ──────────────────────────────────────── -->
+<nav class="navbar" id="navbar">
+  <div class="container">
+    <div class="navbar-inner">
+      <a href="#" class="navbar-logo">Maison<span>.</span>Pain</a>
+      <ul class="navbar-nav">
+        <li><a href="#sobre">Nossa História</a></li>
+        <li><a href="#produtos">Produtos</a></li>
+        <li><a href="#servicos">Serviços</a></li>
+        <li><a href="#galeria">Galeria</a></li>
+        <li><a href="#contato">Contato</a></li>
+      </ul>
+      <a href="#contato" class="btn btn-primary navbar-cta">Fazer Pedido</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ─── 02. HERO ─────────────────────────────────────────── -->
+<section class="hero" id="hero">
+  <div class="hero-bg">
+    <div class="hero-bg-img"></div>
+  </div>
+  <div class="hero-grain"></div>
+  <div class="container hero-content">
+    <div class="hero-badge animate-fadeup">
+      <span class="badge badge-dark">✦ Artesanal desde 1998</span>
+    </div>
+    <span class="hero-tagline animate-fadeup delay-1">Pão de verdade, feito com amor</span>
+    <h1 class="hero-title animate-fadeup delay-2">
+      O sabor que <em>aquece a alma</em>
+    </h1>
+    <p class="hero-description animate-fadeup delay-3">
+      Cada pão é uma história. Fermentação lenta, ingredientes selecionados e
+      décadas de tradição transformadas em sabor que você nunca esquece.
+    </p>
+    <div class="hero-actions animate-fadeup delay-4">
+      <a href="#produtos" class="btn btn-primary">Ver Cardápio</a>
+      <a href="#sobre" class="btn btn-outline-white">Nossa História</a>
+    </div>
+    <div class="hero-stats animate-fadeup delay-4">
+      <div>
+        <div class="hero-stat-number">25+</div>
+        <div class="hero-stat-label">Anos de tradição</div>
+      </div>
+      <div>
+        <div class="hero-stat-number">60+</div>
+        <div class="hero-stat-label">Variedades de pão</div>
+      </div>
+      <div>
+        <div class="hero-stat-number">98%</div>
+        <div class="hero-stat-label">Clientes satisfeitos</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll-cue">Scroll</div>
+</section>
+
+<!-- ─── 03. FEATURES STRIP ──────────────────────────────── -->
+<div class="features-strip">
+  <div class="container">
+    <div class="features-grid">
+      <div class="feature-item">
+        <div class="feature-icon">🌾</div>
+        <div>
+          <div class="feature-title">Ingredientes Naturais</div>
+          <div class="feature-text">Farinhas orgânicas selecionadas, sem aditivos artificiais</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🕐</div>
+        <div>
+          <div class="feature-title">Fermentação Lenta</div>
+          <div class="feature-text">Processo de 24h a 72h para sabor e leveza incomparáveis</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🚚</div>
+        <div>
+          <div class="feature-title">Entrega Diária</div>
+          <div class="feature-text">Pão fresco do forno à sua mesa, todos os dias</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── 04. ABOUT ─────────────────────────────────────────── -->
+<section class="section" id="sobre">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-images">
+        <div class="about-accent"></div>
+        <div class="about-img-main">
+          <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80" alt="Padeiro fazendo pão" loading="lazy">
+        </div>
+        <div class="about-img-secondary">
+          <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&q=80" alt="Pães artesanais" loading="lazy">
+        </div>
+        <div class="about-years-badge">
+          <div class="about-years-num">25</div>
+          <div class="about-years-text">Anos</div>
+        </div>
+      </div>
+      <div class="about-text">
+        <span class="section-label">Nossa história</span>
+        <h2 class="section-title">Tradição artesanal<br>com alma brasileira</h2>
+        <div class="divider-ornament"><span>✦</span></div>
+        <p class="about-body">
+          Tudo começou com um forno de pedra, mãos calejadas e a receita da vovó Inês.
+          Em 1998, abrimos as portas da Maison Pain com um único objetivo: criar pães
+          que contassem histórias e conectassem pessoas.
+        </p>
+        <p class="about-body">
+          Hoje, nossa padaria é um ponto de encontro no bairro — um lugar onde o aroma
+          do pão recém-saído do forno é convite para parar, respirar e saborear os
+          pequenos momentos que fazem a vida valer a pena.
+        </p>
+        <div class="about-signature">Chef Inês Carvalho</div>
+        <div class="about-founder-role">Fundadora & Maestra Padeira</div>
+        <br>
+        <a href="#produtos" class="btn btn-primary" style="margin-top:8px">Conhecer nossos pães</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 05. PRODUCTS ──────────────────────────────────────── -->
+<section class="section section-alt" id="produtos">
+  <div class="container">
+    <div class="products-header">
+      <div>
+        <span class="section-label">Nossos produtos</span>
+        <h2 class="section-title" style="margin-bottom:0">Feitos com carinho,<br>toda manhã</h2>
+      </div>
+      <a href="#" class="btn btn-outline">Ver cardápio completo</a>
+    </div>
+    <div class="products-grid">
+
+      <!-- Card 1 -->
+      <div class="card-product">
+        <div class="card-product-img">
+          <img src="https://images.unsplash.com/photo-1549931319-a545dcf3bc73?w=600&q=80" alt="Sourdough" loading="lazy">
+          <div class="card-product-badge"><span class="badge badge-caramel">Mais pedido</span></div>
+        </div>
+        <div class="card-product-body">
+          <span class="card-product-category">Pães de fermentação</span>
+          <h3 class="card-product-name">Sourdough Clássico</h3>
+          <p class="card-product-desc">Fermento natural, casca crocante, miolo alveolado. 72h de fermentação.</p>
+          <div class="card-product-footer">
+            <span class="card-product-price">R$&nbsp;32<small>,90</small></span>
+            <button class="btn-add">+</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="card-product">
+        <div class="card-product-img">
+          <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=600&q=80" alt="Croissant" loading="lazy">
+          <div class="card-product-badge"><span class="badge">Novidade</span></div>
+        </div>
+        <div class="card-product-body">
+          <span class="card-product-category">Folhados</span>
+          <h3 class="card-product-name">Croissant de Manteiga</h3>
+          <p class="card-product-desc">127 camadas de manteiga francesa. Crocante por fora, sedoso por dentro.</p>
+          <div class="card-product-footer">
+            <span class="card-product-price">R$&nbsp;14<small>,50</small></span>
+            <button class="btn-add">+</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="card-product">
+        <div class="card-product-img">
+          <img src="https://images.unsplash.com/photo-1586444248902-2f64eddc13df?w=600&q=80" alt="Baguete" loading="lazy">
+        </div>
+        <div class="card-product-body">
+          <span class="card-product-category">Pães tradicionais</span>
+          <h3 class="card-product-name">Baguette Tradition</h3>
+          <p class="card-product-desc">Receita francesa original, assada em pedra vulcânica, crocância única.</p>
+          <div class="card-product-footer">
+            <span class="card-product-price">R$&nbsp;12<small>,00</small></span>
+            <button class="btn-add">+</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="card-product">
+        <div class="card-product-img">
+          <img src="https://images.unsplash.com/photo-1587248720327-8eb72564be1e?w=600&q=80" alt="Focaccia" loading="lazy">
+          <div class="card-product-badge"><span class="badge badge-dark">Premium</span></div>
+        </div>
+        <div class="card-product-body">
+          <span class="card-product-category">Especiais</span>
+          <h3 class="card-product-name">Focaccia de Alecrim</h3>
+          <p class="card-product-desc">Azeite extravirgem, alecrim fresco, flor de sal e tomates confitados.</p>
+          <div class="card-product-footer">
+            <span class="card-product-price">R$&nbsp;28<small>,00</small></span>
+            <button class="btn-add">+</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── 06. SERVICES ──────────────────────────────────────── -->
+<section class="section services-section" id="servicos">
+  <div class="container">
+    <span class="section-label">O que oferecemos</span>
+    <div style="display:flex; justify-content:space-between; align-items:flex-end;">
+      <h2 class="section-title" style="color:var(--color-wheat)">Além do balcão:<br>serviços completos</h2>
+      <p class="section-subtitle" style="color:rgba(255,255,255,.5)">Do café da manhã à encomenda especial — estamos aqui para tornar cada momento único.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">🎂</div>
+        <h3 class="service-title">Bolos & Eventos</h3>
+        <p class="service-desc">Bolos personalizados para casamentos, aniversários e eventos corporativos. Cada peça é única, criada com você.</p>
+        <a href="#" class="service-link">Solicitar orçamento →</a>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">📦</div>
+        <h3 class="service-title">Assinatura Mensal</h3>
+        <p class="service-desc">Receba semanalmente uma cesta curada com o melhor da nossa produção diretamente na sua porta.</p>
+        <a href="#" class="service-link">Ver planos →</a>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🏢</div>
+        <h3 class="service-title">Para Empresas</h3>
+        <p class="service-desc">Fornecimento diário para cafeterias, hotéis e restaurantes. Qualidade garantida com contratos flexíveis.</p>
+        <a href="#" class="service-link">Falar com consultor →</a>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">👨‍🍳</div>
+        <h3 class="service-title">Workshop de Pão</h3>
+        <p class="service-desc">Aprenda com nossos padeiros. Workshops mensais de fermentação natural, croissant e pães especiais.</p>
+        <a href="#" class="service-link">Ver agenda →</a>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">☕</div>
+        <h3 class="service-title">Café & Bistrô</h3>
+        <p class="service-desc">Espaço aconchegante para café da manhã, brunch e almoço. Tudo feito com ingredientes da estação.</p>
+        <a href="#" class="service-link">Ver cardápio →</a>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🎁</div>
+        <h3 class="service-title">Cestas Premium</h3>
+        <p class="service-desc">Presentes gourmet personalizados com seleção de pães, patês, geleias e acompanhamentos artesanais.</p>
+        <a href="#" class="service-link">Montar cesta →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 07. GALLERY ─────────────────────────────────────── -->
+<section class="section" id="galeria">
+  <div class="container">
+    <span class="section-label">Nossa galeria</span>
+    <h2 class="section-title">Beleza que se<br>come com os olhos</h2>
+    <div class="gallery-grid">
+      <div class="gallery-item tall">
+        <img src="https://images.unsplash.com/photo-1517433367423-c7e5b0f35086?w=600&q=80" alt="Padaria interior" loading="lazy">
+      </div>
+      <div class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1579697096985-41fe1430e5df?w=600&q=80" alt="Pães artesanais" loading="lazy">
+      </div>
+      <div class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&q=80" alt="Sourdough" loading="lazy">
+      </div>
+      <div class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1486887396153-fa416526c108?w=600&q=80" alt="Croissant" loading="lazy">
+      </div>
+      <div class="gallery-item wide">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=80" alt="Padeiro" loading="lazy">
+      </div>
+      <div class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1590080875515-8a3a8dc5735e?w=600&q=80" alt="Pão de centeio" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 08. TESTIMONIALS ─────────────────────────────────── -->
+<section class="section section-alt" id="depoimentos">
+  <div class="container">
+    <div style="text-align:center; margin-bottom:0">
+      <span class="section-label" style="display:block; text-align:center">Depoimentos</span>
+      <h2 class="section-title" style="text-align:center; margin:0 auto 8px">O que nossos clientes dizem</h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="testimonial-stars">
+          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+        </div>
+        <p class="testimonial-text">O sourdough da Maison Pain mudou minha vida. É simplesmente o melhor pão que já comi — e olha que já fui à Paris três vezes.</p>
+        <div class="testimonial-footer">
+          <div class="testimonial-avatar" style="background:var(--color-caramel);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:.9rem">MC</div>
+          <div>
+            <div class="testimonial-name">Mariana Costa</div>
+            <div class="testimonial-date">Cliente há 6 anos · Google Reviews</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-stars">
+          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+        </div>
+        <p class="testimonial-text">Encomendei o bolo de casamento e superou todas as expectativas. Todos os convidados pediram o contato. Obrigado por tornar nosso dia ainda mais especial.</p>
+        <div class="testimonial-footer">
+          <div class="testimonial-avatar" style="background:var(--color-gold);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:.9rem">RF</div>
+          <div>
+            <div class="testimonial-name">Rafael & Fernanda</div>
+            <div class="testimonial-date">Clientes desde 2021 · Instagram</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-stars">
+          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+        </div>
+        <p class="testimonial-text">A assinatura semanal é a melhor decisão que tomei para minha família. Pão fresco, artesanal e com história — na nossa porta toda sexta-feira.</p>
+        <div class="testimonial-footer">
+          <div class="testimonial-avatar" style="background:var(--color-brown);display:flex;align-items:center;justify-content:center;color:var(--color-wheat);font-weight:700;font-size:.9rem">LP</div>
+          <div>
+            <div class="testimonial-name">Lúcia Pimentel</div>
+            <div class="testimonial-date">Assinante · Trustpilot</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 09. CTA ───────────────────────────────────────────── -->
+<section class="section cta-section" id="contato">
+  <div class="container">
+    <div class="cta-inner">
+      <span class="section-label">Fique por dentro</span>
+      <h2 class="cta-title">Receba nossas <em>novidades</em><br>todo dia</h2>
+      <p class="cta-subtitle">Promoções exclusivas, lançamentos de temporada e as histórias por trás de cada pão. Direto no seu e-mail, sem spam.</p>
+      <div class="cta-form">
+        <input type="email" class="cta-input" placeholder="seu@email.com.br">
+        <button class="btn btn-primary">Quero receber</button>
+      </div>
+      <div class="cta-guarantee">
+        <span>🔒</span> Seus dados estão seguros. Cancele quando quiser.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── 10. FOOTER ────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <span class="footer-logo">Maison<span>.</span>Pain</span>
+        <p class="footer-desc">Pães artesanais de fermentação natural, feitos com ingredientes selecionados e décadas de tradição.</p>
+        <div class="footer-socials">
+          <a href="#" class="footer-social-btn">f</a>
+          <a href="#" class="footer-social-btn">ig</a>
+          <a href="#" class="footer-social-btn">yt</a>
+          <a href="#" class="footer-social-btn">in</a>
+        </div>
+      </div>
+      <div>
+        <h4 class="footer-col-title">Navegação</h4>
+        <div class="footer-links">
+          <a href="#">Nossa História</a>
+          <a href="#">Cardápio</a>
+          <a href="#">Serviços</a>
+          <a href="#">Galeria</a>
+          <a href="#">Blog</a>
+          <a href="#">Franquias</a>
+        </div>
+      </div>
+      <div>
+        <h4 class="footer-col-title">Serviços</h4>
+        <div class="footer-links">
+          <a href="#">Encomendas</a>
+          <a href="#">Assinatura Mensal</a>
+          <a href="#">Para Empresas</a>
+          <a href="#">Workshops</a>
+          <a href="#">Cestas Premium</a>
+          <a href="#">Café & Bistrô</a>
+        </div>
+      </div>
+      <div>
+        <h4 class="footer-col-title">Contato</h4>
+        <div class="footer-contact-item">
+          <div class="footer-contact-icon">📍</div>
+          <div class="footer-contact-text">Rua das Flores, 142<br>Jardim Paulista, São Paulo - SP</div>
+        </div>
+        <div class="footer-contact-item">
+          <div class="footer-contact-icon">📞</div>
+          <div class="footer-contact-text">(11) 9 9999-9999</div>
+        </div>
+        <div class="footer-contact-item">
+          <div class="footer-contact-icon">⏰</div>
+          <div class="footer-contact-text">Seg–Sex: 6h às 20h<br>Sáb–Dom: 6h às 14h</div>
+        </div>
+        <div class="footer-contact-item">
+          <div class="footer-contact-icon">✉️</div>
+          <div class="footer-contact-text">ola@maisonpain.com.br</div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2025 Maison Pain. Todos os direitos reservados.</span>
+      <div class="footer-legal">
+        <a href="#">Privacidade</a>
+        <a href="#">Termos de uso</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ─── SCRIPTS ───────────────────────────────────────────── -->
+<script>
+/* Navbar scroll effect */
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+/* Intersection Observer — animate-on-scroll */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.card-product, .service-card, .testimonial-card, .gallery-item').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'opacity .6s ease, transform .6s ease';
+  observer.observe(el);
+});
+
+/* Add to cart micro-interaction */
+document.querySelectorAll('.btn-add').forEach(btn => {
+  btn.addEventListener('click', function() {
+    this.textContent = '✓';
+    this.style.background = '#4CAF50';
+    setTimeout(() => {
+      this.textContent = '+';
+      this.style.background = '';
+    }, 1400);
+  });
+});
+</script>
+</body>
+</html>
