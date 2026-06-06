@@ -1,0 +1,1835 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VidaPet — Clínica Veterinária</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+
+/* ══════════ TOKENS ══════════ */
+:root {
+  --navy:    #0C1E4A;
+  --blue:    #1D52D5;
+  --sky:     #E8F0FE;
+  --amber:   #F5A623;
+  --amber-lt:#FEF3DC;
+  --teal:    #0B9E84;
+  --teal-lt: #E0F5F1;
+  --red:     #E53E3E;
+  --bg:      #F7F9FC;
+  --white:   #FFFFFF;
+  --gray-lt: #F0F2F5;
+  --gray:    #8896AB;
+  --text:    #1A2540;
+  --text-sm: #4A5568;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+}
+
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--blue);border-radius:3px;}
+
+/* ══════════ REVEAL ══════════ */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.reveal-l{opacity:0;transform:translateX(-40px);transition:opacity .7s ease,transform .7s ease;}
+.reveal-l.visible{opacity:1;transform:translateX(0);}
+.reveal-r{opacity:0;transform:translateX(40px);transition:opacity .7s ease,transform .7s ease;}
+.reveal-r.visible{opacity:1;transform:translateX(0);}
+
+/* ══════════ NAV ══════════ */
+nav{
+  position:sticky;top:0;z-index:100;
+  background:var(--white);
+  border-bottom:1px solid rgba(0,0,0,0.07);
+  box-shadow:0 2px 20px rgba(0,0,0,0.05);
+  padding:0 3rem;
+  display:flex;align-items:center;justify-content:space-between;
+  height:70px;
+}
+.nav-logo{
+  display:flex;align-items:center;gap:0.7rem;
+  text-decoration:none;
+}
+.nav-logo-icon{
+  width:40px;height:40px;
+  background:var(--blue);border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;
+}
+.nav-logo-text{
+  font-family:'DM Serif Display',serif;
+  font-size:1.5rem;color:var(--navy);line-height:1;
+}
+.nav-logo-text span{
+  display:block;font-family:'DM Sans',sans-serif;
+  font-size:0.65rem;font-weight:500;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--gray);margin-top:2px;
+}
+.nav-links{display:flex;gap:0.3rem;list-style:none;align-items:center;}
+.nav-links a{
+  font-size:.88rem;font-weight:500;color:var(--text-sm);
+  text-decoration:none;padding:.45rem .9rem;border-radius:6px;
+  transition:background .2s,color .2s;
+}
+.nav-links a:hover{background:var(--sky);color:var(--blue);}
+.nav-emergency{
+  display:flex;align-items:center;gap:.5rem;
+  background:#FFF1F1;border:1.5px solid #FFCCCC;
+  color:var(--red);padding:.4rem .9rem;border-radius:6px;
+  font-size:.82rem;font-weight:600;
+}
+.nav-cta{
+  background:var(--blue);color:var(--white)!important;
+  border-radius:8px;padding:.5rem 1.2rem!important;
+  font-weight:600!important;
+  transition:background .2s,transform .2s!important;
+}
+.nav-cta:hover{background:var(--navy)!important;transform:translateY(-1px)!important;}
+
+/* ══════════ HERO ══════════ */
+#hero{
+  background:var(--navy);
+  min-height:calc(100vh - 70px);
+  position:relative;overflow:hidden;
+  display:grid;grid-template-columns:1fr 1fr;
+  align-items:center;gap:0;
+}
+
+/* subtle grid bg */
+#hero::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
+  background-size:40px 40px;
+}
+/* glow blob */
+#hero::after{
+  content:'';position:absolute;
+  width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(29,82,213,.4) 0%,transparent 70%);
+  top:-100px;right:300px;pointer-events:none;
+}
+
+.hero-left{
+  position:relative;z-index:2;
+  padding:5rem 3rem 5rem 4rem;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:rgba(245,166,35,.15);border:1px solid rgba(245,166,35,.3);
+  color:var(--amber);font-size:.78rem;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;
+  padding:.4rem 1rem;border-radius:50px;margin-bottom:1.8rem;
+}
+.hero-h1{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(2.8rem,4.5vw,5rem);
+  color:var(--white);line-height:1.08;
+  margin-bottom:1.5rem;
+}
+.hero-h1 em{font-style:italic;color:var(--amber);}
+.hero-p{
+  color:rgba(255,255,255,.65);font-size:1.05rem;
+  line-height:1.85;max-width:440px;margin-bottom:2.5rem;
+}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:3rem;}
+
+.btn{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-family:'DM Sans',sans-serif;font-weight:600;font-size:.95rem;
+  padding:.85rem 1.8rem;border-radius:10px;text-decoration:none;
+  transition:transform .2s,box-shadow .2s,background .2s;cursor:pointer;border:none;
+}
+.btn:hover{transform:translateY(-2px);}
+.btn-blue{background:var(--blue);color:white;box-shadow:0 4px 20px rgba(29,82,213,.4);}
+.btn-blue:hover{box-shadow:0 8px 30px rgba(29,82,213,.5);}
+.btn-ghost{background:rgba(255,255,255,.1);color:white;border:1.5px solid rgba(255,255,255,.25);}
+.btn-ghost:hover{background:rgba(255,255,255,.18);}
+.btn-amber{background:var(--amber);color:var(--navy);box-shadow:0 4px 20px rgba(245,166,35,.4);}
+.btn-amber:hover{box-shadow:0 8px 30px rgba(245,166,35,.5);}
+.btn-outline{background:transparent;color:var(--blue);border:2px solid var(--blue);}
+.btn-outline:hover{background:var(--blue);color:white;}
+.btn-navy{background:var(--navy);color:white;box-shadow:0 4px 15px rgba(0,0,0,.2);}
+
+.hero-trust{
+  display:flex;gap:2rem;padding-top:2rem;
+  border-top:1px solid rgba(255,255,255,.1);
+}
+.trust-item{}
+.trust-item strong{
+  display:block;font-family:'DM Serif Display',serif;
+  font-size:2rem;color:var(--amber);
+}
+.trust-item span{font-size:.8rem;color:rgba(255,255,255,.55);font-weight:500;}
+
+/* hero right — photo */
+.hero-right{
+  position:relative;z-index:2;
+  height:100%;min-height:600px;
+  display:flex;align-items:center;justify-content:center;
+  padding:3rem 3rem 3rem 0;
+}
+.hero-photo-frame{
+  position:relative;width:100%;max-width:480px;
+}
+.hero-photo-main{
+  width:100%;border-radius:20px;overflow:hidden;
+  box-shadow:0 30px 80px rgba(0,0,0,.4);
+  border:1px solid rgba(255,255,255,.1);
+}
+.hero-photo-main img{width:100%;height:480px;object-fit:cover;display:block;}
+
+.hero-badge{
+  position:absolute;
+  background:white;border-radius:14px;
+  padding:1rem 1.3rem;
+  box-shadow:0 15px 40px rgba(0,0,0,.2);
+  display:flex;align-items:center;gap:.8rem;
+}
+.hb1{bottom:-20px;left:-30px;}
+.hb2{top:20px;right:-30px;}
+.hb-icon{
+  width:44px;height:44px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;font-size:1.3rem;
+}
+.hb-blue{background:var(--sky);}
+.hb-amber{background:var(--amber-lt);}
+.hb-red{background:#FFF1F1;}
+.hb-text strong{display:block;font-size:.8rem;font-weight:700;color:var(--navy);}
+.hb-text span{font-size:.72rem;color:var(--gray);}
+.pulse{display:flex;align-items:center;gap:.4rem;}
+.pulse-dot{width:8px;height:8px;background:#22c55e;border-radius:50%;animation:pulse-anim 1.5s ease-in-out infinite;}
+@keyframes pulse-anim{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.4);}50%{box-shadow:0 0 0 6px rgba(34,197,94,0);}}
+
+/* ══════════ SECTION COMMON ══════════ */
+.section-eyebrow{
+  display:inline-flex;align-items:center;gap:.5rem;
+  color:var(--blue);font-size:.75rem;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;margin-bottom:.8rem;
+}
+.section-eyebrow::before{content:'';width:20px;height:2px;background:var(--blue);}
+
+/* ══════════ ABOUT ══════════ */
+#about{background:var(--white);padding:7rem 3rem;}
+.about-inner{
+  max-width:1160px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;
+}
+.about-photos{position:relative;height:500px;}
+.ap-main{
+  position:absolute;top:0;left:0;
+  width:300px;height:380px;border-radius:16px;overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,.12);
+}
+.ap-main img{width:100%;height:100%;object-fit:cover;display:block;}
+.ap-sec{
+  position:absolute;bottom:0;right:0;
+  width:240px;height:280px;border-radius:16px;overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,.12);
+  border:4px solid white;
+}
+.ap-sec img{width:100%;height:100%;object-fit:cover;display:block;}
+.ap-stat{
+  position:absolute;top:50%;left:55%;transform:translate(-50%,-50%);
+  background:var(--blue);color:white;border-radius:16px;
+  padding:1.2rem 1.5rem;text-align:center;
+  box-shadow:0 15px 40px rgba(29,82,213,.35);
+}
+.ap-stat strong{font-family:'DM Serif Display',serif;font-size:2.2rem;display:block;line-height:1;}
+.ap-stat span{font-size:.75rem;opacity:.8;font-weight:500;}
+
+.ap-badge{
+  position:absolute;top:20px;right:-10px;
+  background:var(--amber);color:var(--navy);
+  border-radius:10px;padding:.7rem 1rem;
+  font-size:.78rem;font-weight:700;
+  box-shadow:0 8px 25px rgba(245,166,35,.3);
+}
+
+.about-text h2{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(2rem,3vw,3rem);
+  color:var(--navy);line-height:1.2;margin-bottom:1.2rem;
+}
+.about-text h2 em{font-style:italic;color:var(--blue);}
+.about-text p{color:var(--text-sm);line-height:1.9;margin-bottom:1rem;font-size:1rem;}
+
+.about-team{
+  display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:2rem;
+}
+.team-card{
+  background:var(--bg);border-radius:12px;padding:1.2rem;
+  display:flex;align-items:center;gap:.8rem;
+  transition:box-shadow .2s;
+}
+.team-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.08);}
+.team-avatar{
+  width:48px;height:48px;border-radius:50%;overflow:hidden;
+  background:var(--sky);display:flex;align-items:center;justify-content:center;
+  font-size:1.5rem;flex-shrink:0;
+}
+.team-info strong{display:block;font-size:.88rem;font-weight:600;color:var(--navy);}
+.team-info span{font-size:.75rem;color:var(--gray);}
+
+/* ══════════ GALLERY ══════════ */
+#gallery{background:var(--bg);padding:7rem 3rem;}
+.gallery-inner{max-width:1160px;margin:0 auto;}
+.gallery-top{
+  display:flex;justify-content:space-between;
+  align-items:flex-end;margin-bottom:3rem;
+}
+.gallery-top h2{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(2rem,3vw,3rem);color:var(--navy);
+}
+.gallery-top p{color:var(--text-sm);max-width:360px;line-height:1.7;font-size:.95rem;}
+.gallery-grid{
+  display:grid;
+  grid-template-columns:1.4fr 1fr 1fr;
+  grid-template-rows:220px 220px;
+  gap:1rem;
+}
+.gallery-card{
+  border-radius:14px;overflow:hidden;
+  position:relative;cursor:pointer;
+  box-shadow:0 4px 20px rgba(0,0,0,.07);
+}
+.gallery-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease;}
+.gallery-card:hover img{transform:scale(1.06);}
+.gallery-card:nth-child(1){grid-row:1/3;}
+.gallery-card:nth-child(4){grid-column:2/4;}
+.gallery-cap{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:1rem 1.2rem;
+  background:linear-gradient(to top,rgba(12,30,74,.8) 0%,transparent 100%);
+  color:white;opacity:0;transition:opacity .3s;
+}
+.gallery-card:hover .gallery-cap{opacity:1;}
+.gallery-cap strong{display:block;font-size:.95rem;font-weight:600;}
+.gallery-cap span{font-size:.78rem;opacity:.8;}
+
+/* ══════════ SERVICES ══════════ */
+#services{background:var(--navy);padding:7rem 3rem;}
+.services-inner{max-width:1160px;margin:0 auto;}
+.services-top{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  margin-bottom:3.5rem;
+}
+.services-top .section-eyebrow{color:var(--amber);}
+.services-top .section-eyebrow::before{background:var(--amber);}
+.services-top h2{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(2rem,3.5vw,3.2rem);color:white;max-width:500px;line-height:1.2;
+}
+.services-top h2 em{font-style:italic;color:var(--amber);}
+.services-top p{color:rgba(255,255,255,.55);max-width:300px;line-height:1.7;font-size:.9rem;}
+
+.services-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;
+}
+.svc-card{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:16px;padding:2rem;
+  transition:background .25s,transform .25s,border-color .25s;
+  position:relative;overflow:hidden;
+}
+.svc-card::after{
+  content:'';position:absolute;
+  bottom:-30px;right:-30px;
+  width:80px;height:80px;border-radius:50%;
+  background:rgba(255,255,255,.03);
+}
+.svc-card:hover{
+  background:rgba(255,255,255,.09);
+  border-color:rgba(255,255,255,.18);
+  transform:translateY(-4px);
+}
+.svc-tag{
+  display:inline-flex;align-items:center;gap:.4rem;
+  font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  padding:.3rem .8rem;border-radius:50px;margin-bottom:1.2rem;
+}
+.tag-blue  {background:rgba(29,82,213,.25);color:#92B4F7;}
+.tag-amber {background:rgba(245,166,35,.2);color:var(--amber);}
+.tag-teal  {background:rgba(11,158,132,.2);color:#5ECFC0;}
+.tag-red   {background:rgba(229,62,62,.2); color:#FC8181;}
+.tag-purple{background:rgba(124,58,237,.2);color:#C4B5FD;}
+.tag-green {background:rgba(34,197,94,.2); color:#86EFAC;}
+
+.svc-icon{font-size:2rem;display:block;margin-bottom:1rem;}
+.svc-card h3{
+  font-family:'DM Serif Display',serif;
+  font-size:1.25rem;color:white;margin-bottom:.6rem;
+}
+.svc-card p{font-size:.88rem;color:rgba(255,255,255,.6);line-height:1.75;}
+.svc-price{
+  display:inline-block;margin-top:1.2rem;
+  font-size:.9rem;font-weight:600;color:var(--amber);
+}
+.svc-urgent{
+  position:absolute;top:1rem;right:1rem;
+  background:var(--red);color:white;
+  font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:.2rem .6rem;border-radius:50px;
+}
+
+/* ══════════ SCHEDULE ══════════ */
+#schedule{background:var(--white);padding:7rem 3rem;}
+.schedule-inner{max-width:1160px;margin:0 auto;}
+.schedule-top{text-align:center;margin-bottom:4rem;}
+.schedule-top h2{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(2rem,3.5vw,3rem);color:var(--navy);margin-bottom:.8rem;
+}
+.schedule-top p{color:var(--text-sm);max-width:480px;margin:0 auto;line-height:1.7;}
+
+.schedule-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:2rem;
+}
+.hours-card{
+  background:var(--bg);border-radius:20px;padding:2.5rem;
+}
+.hours-card h3{
+  font-family:'DM Serif Display',serif;
+  font-size:1.5rem;color:var(--navy);margin-bottom:.5rem;
+}
+.hours-card > p{font-size:.88rem;color:var(--gray);margin-bottom:1.8rem;}
+.hours-list{list-style:none;}
+.hour-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:.9rem 0;border-bottom:1px solid rgba(0,0,0,.06);
+}
+.hour-row:last-child{border-bottom:none;}
+.hour-day{
+  display:flex;align-items:center;gap:.6rem;
+  font-size:.9rem;font-weight:500;color:var(--text);
+}
+.hour-day-dot{width:8px;height:8px;border-radius:50%;}
+.dot-open{background:#22c55e;}
+.dot-partial{background:var(--amber);}
+.dot-closed{background:#CBD5E0;}
+.hour-time{
+  font-size:.82rem;font-weight:600;
+  padding:.25rem .8rem;border-radius:50px;
+}
+.ht-open  {background:var(--teal-lt);color:var(--teal);}
+.ht-partial{background:var(--amber-lt);color:#9B6000;}
+.ht-closed{background:var(--gray-lt);color:var(--gray);}
+
+.emergency-card{
+  background:var(--navy);border-radius:20px;padding:2.5rem;
+  position:relative;overflow:hidden;
+}
+.emergency-card::before{
+  content:'🚑';position:absolute;right:-20px;bottom:-30px;
+  font-size:8rem;opacity:.06;line-height:1;
+}
+.emergency-label{
+  display:inline-flex;align-items:center;gap:.4rem;
+  background:rgba(229,62,62,.2);border:1px solid rgba(229,62,62,.3);
+  color:#FC8181;font-size:.72rem;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase;
+  padding:.3rem .8rem;border-radius:50px;margin-bottom:1.2rem;
+}
+.emergency-card h3{
+  font-family:'DM Serif Display',serif;
+  font-size:1.8rem;color:white;margin-bottom:.7rem;
+}
+.emergency-card p{color:rgba(255,255,255,.65);font-size:.9rem;line-height:1.7;margin-bottom:1.8rem;}
+.emergency-phone{
+  font-family:'DM Serif Display',serif;
+  font-size:2rem;color:var(--amber);display:block;margin-bottom:1.5rem;
+  letter-spacing:.02em;
+}
+
+.agenda-steps{list-style:none;margin-bottom:2rem;}
+.ag-step{
+  display:flex;gap:1rem;align-items:flex-start;
+  margin-bottom:1.2rem;
+}
+.ag-num{
+  width:28px;height:28px;min-width:28px;
+  background:rgba(245,166,35,.2);color:var(--amber);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:.78rem;font-weight:700;
+}
+.ag-text{font-size:.88rem;color:rgba(255,255,255,.7);line-height:1.6;padding-top:.4rem;}
+
+/* ══════════ BENEFITS ══════════ */
+#benefits{background:var(--bg);padding:7rem 3rem;}
+.benefits-inner{max-width:1160px;margin:0 auto;}
+.benefits-top{text-align:center;margin-bottom:4rem;}
+.benefits-top h2{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(2rem,3.5vw,3rem);color:var(--navy);margin-bottom:.8rem;
+}
+.benefits-top h2 em{font-style:italic;color:var(--blue);}
+.benefits-top p{color:var(--text-sm);max-width:500px;margin:0 auto;line-height:1.7;}
+
+.benefits-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:1.5rem;margin-bottom:3rem;
+}
+.benefit-card{
+  background:var(--white);border-radius:16px;padding:2rem;
+  display:flex;gap:1.3rem;align-items:flex-start;
+  box-shadow:0 2px 20px rgba(0,0,0,.05);
+  transition:box-shadow .2s,transform .2s;
+}
+.benefit-card:hover{box-shadow:0 8px 40px rgba(0,0,0,.1);transform:translateY(-3px);}
+.benefit-icon{
+  width:52px;height:52px;min-width:52px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;font-size:1.5rem;
+}
+.bi-blue  {background:var(--sky);}
+.bi-amber {background:var(--amber-lt);}
+.bi-teal  {background:var(--teal-lt);}
+.bi-navy  {background:#E8EBF3;}
+.benefit-text h4{
+  font-family:'DM Serif Display',serif;
+  font-size:1.1rem;color:var(--navy);margin-bottom:.4rem;
+}
+.benefit-text p{font-size:.87rem;color:var(--text-sm);line-height:1.7;}
+
+.accreditations{
+  background:var(--white);border-radius:20px;padding:3rem;
+  box-shadow:0 2px 30px rgba(0,0,0,.06);
+  display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;text-align:center;
+}
+.accred-item{}
+.accred-icon{font-size:2.5rem;display:block;margin-bottom:.8rem;}
+.accred-item strong{
+  display:block;font-family:'DM Serif Display',serif;
+  font-size:1.8rem;color:var(--navy);margin-bottom:.2rem;
+}
+.accred-item span{font-size:.8rem;color:var(--gray);font-weight:500;}
+
+/* ══════════ CONTACT ══════════ */
+#contact{background:var(--white);padding:7rem 3rem;}
+.contact-inner{max-width:1160px;margin:0 auto;}
+.contact-top{text-align:center;margin-bottom:4rem;}
+.contact-top h2{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(2rem,3.5vw,3rem);color:var(--navy);margin-bottom:.8rem;
+}
+.contact-top p{color:var(--text-sm);max-width:480px;margin:0 auto;line-height:1.7;}
+
+.contact-grid{
+  display:grid;grid-template-columns:1fr 1.5fr;gap:3rem;
+}
+.contact-info-col{}
+.contact-info-col h3{
+  font-family:'DM Serif Display',serif;
+  font-size:1.4rem;color:var(--navy);margin-bottom:1.5rem;
+}
+.contact-detail{
+  display:flex;align-items:flex-start;gap:1rem;
+  padding:1.1rem 0;border-bottom:1px solid var(--gray-lt);
+}
+.contact-detail:last-of-type{border-bottom:none;}
+.cd-icon{
+  width:42px;height:42px;min-width:42px;background:var(--sky);
+  border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;
+}
+.cd-text strong{display:block;font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--blue);margin-bottom:.2rem;font-weight:600;}
+.cd-text span{font-size:.92rem;color:var(--text);font-weight:500;}
+
+.emergency-inline{
+  background:var(--navy);border-radius:14px;
+  padding:1.3rem 1.5rem;margin-top:1.5rem;
+  display:flex;align-items:center;gap:1rem;
+}
+.ei-dot{width:10px;height:10px;background:#22c55e;border-radius:50%;animation:pulse-anim 1.5s infinite;flex-shrink:0;}
+.ei-text strong{display:block;font-size:.78rem;color:var(--amber);font-weight:600;text-transform:uppercase;letter-spacing:.06em;}
+.ei-text span{color:rgba(255,255,255,.7);font-size:.88rem;}
+
+.contact-form{
+  background:var(--bg);border-radius:20px;padding:2.5rem;
+}
+.contact-form h3{
+  font-family:'DM Serif Display',serif;
+  font-size:1.4rem;color:var(--navy);margin-bottom:1.5rem;
+}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.form-group{margin-bottom:1rem;}
+.form-group label{
+  display:block;font-size:.78rem;font-weight:600;
+  color:var(--navy);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.45rem;
+}
+.form-group input,.form-group select,.form-group textarea{
+  width:100%;padding:.8rem 1rem;
+  border:1.5px solid rgba(0,0,0,.12);border-radius:10px;
+  font-family:'DM Sans',sans-serif;font-size:.92rem;color:var(--text);
+  background:var(--white);outline:none;resize:none;
+  transition:border-color .2s,box-shadow .2s;
+}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{
+  border-color:var(--blue);box-shadow:0 0 0 3px rgba(29,82,213,.1);
+}
+.form-submit{
+  width:100%;background:var(--blue);color:white;border:none;
+  padding:.95rem;border-radius:10px;
+  font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:600;
+  cursor:pointer;transition:background .2s,transform .2s;
+  display:flex;align-items:center;justify-content:center;gap:.5rem;
+}
+.form-submit:hover{background:var(--navy);transform:translateY(-2px);}
+
+/* ══════════ FOOTER ══════════ */
+footer{background:var(--navy);color:white;padding:4rem 3rem 2rem;}
+.footer-inner{
+  max-width:1160px;margin:0 auto;
+  display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;
+  gap:3rem;margin-bottom:3rem;
+}
+.footer-brand .logo{
+  display:flex;align-items:center;gap:.6rem;margin-bottom:1rem;
+}
+.footer-logo-icon{
+  width:36px;height:36px;background:var(--blue);border-radius:8px;
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;
+}
+.footer-logo-text{
+  font-family:'DM Serif Display',serif;font-size:1.4rem;color:white;
+}
+.footer-brand p{font-size:.85rem;opacity:.55;line-height:1.8;max-width:230px;}
+.footer-socials{display:flex;gap:.6rem;margin-top:1.2rem;}
+.soc{
+  width:38px;height:38px;border-radius:8px;
+  border:1px solid rgba(255,255,255,.15);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;text-decoration:none;transition:background .2s;
+}
+.soc:hover{background:var(--blue);}
+.footer-col h4{
+  font-size:.75rem;text-transform:uppercase;letter-spacing:.12em;
+  color:var(--amber);margin-bottom:1.2rem;font-weight:600;
+}
+.footer-col a{
+  display:block;color:rgba(255,255,255,.55);text-decoration:none;
+  font-size:.88rem;margin-bottom:.55rem;transition:color .2s;
+}
+.footer-col a:hover{color:white;}
+.footer-bottom{
+  max-width:1160px;margin:0 auto;
+  padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.08);
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:.8rem;color:rgba(255,255,255,.35);
+}
+.footer-crc{
+  display:flex;align-items:center;gap:.5rem;
+}
+.crc-badge{
+  background:rgba(245,166,35,.15);border:1px solid rgba(245,166,35,.3);
+  color:var(--amber);font-size:.7rem;font-weight:600;
+  padding:.2rem .6rem;border-radius:50px;
+}
+
+/* whatsapp */
+.wa{
+  position:fixed;bottom:1.5rem;right:1.5rem;z-index:90;
+  width:56px;height:56px;background:#25D366;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:1.6rem;
+  box-shadow:0 6px 30px rgba(37,211,102,.45);text-decoration:none;
+  transition:transform .2s;
+}
+.wa:hover{transform:scale(1.1);}
+
+/* ══════════ RESPONSIVE ══════════ */
+/* ══════════ VACCINE SCHEDULE ══════════ */
+#vaccines{background:var(--navy);padding:7rem 3rem;}
+.vaccines-inner{max-width:1160px;margin:0 auto;}
+.vaccines-top{margin-bottom:3rem;}
+.vaccines-top .section-eyebrow{color:var(--amber);}
+.vaccines-top .section-eyebrow::before{background:var(--amber);}
+.vaccines-top h2{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(2rem,3.5vw,3rem);color:white;margin-bottom:.8rem;
+}
+.vaccines-top h2 em{font-style:italic;color:var(--amber);}
+.vaccines-top p{color:rgba(255,255,255,.55);max-width:560px;line-height:1.7;font-size:.95rem;}
+
+.vax-tabs{
+  display:flex;gap:.5rem;margin-bottom:2rem;
+}
+.vax-tab{
+  padding:.55rem 1.4rem;border-radius:8px;
+  font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:600;
+  border:1.5px solid rgba(255,255,255,.2);color:rgba(255,255,255,.65);
+  background:transparent;cursor:pointer;transition:all .2s;
+}
+.vax-tab.active{background:var(--amber);color:var(--navy);border-color:var(--amber);}
+.vax-tab:hover:not(.active){border-color:rgba(255,255,255,.5);color:white;}
+
+.vax-panel{display:none;}
+.vax-panel.active{display:block;}
+
+.vax-table{
+  width:100%;border-collapse:collapse;
+  background:rgba(255,255,255,.04);border-radius:16px;overflow:hidden;
+}
+.vax-table th{
+  background:rgba(255,255,255,.08);
+  color:rgba(255,255,255,.7);font-size:.75rem;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase;
+  padding:.9rem 1.2rem;text-align:left;
+}
+.vax-table td{
+  padding:.9rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06);
+  color:rgba(255,255,255,.85);font-size:.88rem;vertical-align:middle;
+}
+.vax-table tr:last-child td{border-bottom:none;}
+.vax-table tr:hover td{background:rgba(255,255,255,.04);}
+.vax-table td:first-child{font-weight:600;color:white;}
+.vax-badge{
+  display:inline-flex;align-items:center;gap:.35rem;
+  font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  padding:.25rem .65rem;border-radius:50px;
+}
+.vb-obrg{background:rgba(229,62,62,.25);color:#FC8181;}
+.vb-rec {background:rgba(245,166,35,.2); color:var(--amber);}
+.vb-opc {background:rgba(11,158,132,.2); color:#5ECFC0;}
+.vax-check{color:#22c55e;font-size:1rem;}
+.vax-note{
+  margin-top:1.2rem;padding:1rem 1.2rem;
+  background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.25);
+  border-radius:10px;font-size:.82rem;color:rgba(255,255,255,.65);
+  display:flex;gap:.6rem;align-items:flex-start;
+}
+.vax-note-icon{font-size:1rem;flex-shrink:0;margin-top:.1rem;}
+
+/* ══════════ TESTIMONIALS ══════════ */
+#testimonials{background:var(--bg);padding:7rem 3rem;}
+.testimonials-inner{max-width:1160px;margin:0 auto;}
+.testimonials-top{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  margin-bottom:3rem;
+}
+.testimonials-top h2{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(2rem,3vw,3rem);color:var(--navy);
+}
+.rating-summary{
+  text-align:right;
+}
+.rating-big{
+  font-family:'DM Serif Display',serif;
+  font-size:3.5rem;color:var(--navy);line-height:1;display:block;
+}
+.stars{color:#F5A623;font-size:1.1rem;letter-spacing:.1em;}
+.rating-count{font-size:.82rem;color:var(--gray);margin-top:.2rem;}
+
+.testi-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1.5rem;margin-bottom:2.5rem;
+}
+.testi-card{
+  background:var(--white);border-radius:16px;padding:1.8rem;
+  box-shadow:0 2px 20px rgba(0,0,0,.06);
+  transition:box-shadow .25s,transform .25s;
+  position:relative;
+}
+.testi-card:hover{box-shadow:0 10px 40px rgba(0,0,0,.1);transform:translateY(-4px);}
+.testi-card::before{
+  content:'"';position:absolute;top:1rem;right:1.5rem;
+  font-family:'DM Serif Display',serif;font-size:5rem;
+  color:var(--sky);line-height:1;
+}
+.testi-stars{color:#F5A623;font-size:.85rem;margin-bottom:1rem;letter-spacing:.08em;}
+.testi-text{
+  font-size:.92rem;color:var(--text-sm);line-height:1.8;
+  margin-bottom:1.3rem;font-style:italic;
+}
+.testi-author{
+  display:flex;align-items:center;gap:.8rem;
+  border-top:1px solid var(--gray-lt);padding-top:1rem;
+}
+.testi-avatar{
+  width:42px;height:42px;border-radius:50%;
+  background:var(--sky);display:flex;align-items:center;justify-content:center;
+  font-size:1.4rem;flex-shrink:0;
+}
+.testi-author-info strong{display:block;font-size:.88rem;font-weight:600;color:var(--navy);}
+.testi-author-info span{font-size:.76rem;color:var(--gray);}
+.testi-pet{
+  display:inline-flex;align-items:center;gap:.3rem;
+  background:var(--teal-lt);color:var(--teal);
+  font-size:.7rem;font-weight:600;padding:.2rem .6rem;
+  border-radius:50px;margin-left:.5rem;
+}
+
+.platforms-row{
+  display:flex;align-items:center;justify-content:center;
+  gap:2rem;flex-wrap:wrap;
+  padding:1.5rem;background:var(--white);border-radius:12px;
+  box-shadow:0 2px 15px rgba(0,0,0,.05);
+}
+.platform-item{
+  display:flex;align-items:center;gap:.6rem;
+  font-size:.88rem;font-weight:600;color:var(--text-sm);
+}
+.platform-stars{color:#F5A623;font-size:.8rem;}
+.platform-sep{width:1px;height:24px;background:var(--gray-lt);}
+
+/* ══════════ FAQ ══════════ */
+#faq{background:var(--white);padding:7rem 3rem;}
+.faq-inner{
+  max-width:860px;margin:0 auto;
+}
+.faq-top{text-align:center;margin-bottom:3.5rem;}
+.faq-top h2{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(2rem,3.5vw,3rem);color:var(--navy);margin-bottom:.8rem;
+}
+.faq-top p{color:var(--text-sm);line-height:1.7;max-width:480px;margin:0 auto;}
+
+.faq-list{display:flex;flex-direction:column;gap:.8rem;}
+.faq-item{
+  background:var(--bg);border-radius:14px;
+  border:1.5px solid transparent;
+  overflow:hidden;transition:border-color .25s;
+}
+.faq-item.open{border-color:var(--blue);}
+.faq-q{
+  width:100%;display:flex;align-items:center;justify-content:space-between;
+  padding:1.3rem 1.5rem;background:none;border:none;cursor:pointer;
+  text-align:left;gap:1rem;
+}
+.faq-q-text{
+  font-family:'DM Serif Display',serif;
+  font-size:1.05rem;color:var(--navy);font-weight:400;line-height:1.4;
+}
+.faq-icon{
+  width:28px;height:28px;min-width:28px;border-radius:50%;
+  background:var(--sky);color:var(--blue);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;font-weight:700;transition:transform .3s,background .25s;
+}
+.faq-item.open .faq-icon{transform:rotate(45deg);background:var(--blue);color:white;}
+.faq-a{
+  max-height:0;overflow:hidden;
+  transition:max-height .35s ease,padding .35s ease;
+}
+.faq-item.open .faq-a{max-height:300px;}
+.faq-a-inner{
+  padding:0 1.5rem 1.3rem;
+  font-size:.92rem;color:var(--text-sm);line-height:1.8;
+  border-top:1px solid rgba(0,0,0,.06);padding-top:1rem;
+}
+.faq-item.open .faq-a-inner{padding-top:1rem;}
+.faq-tag{
+  display:inline-flex;align-items:center;gap:.3rem;
+  font-size:.7rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;
+  padding:.2rem .65rem;border-radius:50px;
+  background:var(--sky);color:var(--blue);margin-bottom:.5rem;
+}
+.faq-cta-row{
+  text-align:center;margin-top:3rem;
+  padding:2.5rem;background:var(--navy);border-radius:20px;
+}
+.faq-cta-row h3{
+  font-family:'DM Serif Display',serif;
+  font-size:1.6rem;color:white;margin-bottom:.6rem;
+}
+.faq-cta-row p{color:rgba(255,255,255,.6);font-size:.92rem;margin-bottom:1.5rem;}
+
+@media(max-width:960px){
+  .testi-grid{grid-template-columns:1fr;}
+  nav{padding:0 1.5rem;}
+  .nav-links{display:none;}
+  #hero{grid-template-columns:1fr;min-height:auto;}
+  .hero-left{padding:5rem 1.5rem 2rem;}
+  .hero-right{display:none;}
+  .about-inner,.contact-grid,.schedule-grid{grid-template-columns:1fr;gap:2rem;}
+  .about-photos{height:300px;}
+  .ap-main{width:200px;height:250px;}
+  .ap-sec{width:170px;height:200px;}
+  .gallery-grid{grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,180px);}
+  .gallery-card:nth-child(1),.gallery-card:nth-child(4){grid-row:auto;grid-column:auto;}
+  .services-grid,.benefits-grid{grid-template-columns:1fr;}
+  .accreditations{grid-template-columns:repeat(2,1fr);}
+  .footer-inner{grid-template-columns:1fr 1fr;}
+  .services-top,.gallery-top{flex-direction:column;gap:1rem;align-items:flex-start;}
+  section{padding:4rem 1.5rem!important;}
+  #contact,#about,#gallery,#benefits{padding:4rem 1.5rem!important;}
+  #services,#schedule{padding:4rem 1.5rem!important;}
+  footer{padding:3rem 1.5rem 1.5rem;}
+  .form-row{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<a href="../" style="position:fixed;left:16px;bottom:16px;z-index:9999;padding:10px 13px;border-radius:999px;background:rgba(12,30,74,.9);color:#fff;border:1px solid rgba(255,255,255,.22);font:700 12px 'DM Sans',system-ui,sans-serif;text-decoration:none;box-shadow:0 10px 28px rgba(12,30,74,.24)">Kynovia / Modelos</a>
+
+<!-- WA -->
+<a href="https://wa.me/5511999999999" class="wa" target="_blank">💬</a>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+  <a class="nav-logo" href="#">
+    <div class="nav-logo-icon">🏥</div>
+    <div class="nav-logo-text">
+      VidaPet
+      <span>Clínica Veterinária</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">A Clínica</a></li>
+    <li><a href="#gallery">Estrutura</a></li>
+    <li><a href="#services">Procedimentos</a></li>
+    <li><a href="#schedule">Horários</a></li>
+    <li><a href="#benefits">Diferenciais</a></li>
+    <li><span class="nav-emergency">🚨 Emergência 24h</span></li>
+    <li><a href="#contact" class="nav-cta">Agendar Consulta</a></li>
+  </ul>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">✦ Medicina veterinária de excelência</div>
+    <h1 class="hero-h1">
+      Saúde e bem‑estar<br>
+      para quem você<br>
+      mais <em>ama.</em>
+    </h1>
+    <p class="hero-p">
+      Diagnóstico preciso, tratamento humanizado e tecnologia de ponta — tudo para garantir uma vida longa e feliz ao seu pet.
+    </p>
+    <div class="hero-btns">
+      <a href="#contact" class="btn btn-amber">Agendar consulta</a>
+      <a href="#services" class="btn btn-ghost">Ver procedimentos →</a>
+    </div>
+    <div class="hero-trust">
+      <div class="trust-item">
+        <strong>12+</strong>
+        <span>Anos de clínica</span>
+      </div>
+      <div class="trust-item">
+        <strong>8k+</strong>
+        <span>Pacientes tratados</span>
+      </div>
+      <div class="trust-item">
+        <strong>24h</strong>
+        <span>Emergências</span>
+      </div>
+      <div class="trust-item">
+        <strong>98%</strong>
+        <span>Satisfação</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-photo-frame">
+      <div class="hero-photo-main">
+        <img src="https://images.pexels.com/photos/5731845/pexels-photo-5731845.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Veterinária examinando cachorro">
+      </div>
+      <div class="hero-badge hb1">
+        <div class="hb-icon hb-blue">🐾</div>
+        <div class="hb-text">
+          <strong>Medicina Integrativa</strong>
+          <span>Clínica geral + especialidades</span>
+        </div>
+      </div>
+      <div class="hero-badge hb2">
+        <div class="hb-icon hb-red">🚨</div>
+        <div class="hb-text">
+          <div class="pulse">
+            <div class="pulse-dot"></div>
+            <strong>Emergências 24h</strong>
+          </div>
+          <span>Sempre disponíveis</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ABOUT ═══ -->
+<section id="about">
+  <div class="about-inner">
+    <div class="about-photos reveal-l">
+      <div class="ap-main">
+        <img src="https://images.pexels.com/photos/5731840/pexels-photo-5731840.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Veterinária com cachorro">
+      </div>
+      <div class="ap-sec">
+        <img src="https://images.pexels.com/photos/6235233/pexels-photo-6235233.jpeg?auto=compress&cs=tinysrgb&w=500" alt="Consulta veterinária">
+      </div>
+      <div class="ap-stat">
+        <strong>15</strong>
+        <span>especialistas<br>na equipe</span>
+      </div>
+      <div class="ap-badge">⭐ CRMV Certificada</div>
+    </div>
+
+    <div class="reveal-r">
+      <div class="section-eyebrow">A Clínica</div>
+      <h2 class="about-text">Medicina veterinária<br><em>com alma</em> e ciência.</h2>
+      <p class="about-text" style="margin-top:1.2rem">Fundada em 2012, a VidaPet nasceu da convicção de que animais merecem o mesmo padrão de medicina que qualquer ser vivo. Nossa equipe combina rigor científico com escuta atenta e cuidado genuíno.</p>
+      <p class="about-text">Oferecemos medicina preventiva, diagnóstico por imagem, cirurgias e internação em um ambiente moderno, seguro e tranquilizador — tanto para os pets quanto para os tutores.</p>
+      <div class="about-team">
+        <div class="team-card">
+          <div class="team-avatar">👩‍⚕️</div>
+          <div class="team-info">
+            <strong>Dra. Carla Mendes</strong>
+            <span>Clínica Geral & Dermatologia</span>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar">👨‍⚕️</div>
+          <div class="team-info">
+            <strong>Dr. Rafael Lima</strong>
+            <span>Cirurgia & Oncologia</span>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar">👩‍⚕️</div>
+          <div class="team-info">
+            <strong>Dra. Ana Souza</strong>
+            <span>Cardiologia & Neurologia</span>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar">👨‍⚕️</div>
+          <div class="team-info">
+            <strong>Dr. Pedro Costa</strong>
+            <span>Ortopedia & Reabilitação</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ GALLERY ═══ -->
+<section id="gallery">
+  <div class="gallery-inner">
+    <div class="gallery-top reveal">
+      <div>
+        <div class="section-eyebrow">Estrutura</div>
+        <h2>Nossa clínica, seus cuidados.</h2>
+      </div>
+      <p>Equipamentos modernos e ambiente acolhedor para o conforto do seu pet e sua tranquilidade.</p>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-card reveal" style="transition-delay:.05s">
+        <img src="https://images.pexels.com/photos/5731855/pexels-photo-5731855.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Consulta veterinária" loading="lazy">
+        <div class="gallery-cap"><strong>Sala de consulta</strong><span>Atendimento humanizado</span></div>
+      </div>
+      <div class="gallery-card reveal" style="transition-delay:.1s">
+        <img src="https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Golden Retriever saudável" loading="lazy">
+        <div class="gallery-cap"><strong>Pacientes felizes</strong><span>Após tratamento</span></div>
+      </div>
+      <div class="gallery-card reveal" style="transition-delay:.15s">
+        <img src="https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Gato no exame" loading="lazy">
+        <div class="gallery-cap"><strong>Cuidado felino</strong><span>Consulta e exames</span></div>
+      </div>
+      <div class="gallery-card reveal" style="transition-delay:.08s">
+        <img src="https://images.pexels.com/photos/2253275/pexels-photo-2253275.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Cachorro saudável" loading="lazy">
+        <div class="gallery-cap"><strong>Medicina preventiva</strong><span>Vacinas e check-up</span></div>
+      </div>
+      <div class="gallery-card reveal" style="transition-delay:.12s">
+        <img src="https://images.pexels.com/photos/1741205/pexels-photo-1741205.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Gato exame" loading="lazy">
+        <div class="gallery-cap"><strong>Diagnóstico por imagem</strong><span>Ultrassom e Raio-X</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SERVICES ═══ -->
+<section id="services">
+  <div class="services-inner">
+    <div class="services-top reveal">
+      <div>
+        <div class="section-eyebrow">Procedimentos</div>
+        <h2>Tudo que seu pet<br>precisa, em <em>um só lugar.</em></h2>
+      </div>
+      <p>Da prevenção ao tratamento especializado — nossa estrutura completa cuida de cada etapa da saúde do seu animal.</p>
+    </div>
+    <div class="services-grid">
+      <div class="svc-card reveal" style="transition-delay:.05s">
+        <span class="svc-tag tag-blue">Preventivo</span>
+        <span class="svc-icon">💉</span>
+        <h3>Vacinas & Imunização</h3>
+        <p>Protocolo vacinal completo: V8, V10, raiva, gripe canina, leucemia felina e muito mais. Carteirinha digital inclusa.</p>
+        <span class="svc-price">A partir de R$ 60</span>
+      </div>
+      <div class="svc-card reveal" style="transition-delay:.1s">
+        <span class="svc-tag tag-teal">Diagnóstico</span>
+        <span class="svc-icon">🩺</span>
+        <h3>Consulta Clínica Geral</h3>
+        <p>Anamnese completa, exame físico detalhado e prescrição por veterinários experientes e especializados.</p>
+        <span class="svc-price">A partir de R$ 150</span>
+      </div>
+      <div class="svc-card reveal" style="transition-delay:.15s">
+        <span class="svc-tag tag-purple">Imagem</span>
+        <span class="svc-icon">🔬</span>
+        <h3>Raio-X & Ultrassom</h3>
+        <p>Diagnóstico por imagem com equipamentos digitais de última geração. Laudo em até 24h com laudagem veterinária.</p>
+        <span class="svc-price">A partir de R$ 180</span>
+      </div>
+      <div class="svc-card reveal" style="transition-delay:.08s">
+        <span class="svc-tag tag-amber">Laboratorial</span>
+        <span class="svc-icon">🧪</span>
+        <h3>Exames Laboratoriais</h3>
+        <p>Hemograma, bioquímica, urinálise, culturas e antibiograma. Resultados em até 24h pelo app ou WhatsApp.</p>
+        <span class="svc-price">A partir de R$ 90</span>
+      </div>
+      <div class="svc-card reveal" style="transition-delay:.12s">
+        <span class="svc-tag tag-blue">Cirurgia</span>
+        <span class="svc-icon">⚕️</span>
+        <h3>Cirurgias & Procedimentos</h3>
+        <p>Centro cirúrgico completo com monitoração anestésica, ortopedia, tecidos moles e laparoscopia veterinária.</p>
+        <span class="svc-price">Consultar</span>
+      </div>
+      <div class="svc-card reveal" style="transition-delay:.16s">
+        <span class="svc-tag tag-red">Urgência</span>
+        <span class="svc-icon">🚨</span>
+        <h3>Emergências 24h</h3>
+        <p>Plantão 24 horas, 7 dias por semana. Equipe de pronto-atendimento com UTI veterinária e internação.</p>
+        <span class="svc-price">Plantão ativo</span>
+        <span class="svc-urgent">24h</span>
+      </div>
+      <div class="svc-card reveal" style="transition-delay:.1s">
+        <span class="svc-tag tag-green">Preventivo</span>
+        <span class="svc-icon">🦠</span>
+        <h3>Vermifugação & Antiparasitários</h3>
+        <p>Controle de parasitas internos e externos com os melhores produtos do mercado e orientação individualizada.</p>
+        <span class="svc-price">A partir de R$ 45</span>
+      </div>
+      <div class="svc-card reveal" style="transition-delay:.14s">
+        <span class="svc-tag tag-teal">Internação</span>
+        <span class="svc-icon">🏥</span>
+        <h3>UTI & Internação</h3>
+        <p>Unidade de terapia intensiva com monitoração contínua, enfermagem veterinária 24h e atualizações para o tutor.</p>
+        <span class="svc-price">A partir de R$ 220/dia</span>
+      </div>
+      <div class="svc-card reveal" style="transition-delay:.18s">
+        <span class="svc-tag tag-purple">Especialidade</span>
+        <span class="svc-icon">❤️</span>
+        <h3>Cardiologia & Especialidades</h3>
+        <p>Ecocardiografia, neurologia, dermatologia, oftalmologia e oncologia veterinária com especialistas certificados.</p>
+        <span class="svc-price">Consultar</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SCHEDULE ═══ -->
+<section id="schedule">
+  <div class="schedule-inner">
+    <div class="schedule-top reveal">
+      <div class="section-eyebrow">Horários & Agenda</div>
+      <h2>Estamos aqui quando você precisar.</h2>
+      <p>Atendimento regular com hora marcada e plantão 24h para emergências. Agende online ou por telefone.</p>
+    </div>
+    <div class="schedule-grid">
+      <div class="hours-card reveal-l">
+        <h3>🕐 Funcionamento</h3>
+        <p>Agendamentos com horário marcado para maior conforto.</p>
+        <ul class="hours-list">
+          <li class="hour-row">
+            <span class="hour-day"><span class="hour-day-dot dot-open"></span>Segunda a Sexta</span>
+            <span class="hour-time ht-open">08h00 – 20h00</span>
+          </li>
+          <li class="hour-row">
+            <span class="hour-day"><span class="hour-day-dot dot-open"></span>Sábado</span>
+            <span class="hour-time ht-open">08h00 – 18h00</span>
+          </li>
+          <li class="hour-row">
+            <span class="hour-day"><span class="hour-day-dot dot-partial"></span>Domingo</span>
+            <span class="hour-time ht-partial">09h00 – 14h00</span>
+          </li>
+          <li class="hour-row">
+            <span class="hour-day"><span class="hour-day-dot dot-partial"></span>Feriados</span>
+            <span class="hour-time ht-partial">Emergências</span>
+          </li>
+          <li class="hour-row">
+            <span class="hour-day"><span class="hour-day-dot dot-open"></span>Emergências</span>
+            <span class="hour-time ht-open">24h / 7 dias</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="emergency-card reveal-r">
+        <span class="emergency-label">🚨 Emergências</span>
+        <h3>Plantão 24 horas,<br>todos os dias.</h3>
+        <p>Não espere — em casos urgentes, venha diretamente ou ligue. Nossa equipe de pronto-atendimento está sempre pronta.</p>
+        <span class="emergency-phone">📞 (11) 3333-9999</span>
+        <ul class="agenda-steps">
+          <li class="ag-step">
+            <span class="ag-num">1</span>
+            <span class="ag-text">Escolha o tipo de consulta: preventiva, especialidade ou emergência.</span>
+          </li>
+          <li class="ag-step">
+            <span class="ag-num">2</span>
+            <span class="ag-text">Selecione data e horário disponíveis no nosso sistema.</span>
+          </li>
+          <li class="ag-step">
+            <span class="ag-num">3</span>
+            <span class="ag-text">Receba confirmação por WhatsApp e lembrete 1h antes.</span>
+          </li>
+        </ul>
+        <a href="#contact" class="btn btn-amber">Agendar online →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BENEFITS ═══ -->
+<section id="benefits">
+  <div class="benefits-inner">
+    <div class="benefits-top reveal">
+      <div class="section-eyebrow">Diferenciais</div>
+      <h2>Por que a VidaPet é<br><em>diferente.</em></h2>
+      <p>Mais do que uma clínica — um centro médico veterinário completo, com tecnologia, equipe especializada e atendimento humanizado.</p>
+    </div>
+    <div class="benefits-grid">
+      <div class="benefit-card reveal" style="transition-delay:.05s">
+        <div class="benefit-icon bi-blue">🔬</div>
+        <div class="benefit-text">
+          <h4>Tecnologia de Diagnóstico</h4>
+          <p>Raio-X digital, ultrassom, endoscopia e exames laboratoriais com resultados rápidos e precisos.</p>
+        </div>
+      </div>
+      <div class="benefit-card reveal" style="transition-delay:.1s">
+        <div class="benefit-icon bi-amber">🎓</div>
+        <div class="benefit-text">
+          <h4>Equipe com Especialização</h4>
+          <p>15 médicos veterinários com pós-graduação em áreas específicas, todos registrados no CRMV.</p>
+        </div>
+      </div>
+      <div class="benefit-card reveal" style="transition-delay:.08s">
+        <div class="benefit-icon bi-teal">📱</div>
+        <div class="benefit-text">
+          <h4>Prontuário Digital</h4>
+          <p>Histórico completo do seu pet disponível no app. Resultados de exames, vacinas e prescrições em um só lugar.</p>
+        </div>
+      </div>
+      <div class="benefit-card reveal" style="transition-delay:.12s">
+        <div class="benefit-icon bi-navy">🏥</div>
+        <div class="benefit-text">
+          <h4>UTI Veterinária Completa</h4>
+          <p>Unidade de terapia intensiva com monitoramento contínuo e atualização em tempo real para os tutores.</p>
+        </div>
+      </div>
+    </div>
+    <div class="accreditations reveal">
+      <div class="accred-item">
+        <span class="accred-icon">🏅</span>
+        <strong>CRMV</strong>
+        <span>Clínica certificada</span>
+      </div>
+      <div class="accred-item">
+        <span class="accred-icon">⚡</span>
+        <strong>&lt; 15min</strong>
+        <span>Tempo de triagem</span>
+      </div>
+      <div class="accred-item">
+        <span class="accred-icon">🔒</span>
+        <strong>100%</strong>
+        <span>Dados protegidos (LGPD)</span>
+      </div>
+      <div class="accred-item">
+        <span class="accred-icon">💊</span>
+        <strong>Farmácia</strong>
+        <span>Veterinária própria</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONTACT ═══ -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="contact-top reveal">
+      <div class="section-eyebrow">Contato & Agendamento</div>
+      <h2>Cuide da saúde do<br>seu pet hoje.</h2>
+      <p>Agende uma consulta preventiva ou de especialidade. Nossa equipe responde em até 2h em horário comercial.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="reveal-l">
+        <h3>Informações</h3>
+        <div class="contact-detail">
+          <div class="cd-icon">📍</div>
+          <div class="cd-text">
+            <strong>Endereço</strong>
+            <span>Av. Saúde Animal, 456 — Pinheiros, SP</span>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="cd-icon">📞</div>
+          <div class="cd-text">
+            <strong>Telefone</strong>
+            <span>(11) 3333-8888</span>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="cd-icon">📧</div>
+          <div class="cd-text">
+            <strong>E-mail</strong>
+            <span>contato@vidapet.com.br</span>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="cd-icon">💬</div>
+          <div class="cd-text">
+            <strong>WhatsApp</strong>
+            <span>(11) 99999-9999</span>
+          </div>
+        </div>
+        <div class="emergency-inline">
+          <div class="ei-dot"></div>
+          <div class="ei-text">
+            <strong>Emergências 24h</strong>
+            <span>(11) 3333-9999 — Plantão ativo agora</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form reveal-r">
+        <h3>Agendar Consulta</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nome do tutor</label>
+            <input type="text" placeholder="Maria Silva">
+          </div>
+          <div class="form-group">
+            <label>Telefone / WhatsApp</label>
+            <input type="tel" placeholder="(11) 99999-9999">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nome do paciente</label>
+            <input type="text" placeholder="Rex">
+          </div>
+          <div class="form-group">
+            <label>Espécie</label>
+            <select>
+              <option value="">Selecione...</option>
+              <option>Cão</option>
+              <option>Gato</option>
+              <option>Ave</option>
+              <option>Coelho</option>
+              <option>Réptil</option>
+              <option>Outro</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Tipo de atendimento</label>
+          <select>
+            <option value="">Selecione o procedimento...</option>
+            <option>Consulta Clínica Geral</option>
+            <option>Vacinas & Imunização</option>
+            <option>Exames Laboratoriais</option>
+            <option>Raio-X / Ultrassom</option>
+            <option>Cirurgia</option>
+            <option>Cardiologia</option>
+            <option>Dermatologia</option>
+            <option>Oncologia</option>
+            <option>Ortopedia</option>
+            <option>Outro</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Motivo da consulta</label>
+          <textarea rows="3" placeholder="Descreva brevemente os sintomas ou motivo da visita..."></textarea>
+        </div>
+        <button class="form-submit" onclick="this.innerHTML='✅ Solicitação enviada! Retornaremos em breve.';this.style.background='#0B9E84'">
+          Solicitar agendamento →
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ VACCINES ═══ -->
+<section id="vaccines">
+  <div class="vaccines-inner">
+    <div class="vaccines-top reveal">
+      <div class="section-eyebrow">Calendário Vacinal</div>
+      <h2>Proteja seu pet com o<br><em>protocolo certo.</em></h2>
+      <p>A vacinação é a principal forma de prevenção de doenças graves. Consulte abaixo o protocolo recomendado para cães e gatos e mantenha a carteirinha sempre em dia.</p>
+    </div>
+
+    <div class="vax-tabs reveal">
+      <button class="vax-tab active" onclick="switchTab('caes',this)">🐕 Cães</button>
+      <button class="vax-tab" onclick="switchTab('gatos',this)">🐈 Gatos</button>
+    </div>
+
+    <!-- CÃES -->
+    <div class="vax-panel active" id="panel-caes">
+      <table class="vax-table">
+        <thead>
+          <tr>
+            <th>Vacina</th>
+            <th>Doenças que previne</th>
+            <th>Idade inicial</th>
+            <th>Reforços</th>
+            <th>Tipo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>V8 / V10</td>
+            <td>Cinomose, Parvovirose, Hepatite, Leptospirose + outras</td>
+            <td>6–8 semanas</td>
+            <td>3–4 semanas até 16 sem. / Anual</td>
+            <td><span class="vax-badge vb-obrg">Obrigatória</span></td>
+          </tr>
+          <tr>
+            <td>Antirrábica</td>
+            <td>Raiva</td>
+            <td>12 semanas</td>
+            <td>Anual (lei estadual)</td>
+            <td><span class="vax-badge vb-obrg">Obrigatória</span></td>
+          </tr>
+          <tr>
+            <td>Gripe Canina</td>
+            <td>Tosse dos Canis (Bordetella + Parainfluenza)</td>
+            <td>8 semanas</td>
+            <td>Anual ou semestral</td>
+            <td><span class="vax-badge vb-rec">Recomendada</span></td>
+          </tr>
+          <tr>
+            <td>Leishmaniose</td>
+            <td>Leishmaniose Visceral</td>
+            <td>4 meses</td>
+            <td>3 doses + anual</td>
+            <td><span class="vax-badge vb-rec">Recomendada</span></td>
+          </tr>
+          <tr>
+            <td>Giárdia</td>
+            <td>Giardíase</td>
+            <td>8 semanas</td>
+            <td>2 doses + anual</td>
+            <td><span class="vax-badge vb-opc">Opcional</span></td>
+          </tr>
+          <tr>
+            <td>Lyme</td>
+            <td>Doença de Lyme (Borrelia)</td>
+            <td>12 semanas</td>
+            <td>2 doses + anual</td>
+            <td><span class="vax-badge vb-opc">Opcional</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="vax-note">
+        <span class="vax-note-icon">💡</span>
+        <span><strong>Importante:</strong> O protocolo exato varia de acordo com a raça, idade, estilo de vida e região. Consulte sempre um médico veterinário para o calendário individualizado do seu cão.</span>
+      </div>
+    </div>
+
+    <!-- GATOS -->
+    <div class="vax-panel" id="panel-gatos">
+      <table class="vax-table">
+        <thead>
+          <tr>
+            <th>Vacina</th>
+            <th>Doenças que previne</th>
+            <th>Idade inicial</th>
+            <th>Reforços</th>
+            <th>Tipo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Tríplice Felina (V3)</td>
+            <td>Rinotraqueíte, Calicivirose, Panleucopenia</td>
+            <td>6–8 semanas</td>
+            <td>A cada 3–4 semanas até 16 sem. / Anual</td>
+            <td><span class="vax-badge vb-obrg">Obrigatória</span></td>
+          </tr>
+          <tr>
+            <td>Antirrábica Felina</td>
+            <td>Raiva</td>
+            <td>12 semanas</td>
+            <td>Anual</td>
+            <td><span class="vax-badge vb-obrg">Obrigatória</span></td>
+          </tr>
+          <tr>
+            <td>Leucemia Felina (FeLV)</td>
+            <td>Leucemia Viral Felina</td>
+            <td>9 semanas</td>
+            <td>2 doses + anual</td>
+            <td><span class="vax-badge vb-rec">Recomendada</span></td>
+          </tr>
+          <tr>
+            <td>FIV / FeLV (combo)</td>
+            <td>Imunodeficiência e Leucemia Felina</td>
+            <td>16 semanas</td>
+            <td>3 doses iniciais + anual</td>
+            <td><span class="vax-badge vb-rec">Recomendada</span></td>
+          </tr>
+          <tr>
+            <td>Clamidiose</td>
+            <td>Chlamydophila felis (conjuntivite/respiratório)</td>
+            <td>9 semanas</td>
+            <td>2 doses + anual</td>
+            <td><span class="vax-badge vb-opc">Opcional</span></td>
+          </tr>
+          <tr>
+            <td>Peritonite (FIP)</td>
+            <td>Peritonite Infecciosa Felina</td>
+            <td>16 semanas</td>
+            <td>2 doses + anual</td>
+            <td><span class="vax-badge vb-opc">Opcional</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="vax-note">
+        <span class="vax-note-icon">💡</span>
+        <span><strong>Importante:</strong> Gatos de vida livre ou que convivem com outros gatos necessitam de protocolos reforçados. Realize o teste de FIV/FeLV antes de iniciar a vacinação contra leucemia.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TESTIMONIALS ═══ -->
+<section id="testimonials">
+  <div class="testimonials-inner">
+    <div class="testimonials-top reveal">
+      <div>
+        <div class="section-eyebrow">Depoimentos</div>
+        <h2>O que os tutores dizem.</h2>
+      </div>
+      <div class="rating-summary">
+        <span class="rating-big">4.9</span>
+        <div class="stars">★★★★★</div>
+        <div class="rating-count">Baseado em +480 avaliações</div>
+      </div>
+    </div>
+
+    <div class="testi-grid">
+      <div class="testi-card reveal" style="transition-delay:.05s">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">A Dra. Carla foi incrível com a minha Luna. Ela estava muito assustada, mas a veterinária soube acalmá-la com uma paciência que raramente vejo. O diagnóstico foi rápido e o tratamento funcionou perfeitamente.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">👩</div>
+          <div class="testi-author-info">
+            <strong>Fernanda Oliveira</strong>
+            <span>Tutora da Luna <span class="testi-pet">🐈 Gata</span></span>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal" style="transition-delay:.1s">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">Meu Thor precisou de cirurgia de emergência às 2h da manhã. A equipe estava lá, ágil e profissional. Saí da clínica com o coração aliviado. A UTI veterinária é de um nível que eu não esperava encontrar.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">👨</div>
+          <div class="testi-author-info">
+            <strong>Ricardo Mendonça</strong>
+            <span>Tutor do Thor <span class="testi-pet">🐕 Golden Retriever</span></span>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal" style="transition-delay:.15s">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">Cardio veterinária de altíssimo nível. Minha Mel tem sopro cardíaco e o Dr. Rafael acompanha ela há 3 anos com muito cuidado e precisão. O prontuário digital é uma mão na roda — tenho tudo no celular.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">👩</div>
+          <div class="testi-author-info">
+            <strong>Camila Braga</strong>
+            <span>Tutora da Mel <span class="testi-pet">🐕 Poodle</span></span>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal" style="transition-delay:.08s">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">Sempre fui muito ansioso com veterinários, mas a VidaPet me surpreendeu. Ambiente calmo, equipe transparente e os exames chegaram no app antes de eu chegar em casa. Excelente experiência.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">👨</div>
+          <div class="testi-author-info">
+            <strong>André Lopes</strong>
+            <span>Tutor do Frodo <span class="testi-pet">🐈 Gato</span></span>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal" style="transition-delay:.12s">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">O protocolo vacinal do meu coelho Pipoca foi feito com todo o cuidado. Não é todo vet que tem experiência com animais exóticos — aqui têm! A Dra. Ana foi atenciosa do início ao fim.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">👧</div>
+          <div class="testi-author-info">
+            <strong>Beatriz Santos</strong>
+            <span>Tutora da Pipoca <span class="testi-pet">🐇 Coelho</span></span>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal" style="transition-delay:.16s">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">Trouxe meu Bolt com suspeita de displasia. O raio-X digital foi feito na hora e o laudo chegou em 20 minutos. O Dr. Pedro explicou tudo com clareza e o plano de reabilitação está funcionando muito bem.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">👨</div>
+          <div class="testi-author-info">
+            <strong>Gustavo Faria</strong>
+            <span>Tutor do Bolt <span class="testi-pet">🐕 Labrador</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="platforms-row reveal">
+      <div class="platform-item">
+        <span>⭐</span>
+        <div>
+          <strong>4.9</strong> no Google
+          <div class="platform-stars">★★★★★</div>
+        </div>
+      </div>
+      <div class="platform-sep"></div>
+      <div class="platform-item">
+        <span>📘</span>
+        <div>
+          <strong>4.8</strong> no Facebook
+          <div class="platform-stars">★★★★★</div>
+        </div>
+      </div>
+      <div class="platform-sep"></div>
+      <div class="platform-item">
+        <span>💊</span>
+        <div>
+          <strong>9.6</strong> no Doctoralia
+          <div class="platform-stars">★★★★★</div>
+        </div>
+      </div>
+      <div class="platform-sep"></div>
+      <div class="platform-item">
+        <span>📱</span>
+        <div>
+          <strong>+480</strong> avaliações
+          <div style="font-size:.75rem;color:var(--gray)">no total</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FAQ ═══ -->
+<section id="faq">
+  <div class="faq-inner">
+    <div class="faq-top reveal">
+      <div class="section-eyebrow">Dúvidas Frequentes</div>
+      <h2>Perguntas que os<br>tutores mais fazem.</h2>
+      <p>Reunimos as dúvidas mais comuns sobre procedimentos, vacinas, internação e nosso atendimento.</p>
+    </div>
+
+    <div class="faq-list reveal">
+      <div class="faq-item open">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text">Com que idade devo começar a vacinar meu pet?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">
+            <span class="faq-tag">💉 Vacinas</span>
+            <p>Para cães e gatos, a vacinação geralmente começa entre 6 e 8 semanas de vida com a múltipla (V8/V10 ou tríplice felina). A antirrábica é aplicada a partir das 12 semanas. O protocolo completo inclui 3 a 4 doses no primeiro ano, com reforço anual a partir daí. Consulte nosso calendário vacinal acima e agende uma consulta para o protocolo individualizado do seu pet.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text">Preciso de agendamento para emergências?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">
+            <span class="faq-tag">🚨 Emergências</span>
+            <p>Não! Nosso plantão de emergências funciona 24h por dia, 7 dias por semana, sem necessidade de agendamento. Basta vir diretamente à clínica ou ligar para (11) 3333-9999 enquanto estiver a caminho. Nossa equipe realiza triagem imediata e prioriza os casos mais graves.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text">Como funciona o prontuário digital? Consigo acompanhar o pet internado?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">
+            <span class="faq-tag">📱 Tecnologia</span>
+            <p>Sim! Nosso app e sistema de WhatsApp permitem que você acompanhe em tempo real o estado do seu pet internado — incluindo laudos, medicações administradas, temperatura e atualizações da equipe. Tutores de animais em UTI recebem relatórios a cada 6 horas, e podem solicitar videoconferência com o veterinário responsável.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text">Vocês atendem animais exóticos (coelhos, aves, répteis)?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">
+            <span class="faq-tag">🐇 Exóticos</span>
+            <p>Sim! Contamos com veterinários especializados em animais exóticos — coelhos, porquinhos-da-índia, chinchilas, aves (periquitos, calopsitas, papagaios) e répteis (tartarugas, lagartos). Para animais exóticos, recomendamos agendamento prévio para garantir o especialista adequado.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text">Quanto tempo demoram os resultados dos exames laboratoriais?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">
+            <span class="faq-tag">🧪 Laboratório</span>
+            <p>Exames de rotina (hemograma, bioquímica, urinálise) ficam prontos em até 24h e são enviados diretamente no app ou via WhatsApp. Exames de urgência — solicitados durante emergências — têm resultado em até 2 horas. Culturas e antibiogramas podem levar de 3 a 7 dias úteis dependendo do microrganismo.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text">Vocês aceitam planos de saúde pet ou têm parcelamento?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">
+            <span class="faq-tag">💳 Pagamento</span>
+            <p>Aceitamos os principais convênios e planos de saúde pet do mercado (Pet Care, Petlove Saúde, Omint Pet e outros). Para pagamento particular, aceitamos Pix (sem juros), cartões de débito e crédito (parcelamento em até 12x) e dinheiro. Consultas e procedimentos podem ser parcelados diretamente conosco em até 6x sem juros.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text">Como me preparar para a cirurgia do meu pet?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">
+            <span class="faq-tag">⚕️ Cirurgia</span>
+            <p>Para qualquer cirurgia eletiva, seu pet deve estar em jejum de 8 a 12 horas antes do procedimento (alimento sólido). Água pode ser oferecida até 2–4 horas antes. Realizamos avaliação pré-anestésica obrigatória com exames de sangue e, quando necessário, eletrocardiograma. Trazê-lo calmo e no horário agendado é muito importante.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-cta-row reveal">
+      <h3>Ainda tem dúvidas?</h3>
+      <p>Nossa equipe está pronta para responder pelo WhatsApp em horário comercial — geralmente em menos de 30 minutos.</p>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+        <a href="https://wa.me/5511999999999" class="btn btn-amber" target="_blank">💬 Falar no WhatsApp</a>
+        <a href="#contact" class="btn btn-ghost">📋 Agendar consulta</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo">
+        <div class="footer-logo-icon">🏥</div>
+        <div class="footer-logo-text">VidaPet</div>
+      </div>
+      <p>Medicina veterinária de excelência com cuidado, ciência e muito amor pelos animais desde 2012.</p>
+      <div class="footer-socials">
+        <a class="soc" href="#">📸</a>
+        <a class="soc" href="#">👍</a>
+        <a class="soc" href="#">💬</a>
+        <a class="soc" href="#">▶️</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Procedimentos</h4>
+      <a href="#">💉 Vacinas</a>
+      <a href="#">🩺 Consulta Geral</a>
+      <a href="#">🔬 Diagnóstico por Imagem</a>
+      <a href="#">🧪 Exames Lab.</a>
+      <a href="#">⚕️ Cirurgias</a>
+      <a href="#">🚨 Emergências 24h</a>
+    </div>
+    <div class="footer-col">
+      <h4>Links</h4>
+      <a href="#about">A Clínica</a>
+      <a href="#gallery">Estrutura</a>
+      <a href="#services">Procedimentos</a>
+      <a href="#schedule">Horários</a>
+      <a href="#benefits">Diferenciais</a>
+      <a href="#contact">Agendamento</a>
+    </div>
+    <div class="footer-col">
+      <h4>Contato</h4>
+      <a href="#">📞 (11) 3333-8888</a>
+      <a href="#">🚨 (11) 3333-9999 (24h)</a>
+      <a href="#">📧 contato@vidapet.com.br</a>
+      <a href="#">📍 Pinheiros, São Paulo</a>
+      <a href="#">Seg–Sex: 08h–20h</a>
+      <a href="#">Sáb: 08h–18h</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2024 VidaPet Clínica Veterinária. Todos os direitos reservados.</span>
+    <div class="footer-crc">
+      <span class="crc-badge">CRMV-SP 12.345</span>
+      <span>Medicina veterinária responsável</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// REVEAL
+const els = document.querySelectorAll('.reveal,.reveal-l,.reveal-r');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, {threshold:.1});
+els.forEach(el => io.observe(el));
+
+// NAV highlight
+const secs = document.querySelectorAll('section[id]');
+const links = document.querySelectorAll('.nav-links a[href^="#"]');
+window.addEventListener('scroll', () => {
+  let cur = '';
+  secs.forEach(s => { if(window.scrollY >= s.offsetTop - 100) cur = s.id; });
+  links.forEach(a => {
+    const isActive = a.getAttribute('href') === '#'+cur;
+    a.style.background = isActive ? 'var(--sky)' : '';
+    a.style.color = isActive ? 'var(--blue)' : '';
+  });
+});
+
+// Stagger service cards
+document.querySelectorAll('.services-grid .svc-card').forEach((c,i) => {
+  if(!c.style.transitionDelay) c.style.transitionDelay = `${i*0.06}s`;
+});
+
+// VACCINE TABS
+function switchTab(species, btn) {
+  document.querySelectorAll('.vax-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.vax-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-' + species).classList.add('active');
+}
+
+// FAQ ACCORDION
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+</script>
+</body>
+</html>
