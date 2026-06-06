@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>RIOT BURGER — Rock 'N' Roll Burgeria</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,400;1,700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:  #070707;
+  --dark:   #0E0E0E;
+  --dark2:  #161616;
+  --dark3:  #1E1E1E;
+  --dark4:  #282828;
+  --red:    #E8192C;
+  --red2:   #FF3345;
+  --red3:   #C01020;
+  --yellow: #FFD100;
+  --orange: #FF5500;
+  --white:  #F2F2F2;
+  --gray:   #888888;
+  --gray2:  #444444;
+  --glow:   rgba(232,25,44,.4);
+  --glow2:  rgba(232,25,44,.15);
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Barlow Condensed',sans-serif;
+  background:var(--black);
+  color:var(--white);
+  overflow-x:hidden;
+  cursor:none;
+}
+/* NOISE GRAIN OVERLAY */
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.055'/%3E%3C/svg%3E");
+  mix-blend-mode:overlay;opacity:1;
+}
+
+/* ─── CURSOR ─── */
+.cur{position:fixed;z-index:9999;pointer-events:none;width:12px;height:12px;background:var(--red);border-radius:0;transform:translate(-50%,-50%) rotate(45deg);transition:width .2s,height .2s,transform .2s}
+.cur-r{position:fixed;z-index:9998;pointer-events:none;width:36px;height:36px;border:2px solid var(--red);border-radius:0;transform:translate(-50%,-50%) rotate(0deg);opacity:.5;transition:transform .08s linear,width .2s,height .2s}
+body:has(a:hover) .cur,body:has(button:hover) .cur{width:20px;height:20px;background:var(--yellow)}
+body:has(a:hover) .cur-r,body:has(button:hover) .cur-r{width:52px;height:52px;border-color:var(--yellow);transform:translate(-50%,-50%) rotate(45deg)}
+
+/* ─── SCAN LINE EFFECT ─── */
+.scanlines{position:absolute;inset:0;pointer-events:none;z-index:2;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.08) 2px,rgba(0,0,0,.08) 4px);opacity:.5}
+
+/* ─── NAV ─── */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:1.5rem 3.5rem;transition:all .3s}
+nav.sc{background:rgba(7,7,7,.96);backdrop-filter:blur(12px);border-bottom:1px solid rgba(232,25,44,.2);padding:1rem 3.5rem}
+.nlogo{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.12em;color:var(--white);text-decoration:none;position:relative;display:flex;align-items:center;gap:.5rem}
+.nlogo-accent{color:var(--red)}
+.nlogo::after{content:'EST. 2019';position:absolute;bottom:-10px;left:0;font-family:'Barlow Condensed';font-size:.5rem;font-weight:700;letter-spacing:.5em;color:var(--gray);text-transform:uppercase}
+.nlinks{display:flex;gap:2.5rem;list-style:none}
+.nlinks a{font-family:'Barlow Condensed';font-size:.75rem;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--gray);text-decoration:none;transition:color .2s}
+.nlinks a:hover{color:var(--red)}
+.npedido{font-family:'Bebas Neue';font-size:1rem;letter-spacing:.2em;background:var(--red);color:#fff;border:none;padding:.55rem 2rem;cursor:none;transition:background .2s,transform .15s,box-shadow .2s;clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%)}
+.npedido:hover{background:var(--red2);transform:skew(-2deg);box-shadow:0 0 24px var(--glow)}
+
+/* ─── HERO ─── */
+#hero{min-height:100vh;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--black)}
+.hero-photo{position:absolute;inset:0;z-index:1}
+.hero-photo img{width:100%;height:100%;object-fit:cover;object-position:center;filter:brightness(.35) contrast(1.2) saturate(.8)}
+.hero-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,rgba(7,7,7,.95) 0%,rgba(7,7,7,.5) 50%,rgba(7,7,7,.85) 100%)}
+/* Red vignette */
+.hero-photo::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at bottom,rgba(232,25,44,.18) 0%,transparent 65%);z-index:1}
+
+/* BIG bg text */
+.hero-bg-text{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;pointer-events:none;overflow:hidden}
+.hero-bg-text span{font-family:'Bebas Neue';font-size:clamp(10rem,22vw,28rem);letter-spacing:-.02em;color:transparent;-webkit-text-stroke:1px rgba(232,25,44,.08);text-stroke:1px rgba(232,25,44,.08);white-space:nowrap;user-select:none}
+
+.hero-inner{position:relative;z-index:3;text-align:left;padding:0 3.5rem;max-width:1200px;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.hero-left{display:flex;flex-direction:column}
+.hero-eyebrow{display:flex;align-items:center;gap:.8rem;margin-bottom:1.5rem;opacity:0;animation:fadeUp .6s .2s forwards}
+.hero-ew-line{width:36px;height:2px;background:var(--red)}
+.hero-ew-txt{font-family:'Barlow Condensed';font-size:.65rem;font-weight:700;letter-spacing:.5em;text-transform:uppercase;color:var(--red)}
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:var(--red);padding:.25rem .9rem;font-size:.6rem;font-weight:700;letter-spacing:.35em;text-transform:uppercase;color:#fff;clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%)}
+h1.hero-h{font-family:'Bebas Neue';font-size:clamp(4rem,10vw,9rem);line-height:.88;letter-spacing:.03em;color:var(--white);opacity:0;animation:fadeUp .8s .3s forwards}
+h1.hero-h .hl-red{color:var(--red);display:block;text-shadow:0 0 40px rgba(232,25,44,.5)}
+h1.hero-h .hl-stroke{color:transparent;-webkit-text-stroke:2px var(--white);text-stroke:2px var(--white)}
+.hero-desc{font-family:'Barlow';font-size:.92rem;font-weight:300;line-height:1.85;color:rgba(242,242,242,.5);max-width:440px;margin:1.5rem 0 2.5rem;opacity:0;animation:fadeUp .8s .5s forwards}
+.hero-actions{display:flex;gap:1.2rem;align-items:center;opacity:0;animation:fadeUp .8s .7s forwards}
+.btn-red{font-family:'Bebas Neue';font-size:1.1rem;letter-spacing:.2em;text-decoration:none;color:#fff;background:var(--red);border:none;padding:.7rem 2.5rem;cursor:none;transition:background .2s,box-shadow .2s,transform .15s;clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%)}
+.btn-red:hover{background:var(--red2);box-shadow:0 0 30px var(--glow);transform:translateY(-2px)}
+.btn-ghost-r{font-family:'Bebas Neue';font-size:1.1rem;letter-spacing:.2em;text-decoration:none;color:var(--white);border:2px solid rgba(242,242,242,.25);padding:.65rem 2.3rem;cursor:none;transition:border-color .2s,color .2s}
+.btn-ghost-r:hover{border-color:var(--red);color:var(--red)}
+.hero-stats{display:flex;gap:2.5rem;margin-top:3rem;padding-top:3rem;border-top:1px solid rgba(242,242,242,.06);opacity:0;animation:fadeUp .8s .9s forwards}
+.hstat-num{font-family:'Bebas Neue';font-size:2.4rem;color:var(--red);display:block;line-height:1;text-shadow:0 0 20px var(--glow)}
+.hstat-lbl{font-size:.62rem;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--gray)}
+
+/* Hero right - burger image spotlight */
+.hero-right{position:relative;opacity:0;animation:heroImg .9s .45s forwards}
+@keyframes heroImg{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+.hero-burger-frame{position:relative;width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center}
+.hero-burger-glow{position:absolute;inset:20%;border-radius:50%;background:radial-gradient(circle,rgba(232,25,44,.35) 0%,transparent 70%);filter:blur(30px);animation:glowPulse 3s ease-in-out infinite}
+@keyframes glowPulse{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.1)}}
+.hero-burger-img{width:90%;height:90%;border-radius:50%;overflow:hidden;position:relative;border:2px solid rgba(232,25,44,.2);box-shadow:0 0 60px rgba(232,25,44,.2)}
+.hero-burger-img img{width:100%;height:100%;object-fit:cover;object-position:center;transition:transform 8s ease}
+.hero-burger-img:hover img{transform:scale(1.08)}
+/* rotating dashed ring */
+.hero-ring{position:absolute;inset:-12px;border-radius:50%;border:1px dashed rgba(232,25,44,.25);animation:ringRot 20s linear infinite}
+.hero-ring2{position:absolute;inset:-28px;border-radius:50%;border:1px solid rgba(242,242,242,.05);animation:ringRot 30s linear infinite reverse}
+@keyframes ringRot{to{transform:rotate(360deg)}}
+/* floating labels */
+.flabel{position:absolute;background:var(--dark2);border:1px solid rgba(232,25,44,.3);padding:.7rem 1.1rem;font-family:'Barlow Condensed';cursor:default}
+.flabel-top{top:8%;right:-10%;animation:floatLbl 4s ease-in-out infinite}
+.flabel-bot{bottom:12%;left:-8%;animation:floatLbl 4s ease-in-out infinite 2s}
+@keyframes floatLbl{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.fl-title{font-size:.58rem;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--red);margin-bottom:.2rem}
+.fl-val{font-family:'Bebas Neue';font-size:1.4rem;letter-spacing:.08em;color:var(--white)}
+
+.hero-scroll{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);z-index:3;display:flex;flex-direction:column;align-items:center;gap:.6rem;opacity:0;animation:fadeUp .7s 1.2s forwards}
+.hs-dot{width:6px;height:6px;background:var(--red);border-radius:50%;animation:scrollDot 1.5s ease-in-out infinite}
+@keyframes scrollDot{0%,100%{opacity:.3;transform:translateY(0)}50%{opacity:1;transform:translateY(6px)}}
+.hs-txt{font-size:.55rem;letter-spacing:.45em;text-transform:uppercase;color:var(--gray)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* ─── TICKER STRIP ─── */
+.ticker{background:var(--red);overflow:hidden;padding:.7rem 0}
+.ticker-inner{display:inline-flex;animation:ticker 18s linear infinite}
+.ticker-inner span{font-family:'Bebas Neue';font-size:1.1rem;letter-spacing:.25em;color:#fff;padding:0 2.5rem;display:flex;align-items:center;gap:2.5rem;white-space:nowrap}
+.ticker-inner span::after{content:'✦';font-size:.7rem;opacity:.7}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ─── COMMONS ─── */
+section{padding:8rem 0;position:relative}
+.container{max-width:1280px;margin:0 auto;padding:0 3.5rem}
+.sec-eyebrow{font-family:'Barlow Condensed';font-size:.65rem;font-weight:700;letter-spacing:.5em;text-transform:uppercase;color:var(--red);margin-bottom:.8rem;display:flex;align-items:center;gap:1rem}
+.sec-eyebrow::before{content:'';display:block;width:30px;height:2px;background:var(--red)}
+h2.sec-title{font-family:'Bebas Neue';font-size:clamp(3rem,6vw,6rem);letter-spacing:.05em;line-height:.9;color:var(--white)}
+h2.sec-title .t-red{color:var(--red)}
+h2.sec-title .t-stroke{color:transparent;-webkit-text-stroke:2px var(--white)}
+h2.sec-title .t-stroke-red{color:transparent;-webkit-text-stroke:2px var(--red)}
+
+/* REVEAL */
+.r{opacity:0;transform:translateY(28px);transition:opacity .8s,transform .8s}
+.r.v{opacity:1;transform:translateY(0)}
+.rd1{transition-delay:.1s}.rd2{transition-delay:.18s}.rd3{transition-delay:.26s}.rd4{transition-delay:.34s}
+.rl{opacity:0;transform:translateX(-28px);transition:opacity .8s,transform .8s}
+.rl.v{opacity:1;transform:translateX(0)}
+.rr{opacity:0;transform:translateX(28px);transition:opacity .8s,transform .8s}
+.rr.v{opacity:1;transform:translateX(0)}
+
+/* ─── COLLECTION ─── */
+#collection{background:var(--dark)}
+.coll-header{margin-bottom:4rem;display:flex;justify-content:space-between;align-items:flex-end}
+.coll-header-left p{font-family:'Barlow';font-size:.9rem;font-weight:300;color:var(--gray);max-width:380px;line-height:1.8;margin-top:.8rem}
+.coll-btn-all{font-family:'Bebas Neue';font-size:1rem;letter-spacing:.2em;text-decoration:none;color:var(--red);border:1px solid var(--red);padding:.6rem 2rem;transition:background .2s,color .2s;clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);cursor:none;background:none}
+.coll-btn-all:hover{background:var(--red);color:#fff}
+
+.burgers-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px}
+.bcard{position:relative;overflow:hidden;cursor:none;background:var(--dark2)}
+.bcard-photo{aspect-ratio:4/5;overflow:hidden;position:relative}
+.bcard-photo img{width:100%;height:100%;object-fit:cover;object-position:center;filter:brightness(.85) saturate(.9);transition:transform .6s ease,filter .4s}
+.bcard:hover .bcard-photo img{transform:scale(1.08);filter:brightness(.7) saturate(1.1)}
+.bcard-photo .scanlines{opacity:.3}
+/* Red overlay on hover */
+.bcard-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(7,7,7,.95) 0%,rgba(7,7,7,.3) 50%,transparent 100%)}
+.bcard-glow{position:absolute;inset:0;background:radial-gradient(ellipse at bottom,rgba(232,25,44,.4) 0%,transparent 60%);opacity:0;transition:opacity .4s;z-index:1}
+.bcard:hover .bcard-glow{opacity:1}
+.bcard-num{position:absolute;top:1.2rem;left:1.4rem;z-index:2;font-family:'Bebas Neue';font-size:.85rem;letter-spacing:.3em;color:rgba(242,242,242,.3)}
+.bcard-ribbon{position:absolute;top:1.2rem;right:0;z-index:2;font-family:'Barlow Condensed';font-size:.58rem;font-weight:700;letter-spacing:.3em;text-transform:uppercase;background:var(--red);color:#fff;padding:.25rem .9rem .25rem .6rem;clip-path:polygon(0 0,100% 0,100% 100%,8px 100%)}
+.bcard-body{position:absolute;bottom:0;left:0;right:0;z-index:2;padding:1.8rem;transform:translateY(30px);transition:transform .4s ease}
+.bcard:hover .bcard-body{transform:translateY(0)}
+.bcard-cat{font-size:.6rem;font-weight:700;letter-spacing:.4em;text-transform:uppercase;color:var(--red);margin-bottom:.5rem}
+.bcard-name{font-family:'Bebas Neue';font-size:2rem;letter-spacing:.06em;color:var(--white);line-height:.95;margin-bottom:.5rem}
+.bcard-desc{font-family:'Barlow';font-size:.78rem;font-weight:300;color:rgba(242,242,242,.55);line-height:1.65;margin-bottom:1rem;max-height:0;overflow:hidden;transition:max-height .4s ease}
+.bcard:hover .bcard-desc{max-height:80px}
+.bcard-footer{display:flex;align-items:center;justify-content:space-between}
+.bcard-price{font-family:'Bebas Neue';font-size:1.8rem;letter-spacing:.08em;color:var(--yellow)}
+.bcard-order{width:38px;height:38px;background:var(--red);border:none;color:#fff;font-size:1.3rem;display:flex;align-items:center;justify-content:center;cursor:none;transition:background .2s,transform .2s;clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%)}
+.bcard-order:hover{background:var(--red2);transform:scale(1.15)}
+/* Big card */
+.bcard.bcard-big{grid-column:span 2}
+.bcard.bcard-big .bcard-photo{aspect-ratio:16/10}
+.bcard.bcard-big .bcard-name{font-size:3rem}
+
+/* ─── MANIFESTO ─── */
+#manifesto{
+  background:var(--red);
+  padding:6rem 0;
+  overflow:hidden;position:relative;
+}
+#manifesto::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-45deg,transparent,transparent 30px,rgba(0,0,0,.06) 30px,rgba(0,0,0,.06) 31px)}
+.manifesto-inner{max-width:900px;margin:0 auto;padding:0 3.5rem;text-align:center}
+.mf-quote{font-family:'Bebas Neue';font-size:clamp(2.5rem,6vw,5.5rem);letter-spacing:.05em;color:#fff;line-height:1;margin-bottom:1.5rem}
+.mf-quote .mf-stroke{color:transparent;-webkit-text-stroke:2px rgba(255,255,255,.5)}
+.mf-sub{font-family:'Barlow';font-size:.9rem;font-weight:300;color:rgba(255,255,255,.65);line-height:1.85;max-width:580px;margin:0 auto 2.5rem}
+.mf-pills{display:flex;justify-content:center;gap:.7rem;flex-wrap:wrap}
+.mf-pill{font-family:'Barlow Condensed';font-size:.65rem;font-weight:700;letter-spacing:.3em;text-transform:uppercase;border:1px solid rgba(255,255,255,.3);color:#fff;padding:.4rem 1.2rem;transition:background .2s}
+.mf-pill:hover{background:rgba(255,255,255,.15)}
+
+/* ─── DROPS LIMITADOS ─── */
+#drops{background:var(--dark2)}
+.drops-header{text-align:center;margin-bottom:4rem}
+.drops-header .sec-eyebrow{justify-content:center}
+.drops-header .sec-eyebrow::before{display:none}
+.drops-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.drop-card{
+  background:var(--dark3);
+  border:1px solid rgba(232,25,44,.12);
+  padding:2.2rem;
+  position:relative;
+  overflow:hidden;
+  cursor:none;
+  transition:border-color .3s,transform .3s;
+}
+.drop-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--red),transparent);transform:scaleX(0);transition:transform .4s}
+.drop-card:hover{border-color:rgba(232,25,44,.35);transform:translateY(-4px)}
+.drop-card:hover::before{transform:scaleX(1)}
+.drop-num{font-family:'Bebas Neue';font-size:.85rem;letter-spacing:.3em;color:var(--gray2);margin-bottom:.8rem}
+.drop-img{width:100%;aspect-ratio:4/3;overflow:hidden;margin-bottom:1.4rem;position:relative}
+.drop-img img{width:100%;height:100%;object-fit:cover;filter:brightness(.8) saturate(.85);transition:transform .5s,filter .3s}
+.drop-card:hover .drop-img img{transform:scale(1.06);filter:brightness(.7) saturate(1)}
+.drop-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(14,14,14,.6) 0%,transparent 60%)}
+.drop-limit{position:absolute;top:1.2rem;right:1.2rem;background:var(--yellow);color:var(--black);font-family:'Barlow Condensed';font-size:.58rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;padding:.2rem .7rem}
+.drop-name{font-family:'Bebas Neue';font-size:1.8rem;letter-spacing:.06em;color:var(--white);margin-bottom:.4rem;line-height:1}
+.drop-desc{font-family:'Barlow';font-size:.8rem;font-weight:300;color:var(--gray);line-height:1.7;margin-bottom:1.4rem}
+.drop-footer{display:flex;align-items:center;justify-content:space-between}
+.drop-price{font-family:'Bebas Neue';font-size:2rem;color:var(--red);text-shadow:0 0 16px var(--glow2)}
+.drop-tag{font-family:'Barlow Condensed';font-size:.62rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--gray);border:1px solid var(--gray2);padding:.25rem .7rem}
+
+/* ─── THE VENUE ─── */
+#venue{padding:0;overflow:hidden}
+.venue-grid{display:grid;grid-template-columns:1.2fr 1fr;min-height:600px}
+.venue-photo{position:relative;overflow:hidden}
+.venue-photo img{width:100%;height:100%;object-fit:cover;filter:brightness(.5) saturate(.7);transition:transform .7s}
+.venue-photo:hover img{transform:scale(1.04)}
+.venue-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,transparent 60%,var(--dark2))}
+.venue-overlay{position:absolute;bottom:3rem;left:3rem;z-index:2}
+.vo-label{font-size:.58rem;font-weight:700;letter-spacing:.4em;text-transform:uppercase;color:var(--red);margin-bottom:.5rem}
+.vo-rating{font-family:'Bebas Neue';font-size:1.5rem;color:var(--yellow);letter-spacing:.2em}
+.venue-body{background:var(--dark2);padding:6rem 5rem;display:flex;flex-direction:column;justify-content:center}
+.venue-body .sec-eyebrow{margin-bottom:.8rem}
+.venue-body h2{font-family:'Bebas Neue';font-size:clamp(2.5rem,4.5vw,5rem);letter-spacing:.05em;color:var(--white);line-height:.95;margin-bottom:1.5rem}
+.venue-body h2 span{color:var(--red)}
+.venue-body p{font-family:'Barlow';font-size:.9rem;font-weight:300;color:var(--gray);line-height:1.9;margin-bottom:1.8rem}
+.venue-features{display:flex;flex-direction:column;gap:.7rem}
+.vf{display:flex;align-items:center;gap:1rem;font-family:'Barlow Condensed';font-size:.85rem;font-weight:500;letter-spacing:.08em;color:rgba(242,242,242,.6)}
+.vf::before{content:'▶';font-size:.55rem;color:var(--red);flex-shrink:0}
+.venue-hours{margin-top:2.5rem;padding-top:2.5rem;border-top:1px solid rgba(242,242,242,.06);display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.vh-item .vh-day{font-size:.6rem;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--gray);margin-bottom:.2rem}
+.vh-item .vh-time{font-family:'Bebas Neue';font-size:1.3rem;letter-spacing:.1em;color:var(--white)}
+
+/* ─── MENU RÁPIDO ─── */
+#menu-rapido{background:var(--black)}
+.mrapido-header{text-align:center;margin-bottom:4rem}
+.mrapido-tabs{display:flex;justify-content:center;gap:0;border-bottom:1px solid rgba(242,242,242,.06);margin-top:2.5rem}
+.mrt{font-family:'Barlow Condensed';font-size:.72rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;background:none;border:none;border-bottom:2px solid transparent;color:var(--gray);padding:.75rem 2rem;cursor:none;transition:color .2s,border-color .2s;margin-bottom:-1px}
+.mrt.on,.mrt:hover{color:var(--red);border-color:var(--red)}
+.mrapido-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5px;margin-top:.2rem}
+.mritem{
+  background:var(--dark2);
+  display:flex;align-items:center;gap:1.4rem;
+  padding:1.4rem 1.8rem;
+  border:1px solid rgba(242,242,242,.04);
+  transition:background .25s,border-color .25s;
+  cursor:none;display:none;
+}
+.mritem.vis{display:flex}
+.mritem:hover{background:var(--dark3);border-color:rgba(232,25,44,.15)}
+.mritem-img{width:64px;height:64px;overflow:hidden;flex-shrink:0;clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%)}
+.mritem-img img{width:100%;height:100%;object-fit:cover;filter:brightness(.85)}
+.mritem-body{flex:1}
+.mritem-name{font-family:'Bebas Neue';font-size:1.2rem;letter-spacing:.06em;color:var(--white)}
+.mritem-desc{font-family:'Barlow';font-size:.72rem;font-weight:300;color:var(--gray);line-height:1.6}
+.mritem-price{font-family:'Bebas Neue';font-size:1.6rem;color:var(--yellow);flex-shrink:0}
+
+/* ─── FAN ZONE / REVIEWS ─── */
+#fanzone{background:var(--dark3)}
+.fz-header{text-align:center;margin-bottom:4rem}
+.reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.rcard{background:var(--dark2);border:1px solid rgba(242,242,242,.04);padding:2rem;transition:border-color .3s}
+.rcard:hover{border-color:rgba(232,25,44,.2)}
+.rcard-stars{color:var(--yellow);font-size:.85rem;letter-spacing:.1em;margin-bottom:1rem}
+.rcard-text{font-family:'Barlow';font-size:.88rem;font-weight:300;color:rgba(242,242,242,.65);line-height:1.75;margin-bottom:1.4rem;font-style:italic}
+.rcard-text::before{content:'❝ ';color:var(--red);font-style:normal}
+.rcard-author{display:flex;align-items:center;gap:.9rem}
+.rauthor-img{width:40px;height:40px;overflow:hidden;clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);background:var(--dark4);flex-shrink:0}
+.rauthor-img img{width:100%;height:100%;object-fit:cover}
+.rauthor-name{font-family:'Barlow Condensed';font-size:.88rem;font-weight:600;letter-spacing:.06em;color:var(--white)}
+.rauthor-handle{font-size:.65rem;font-weight:400;color:var(--gray)}
+.fz-cta-strip{margin-top:4rem;background:var(--dark2);border:1px solid rgba(232,25,44,.15);padding:2.5rem;display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.fz-cta-txt{font-family:'Bebas Neue';font-size:1.8rem;letter-spacing:.08em;color:var(--white)}
+.fz-cta-txt span{color:var(--red)}
+.fz-cta-sub{font-size:.78rem;font-weight:300;color:var(--gray);margin-top:.3rem}
+
+/* ─── FOOTER ─── */
+footer{background:var(--dark);border-top:1px solid rgba(232,25,44,.15);padding:5rem 0 2.5rem}
+.ft-inner{display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;gap:4rem;margin-bottom:4rem;padding-bottom:4rem;border-bottom:1px solid rgba(242,242,242,.04)}
+.ft-logo{font-family:'Bebas Neue';font-size:2.5rem;letter-spacing:.15em;color:var(--white);display:block;text-decoration:none;margin-bottom:.5rem}
+.ft-logo span{color:var(--red)}
+.ft-brand p{font-family:'Barlow';font-size:.82rem;font-weight:300;color:var(--gray);line-height:1.85;max-width:260px}
+.ft-socials{display:flex;gap:.7rem;margin-top:1.8rem}
+.fsoc{width:38px;height:38px;background:var(--dark2);border:1px solid rgba(242,242,242,.06);color:var(--gray);font-size:.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:background .2s,color .2s,border-color .2s;clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%)}
+.fsoc:hover{background:var(--red);color:#fff;border-color:var(--red)}
+.ft-col h4{font-family:'Bebas Neue';font-size:1rem;letter-spacing:.25em;color:var(--red);margin-bottom:1.4rem}
+.ft-col ul{list-style:none}
+.ft-col li{margin-bottom:.7rem}
+.ft-col a{font-family:'Barlow Condensed';font-size:.85rem;font-weight:400;letter-spacing:.08em;color:var(--gray);text-decoration:none;transition:color .2s}
+.ft-col a:hover{color:var(--red)}
+.ft-bottom{display:flex;align-items:center;justify-content:space-between}
+.ft-copy{font-family:'Barlow Condensed';font-size:.7rem;font-weight:400;letter-spacing:.18em;color:var(--gray2)}
+.ft-rights{font-size:.65rem;color:var(--gray2)}
+
+/* ─── GLITCH EFFECT ─── */
+@keyframes glitch{
+  0%,100%{clip-path:inset(0 0 100% 0);transform:translate(0)}
+  10%{clip-path:inset(10% 0 60% 0);transform:translate(-4px,0)}
+  20%{clip-path:inset(50% 0 30% 0);transform:translate(4px,0)}
+  30%{clip-path:inset(20% 0 70% 0);transform:translate(-2px,0)}
+  40%{clip-path:inset(80% 0 5% 0);transform:translate(3px,0)}
+  50%{clip-path:inset(0 0 0 0);transform:translate(0)}
+}
+.glitch-wrap{position:relative;display:inline-block}
+.glitch-wrap::before,.glitch-wrap::after{content:attr(data-text);position:absolute;top:0;left:0;width:100%;height:100%}
+.glitch-wrap::before{color:var(--red);animation:glitch 4s 1s infinite;opacity:.8}
+.glitch-wrap::after{color:var(--yellow);animation:glitch 4s 1.5s infinite reverse;opacity:.6}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:960px){
+  nav{padding:1rem 1.5rem}nav.sc{padding:.7rem 1.5rem}
+  .nlinks{display:none}
+  .hero-inner{grid-template-columns:1fr;gap:2rem;padding:0 2rem}
+  .hero-right{display:none}
+  .container{padding:0 2rem}
+  .burgers-grid{grid-template-columns:1fr 1fr}
+  .bcard.bcard-big{grid-column:span 2}
+  .drops-grid,.reviews-grid{grid-template-columns:1fr}
+  .mrapido-grid{grid-template-columns:1fr}
+  .venue-grid{grid-template-columns:1fr}
+  .venue-hours{grid-template-columns:1fr 1fr}
+  .ft-inner{grid-template-columns:1fr 1fr}
+  .coll-header{flex-direction:column;align-items:flex-start;gap:1.5rem}
+}
+</style>
+</head>
+<body>
+<a href="../" style="position:fixed;left:16px;bottom:16px;z-index:9999;padding:10px 13px;background:#E8192C;color:#fff;border:1px solid rgba(255,255,255,.2);font:700 12px 'Barlow Condensed',system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);box-shadow:0 0 24px rgba(232,25,44,.4);cursor:auto">Kynovia / Modelos</a>
+
+<div class="cur" id="cur"></div>
+<div class="cur-r" id="curR"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nlogo"><span class="nlogo-accent">RIOT</span> BURGER</a>
+  <ul class="nlinks">
+    <li><a href="#collection">The Collection</a></li>
+    <li><a href="#drops">Limited Drops</a></li>
+    <li><a href="#venue">The Venue</a></li>
+    <li><a href="#menu-rapido">Menu</a></li>
+    <li><a href="#fanzone">Fan Zone</a></li>
+  </ul>
+  <button class="npedido">⚡ Pedir Agora</button>
+</nav>
+
+<!-- ══════════ HERO ══════════ -->
+<section id="hero">
+  <div class="hero-photo">
+    <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=1920&q=85" alt="RIOT BURGER" onerror="this.style.display='none'"/>
+  </div>
+  <div class="hero-bg-text"><span>RIOT</span></div>
+
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-eyebrow">
+        <div class="hero-ew-line"></div>
+        <div class="hero-ew-txt">São Paulo · Rock 'N' Roll Burgeria</div>
+        <div class="hero-badge">⚡ Aberto Agora</div>
+      </div>
+
+      <h1 class="hero-h">
+        <span class="hl-stroke">QUANDO</span>
+        <span class="hl-red">A FOME</span>
+        PEDE
+        <span class="hl-stroke">MAIS</span>
+      </h1>
+
+      <p class="hero-desc">Burgers que não pedem licença. Feitos com carne nobre, ingredientes que respeitam e molhos que dão pavor. Para quem não aceita nada pela metade.</p>
+
+      <div class="hero-actions">
+        <a href="#collection" class="btn-red">⚡ Ver os Burgers</a>
+        <a href="#venue" class="btn-ghost-r">O Lugar</a>
+      </div>
+
+      <div class="hero-stats">
+        <div><span class="hstat-num">14</span><div class="hstat-lbl">Burgers no cardápio</div></div>
+        <div><span class="hstat-num">4.8★</span><div class="hstat-lbl">+2.400 avaliações</div></div>
+        <div><span class="hstat-num">5</span><div class="hstat-lbl">Anos no rock</div></div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="hero-burger-frame">
+        <div class="hero-burger-glow"></div>
+        <div class="hero-ring"></div>
+        <div class="hero-ring2"></div>
+        <div class="hero-burger-img">
+          <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=85" alt="The Beast Burger" onerror="this.src='';this.parentElement.style.background='linear-gradient(135deg,#2a0a08,#080808)'"/>
+        </div>
+        <div class="flabel flabel-top">
+          <div class="fl-title">⚡ Mais Pedido</div>
+          <div class="fl-val">THE BEAST</div>
+        </div>
+        <div class="flabel flabel-bot">
+          <div class="fl-title">🔥 Novo Drop</div>
+          <div class="fl-val">HELLFIRE #7</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-scroll"><div class="hs-dot"></div><div class="hs-txt">Scroll</div></div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span>THE BEAST</span><span>BLACKOUT</span><span>THUNDER CRISPY</span>
+    <span>HELLFIRE</span><span>THE GODFATHER</span><span>DOUBLE SMASH</span>
+    <span>RIOT ORIGINAL</span><span>BACK IN BLACK</span><span>ROAD TO HELL</span>
+    <span>THE BEAST</span><span>BLACKOUT</span><span>THUNDER CRISPY</span>
+    <span>HELLFIRE</span><span>THE GODFATHER</span><span>DOUBLE SMASH</span>
+    <span>RIOT ORIGINAL</span><span>BACK IN BLACK</span><span>ROAD TO HELL</span>
+  </div>
+</div>
+
+<!-- ══════════ COLLECTION ══════════ -->
+<section id="collection">
+  <div class="container">
+    <div class="coll-header r">
+      <div class="coll-header-left">
+        <div class="sec-eyebrow">Nossa Coleção</div>
+        <h2 class="sec-title">THE BURGER<br><span class="t-red">COLLECTION</span></h2>
+        <p>Cada burger é um ato de rebeldia gastronômica. Sem meio-termo. Sem mediocridade. Do smash clássico ao monster absurdo — escolha sua batalha.</p>
+      </div>
+      <a href="#menu-rapido" class="coll-btn-all">Ver Cardápio Completo →</a>
+    </div>
+
+    <div class="burgers-grid r rd1">
+
+      <!-- BIG CARD -->
+      <div class="bcard bcard-big">
+        <div class="bcard-photo">
+          <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=85" alt="The Beast" onerror="this.src='';this.parentElement.style.background='linear-gradient(135deg,#2a0a08,#0e0e0e)'"/>
+          <div class="scanlines"></div>
+        </div>
+        <div class="bcard-glow"></div>
+        <div class="bcard-num">01</div>
+        <div class="bcard-ribbon">👑 O Rei</div>
+        <div class="bcard-body">
+          <div class="bcard-cat">Signature · Double Smash</div>
+          <div class="bcard-name">THE BEAST</div>
+          <div class="bcard-desc">Dois smash patties 160g cada, cheddar americano duplo, bacon crocante, cebola caramelizada, pickles artesanais e molho secreto da casa no brioche tostado. O burger que definiu quem somos.</div>
+          <div class="bcard-footer">
+            <div class="bcard-price">R$ 54,90</div>
+            <button class="bcard-order">+</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Regular -->
+      <div class="bcard">
+        <div class="bcard-photo">
+          <img src="https://images.unsplash.com/photo-1553979459-d2229ba7433b?auto=format&fit=crop&w=600&q=85" alt="Blackout" onerror="this.src='';this.parentElement.style.background='linear-gradient(135deg,#1a0a0a,#0e0e0e)'"/>
+          <div class="scanlines"></div>
+        </div>
+        <div class="bcard-glow"></div>
+        <div class="bcard-num">02</div>
+        <div class="bcard-body">
+          <div class="bcard-cat">Dark Edition · Pão Preto</div>
+          <div class="bcard-name">BLACKOUT</div>
+          <div class="bcard-desc">Pão de carvão vegetal, smash 180g, cheddar defumado, cebola roxa agridoce, rúcula selvagem e aioli trufado.</div>
+          <div class="bcard-footer">
+            <div class="bcard-price">R$ 49,90</div>
+            <button class="bcard-order">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="bcard">
+        <div class="bcard-photo">
+          <img src="https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?auto=format&fit=crop&w=600&q=85" alt="Thunder" onerror="this.src='';this.parentElement.style.background='linear-gradient(135deg,#1a1008,#0e0e0e)'"/>
+          <div class="scanlines"></div>
+        </div>
+        <div class="bcard-glow"></div>
+        <div class="bcard-num">03</div>
+        <div class="bcard-ribbon">⚡ Crispy</div>
+        <div class="bcard-body">
+          <div class="bcard-cat">Chicken · Crispy Hot</div>
+          <div class="bcard-name">THUNDER CRISPY</div>
+          <div class="bcard-desc">Frango artesanal frito na dupla imersão, hot honey, jalapeños, coleslaw picante e mayo de sriracha.</div>
+          <div class="bcard-footer">
+            <div class="bcard-price">R$ 46,90</div>
+            <button class="bcard-order">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="bcard">
+        <div class="bcard-photo">
+          <img src="https://images.unsplash.com/photo-1561758033-7e924f619af6?auto=format&fit=crop&w=600&q=85" alt="The Original" onerror="this.src='';this.parentElement.style.background='linear-gradient(135deg,#180808,#0e0e0e)'"/>
+          <div class="scanlines"></div>
+        </div>
+        <div class="bcard-glow"></div>
+        <div class="bcard-num">04</div>
+        <div class="bcard-body">
+          <div class="bcard-cat">Classic · The Beginning</div>
+          <div class="bcard-name">RIOT ORIGINAL</div>
+          <div class="bcard-desc">Smash 150g, queijo americano, alface, tomate, pickle e special sauce. O ponto de partida. Simples e perfeito.</div>
+          <div class="bcard-footer">
+            <div class="bcard-price">R$ 38,90</div>
+            <button class="bcard-order">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="bcard">
+        <div class="bcard-photo">
+          <img src="https://images.unsplash.com/photo-1586816001966-79b736744398?auto=format&fit=crop&w=600&q=85" alt="Hellfire" onerror="this.src='';this.parentElement.style.background='linear-gradient(135deg,#2a0808,#0e0e0e)'"/>
+          <div class="scanlines"></div>
+        </div>
+        <div class="bcard-glow"></div>
+        <div class="bcard-num">05</div>
+        <div class="bcard-ribbon">🌶 EXTREMO</div>
+        <div class="bcard-body">
+          <div class="bcard-cat">Hell Edition · Extremo</div>
+          <div class="bcard-name">HELLFIRE</div>
+          <div class="bcard-desc">Molho ghost pepper, habanero fresco, scorpion flakes, queijo ghost e jalapeños. Assine o termo de responsabilidade.</div>
+          <div class="bcard-footer">
+            <div class="bcard-price">R$ 52,90</div>
+            <button class="bcard-order">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="bcard">
+        <div class="bcard-photo">
+          <img src="https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?auto=format&fit=crop&w=600&q=85" alt="Godfather" onerror="this.src='';this.parentElement.style.background='linear-gradient(135deg,#121208,#0e0e0e)'"/>
+          <div class="scanlines"></div>
+        </div>
+        <div class="bcard-glow"></div>
+        <div class="bcard-num">06</div>
+        <div class="bcard-ribbon">💀 Premium</div>
+        <div class="bcard-body">
+          <div class="bcard-cat">Premium · Wagyu</div>
+          <div class="bcard-name">THE GODFATHER</div>
+          <div class="bcard-desc">Wagyu A5 180g, queijo brie derretido, cogumelos salteados e molho ao vinho tinto. O crime que vale a pena.</div>
+          <div class="bcard-footer">
+            <div class="bcard-price">R$ 84,90</div>
+            <button class="bcard-order">+</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ MANIFESTO ══════════ -->
+<section id="manifesto">
+  <div class="manifesto-inner">
+    <p class="mf-quote r">
+      <span class="mf-stroke">BURGERS</span> SÃO
+      <br>ARTE PESADA.
+    </p>
+    <p class="mf-sub r rd1">Não fazemos comida para agradar a todos. Fazemos para quem quer o melhor, o mais honesto, o mais sem desculpa. Desde 2019, toda grelha aquecida é uma declaração de intenção.</p>
+    <div class="mf-pills r rd2">
+      <span class="mf-pill">Carne Nobre</span>
+      <span class="mf-pill">Pão Artesanal</span>
+      <span class="mf-pill">Molhos da Casa</span>
+      <span class="mf-pill">Zero Congelado</span>
+      <span class="mf-pill">Feito na Hora</span>
+      <span class="mf-pill">Sem Mediocridade</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ DROPS LIMITADOS ══════════ -->
+<section id="drops">
+  <div class="container">
+    <div class="drops-header r">
+      <div class="sec-eyebrow">Edições Especiais</div>
+      <h2 class="sec-title">LIMITED<br><span class="t-stroke-red">DROPS</span></h2>
+      <p style="font-family:'Barlow';font-weight:300;color:var(--gray);max-width:480px;margin:1rem auto 0;font-size:.88rem;line-height:1.8">Lançamentos exclusivos, por tempo e quantidade limitada. Quando acabar, acabou. Fique de olho.</p>
+    </div>
+    <div class="drops-grid r rd1">
+
+      <div class="drop-card">
+        <div class="drop-num">DROP #012</div>
+        <div class="drop-img">
+          <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=500&q=85" alt="Back in Black" onerror="this.style.display='none'"/>
+          <div class="drop-limit">Só 30/dia</div>
+        </div>
+        <div class="drop-name">BACK IN BLACK</div>
+        <div class="drop-desc">Pão preto de lula, smash de picanha 200g, queijo defumado, chips de bacon e molho de tinta de lula. Escuro como a alma do rock.</div>
+        <div class="drop-footer">
+          <div class="drop-price">R$ 69,90</div>
+          <div class="drop-tag">⏱ Esse mês</div>
+        </div>
+      </div>
+
+      <div class="drop-card">
+        <div class="drop-num">DROP #013</div>
+        <div class="drop-img">
+          <img src="https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?auto=format&fit=crop&w=500&q=85" alt="Road to Hell" onerror="this.style.display='none'"/>
+          <div class="drop-limit">Fim de Semana</div>
+        </div>
+        <div class="drop-name">ROAD TO HELL</div>
+        <div class="drop-desc">Triple smash, três queijos (gouda, cheddar e brie), bacon de porco Duroc, cebola crispy e molho buffalo reduzido. 800g de rock puro.</div>
+        <div class="drop-footer">
+          <div class="drop-price">R$ 79,90</div>
+          <div class="drop-tag">🔥 Sáb & Dom</div>
+        </div>
+      </div>
+
+      <div class="drop-card">
+        <div class="drop-num">DROP #014</div>
+        <div class="drop-img">
+          <img src="https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?auto=format&fit=crop&w=500&q=85" alt="Smokeshow" onerror="this.style.display='none'"/>
+          <div class="drop-limit">Lançando Breve</div>
+        </div>
+        <div class="drop-name">SMOKESHOW</div>
+        <div class="drop-desc">Costela bovina defumada 12h, queijo pepper jack, maionese de defumado, coleslaw de jalapeño e chips de batata doce. Aguente firme.</div>
+        <div class="drop-footer">
+          <div class="drop-price">Em breve</div>
+          <div class="drop-tag">👀 Aguarde</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ THE VENUE ══════════ -->
+<section id="venue" style="padding:0">
+  <div class="venue-grid">
+    <div class="venue-photo">
+      <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=85" alt="RIOT BURGER Venue" onerror="this.src='';this.parentElement.style.background='linear-gradient(135deg,#161616,#0e0e0e)'"/>
+      <div class="venue-overlay">
+        <div class="vo-label">Avaliação no Google</div>
+        <div class="vo-rating">★★★★★ 4.8</div>
+      </div>
+    </div>
+    <div class="venue-body">
+      <div class="sec-eyebrow">O Lugar</div>
+      <h2>THE<br><span>VENUE</span></h2>
+      <p>Um espaço projetado para quem vive rápido e come bem. Paredes de tijolo, som no volume certo, iluminação que respeita a refeição e uma vibrações que você sente antes de entrar.</p>
+      <p>Capacidade para 80 pessoas, bar completo de cervejas artesanais e coquetéis, e uma playlist curada que vai de Led Zeppelin a Idles. Sem desculpa pra sair cedo.</p>
+      <div class="venue-features">
+        <div class="vf">Bar de cervejas artesanais selecionadas</div>
+        <div class="vf">Coquetéis autorais e clássicos</div>
+        <div class="vf">Playlist curada — rock the right way</div>
+        <div class="vf">Happy Hour · Ter–Sex · 17h às 20h</div>
+        <div class="vf">Reservas para grupos de até 30 pessoas</div>
+      </div>
+      <div class="venue-hours">
+        <div class="vh-item"><div class="vh-day">Seg — Sex</div><div class="vh-time">12h — 00h</div></div>
+        <div class="vh-item"><div class="vh-day">Sábado</div><div class="vh-time">12h — 02h</div></div>
+        <div class="vh-item"><div class="vh-day">Domingo</div><div class="vh-time">12h — 22h</div></div>
+        <div class="vh-item"><div class="vh-day">Feriados</div><div class="vh-time">13h — 00h</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ MENU RÁPIDO ══════════ -->
+<section id="menu-rapido">
+  <div class="container">
+    <div class="mrapido-header r">
+      <div class="sec-eyebrow">Cardápio</div>
+      <h2 class="sec-title">FULL<br><span class="t-red">MENU</span></h2>
+    </div>
+    <div class="mrapido-tabs r rd1">
+      <button class="mrt on" data-m="burgers">Burgers</button>
+      <button class="mrt" data-m="sides">Acompanhamentos</button>
+      <button class="mrt" data-m="bebidas">Bebidas</button>
+      <button class="mrt" data-m="combos">Combos</button>
+    </div>
+    <div class="mrapido-grid r rd2" id="mgrid">
+
+      <!-- BURGERS -->
+      <div class="mritem vis" data-m="burgers">
+        <div class="mritem-img"><img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=150&q=80" alt="Beast" onerror="this.style.display='none'"/></div>
+        <div class="mritem-body"><div class="mritem-name">THE BEAST</div><div class="mritem-desc">Double smash · Cheddar duplo · Bacon · Molho secreto</div></div>
+        <div class="mritem-price">R$ 54,90</div>
+      </div>
+      <div class="mritem vis" data-m="burgers">
+        <div class="mritem-img"><img src="https://images.unsplash.com/photo-1553979459-d2229ba7433b?auto=format&fit=crop&w=150&q=80" alt="Blackout" onerror="this.style.display='none'"/></div>
+        <div class="mritem-body"><div class="mritem-name">BLACKOUT</div><div class="mritem-desc">Pão preto · Cheddar defumado · Aioli trufado</div></div>
+        <div class="mritem-price">R$ 49,90</div>
+      </div>
+      <div class="mritem vis" data-m="burgers">
+        <div class="mritem-img"><img src="https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?auto=format&fit=crop&w=150&q=80" alt="Thunder" onerror="this.style.display='none'"/></div>
+        <div class="mritem-body"><div class="mritem-name">THUNDER CRISPY</div><div class="mritem-desc">Frango crispy · Hot honey · Jalapeños · Sriracha</div></div>
+        <div class="mritem-price">R$ 46,90</div>
+      </div>
+      <div class="mritem vis" data-m="burgers">
+        <div class="mritem-img"><img src="https://images.unsplash.com/photo-1561758033-7e924f619af6?auto=format&fit=crop&w=150&q=80" alt="Original" onerror="this.style.display='none'"/></div>
+        <div class="mritem-body"><div class="mritem-name">RIOT ORIGINAL</div><div class="mritem-desc">Smash 150g · Queijo americano · Special sauce</div></div>
+        <div class="mritem-price">R$ 38,90</div>
+      </div>
+      <div class="mritem vis" data-m="burgers">
+        <div class="mritem-img"><img src="https://images.unsplash.com/photo-1586816001966-79b736744398?auto=format&fit=crop&w=150&q=80" alt="Hellfire" onerror="this.style.display='none'"/></div>
+        <div class="mritem-body"><div class="mritem-name">HELLFIRE 🌶🌶🌶</div><div class="mritem-desc">Ghost pepper · Habanero · Scorpion · Extremo mesmo</div></div>
+        <div class="mritem-price">R$ 52,90</div>
+      </div>
+      <div class="mritem vis" data-m="burgers">
+        <div class="mritem-img"><img src="https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?auto=format&fit=crop&w=150&q=80" alt="Godfather" onerror="this.style.display='none'"/></div>
+        <div class="mritem-body"><div class="mritem-name">THE GODFATHER</div><div class="mritem-desc">Wagyu A5 · Brie · Cogumelos · Molho ao vinho</div></div>
+        <div class="mritem-price">R$ 84,90</div>
+      </div>
+
+      <!-- SIDES -->
+      <div class="mritem" data-m="sides">
+        <div class="mritem-img"><img src="https://images.unsplash.com/photo-1569012871812-f38ee64cd54c?auto=format&fit=crop&w=150&q=80" alt="Fritas" onerror="this.style.display='none'"/></div>
+        <div class="mritem-body"><div class="mritem-name">FRITAS DO CAOS</div><div class="mritem-desc">Batata frita fina e crocante, temperada com especiarias da casa</div></div>
+        <div class="mritem-price">R$ 18,90</div>
+      </div>
+      <div class="mritem" data-m="sides">
+        <div class="mritem-img"><img src="https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=150&q=80" alt="Onion Rings" onerror="this.style.display='none'"/></div>
+        <div class="mritem-body"><div class="mritem-name">ONION RINGS</div><div class="mritem-desc">Anéis de cebola em massa temperada, fritos na ordem e servidos com ranch</div></div>
+        <div class="mritem-price">R$ 22,90</div>
+      </div>
+      <div class="mritem" data-m="sides">
+        <div class="mritem-img"><img src="https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=150&q=80" alt="Fritas Bacon" onerror="this.style.display='none'"/></div>
+        <div class="mritem-body"><div class="mritem-name">LOADED FRIES</div><div class="mritem-desc">Fritas com queijo derretido, bacon em cubos e cebola crispy</div></div>
+        <div class="mritem-price">R$ 32,90</div>
+      </div>
+      <div class="mritem" data-m="sides">
+        <div class="mritem-img"><img src="https://images.unsplash.com/photo-1553979459-d2229ba7433b?auto=format&fit=crop&w=150&q=80" alt="Coleslaw" onerror="this.style.display='none'"/></div>
+        <div class="mritem-body"><div class="mritem-name">COLESLAW RIOT</div><div class="mritem-desc">Repolho roxo, cenoura e ervas com molho de maionese e mostarda</div></div>
+        <div class="mritem-price">R$ 14,90</div>
+      </div>
+
+      <!-- BEBIDAS -->
+      <div class="mritem" data-m="bebidas">
+        <div class="mritem-img" style="background:var(--dark4)">🍺</div>
+        <div class="mritem-body"><div class="mritem-name">CHOPP RIOT IPA</div><div class="mritem-desc">IPA artesanal exclusiva, parceria com a Cervejaria Amplificador · 473ml</div></div>
+        <div class="mritem-price">R$ 22,90</div>
+      </div>
+      <div class="mritem" data-m="bebidas">
+        <div class="mritem-img" style="background:var(--dark4)">🥤</div>
+        <div class="mritem-body"><div class="mritem-name">MILKSHAKE RIOT</div><div class="mritem-desc">Chocolate amargo, baunilha ou morango — grosso, cremoso e irresponsável</div></div>
+        <div class="mritem-price">R$ 28,90</div>
+      </div>
+      <div class="mritem" data-m="bebidas">
+        <div class="mritem-img" style="background:var(--dark4)">🍹</div>
+        <div class="mritem-body"><div class="mritem-name">HELL'S LEMONADE</div><div class="mritem-desc">Limonada com pimenta cayenne, mel e ginger beer. Vai com tudo.</div></div>
+        <div class="mritem-price">R$ 19,90</div>
+      </div>
+      <div class="mritem" data-m="bebidas">
+        <div class="mritem-img" style="background:var(--dark4)">🧊</div>
+        <div class="mritem-body"><div class="mritem-name">REFRIGERANTE</div><div class="mritem-desc">Coca-Cola, Guaraná, Água com/sem gás · 350ml</div></div>
+        <div class="mritem-price">R$ 7,90</div>
+      </div>
+
+      <!-- COMBOS -->
+      <div class="mritem" data-m="combos">
+        <div class="mritem-img" style="background:var(--dark4);font-size:2rem;display:flex;align-items:center;justify-content:center">🔥</div>
+        <div class="mritem-body"><div class="mritem-name">COMBO BÁSICO</div><div class="mritem-desc">Qualquer burger + fritas + refrigerante · Economize R$ 8</div></div>
+        <div class="mritem-price">R$ 59,90</div>
+      </div>
+      <div class="mritem" data-m="combos">
+        <div class="mritem-img" style="background:var(--dark4);font-size:2rem;display:flex;align-items:center;justify-content:center">⚡</div>
+        <div class="mritem-body"><div class="mritem-name">COMBO RIOT</div><div class="mritem-desc">Qualquer burger + loaded fries + milkshake · Economize R$ 14</div></div>
+        <div class="mritem-price">R$ 79,90</div>
+      </div>
+      <div class="mritem" data-m="combos">
+        <div class="mritem-img" style="background:var(--dark4);font-size:2rem;display:flex;align-items:center;justify-content:center">💀</div>
+        <div class="mritem-body"><div class="mritem-name">COMBO FAMÍLIA (4 pessoas)</div><div class="mritem-desc">4 burgers + fritas grandes + 4 refrigerantes · Economize R$ 28</div></div>
+        <div class="mritem-price">R$ 189,90</div>
+      </div>
+      <div class="mritem" data-m="combos">
+        <div class="mritem-img" style="background:var(--dark4);font-size:2rem;display:flex;align-items:center;justify-content:center">🍺</div>
+        <div class="mritem-body"><div class="mritem-name">HAPPY HOUR</div><div class="mritem-desc">Burger Original + Chopp IPA · Ter a Sex, 17h–20h</div></div>
+        <div class="mritem-price">R$ 44,90</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FAN ZONE ══════════ -->
+<section id="fanzone">
+  <div class="container">
+    <div class="fz-header r">
+      <div class="sec-eyebrow">Fan Zone</div>
+      <h2 class="sec-title">O QUE A<br><span class="t-red">GALERA DIZ</span></h2>
+    </div>
+    <div class="reviews-grid r rd1">
+
+      <div class="rcard">
+        <div class="rcard-stars">★★★★★</div>
+        <div class="rcard-text">O HELLFIRE quase me matou, mas foi a melhor experiência gastronômica da minha vida. Voltei na semana seguinte pro BEAST — e não saí decepcionado.</div>
+        <div class="rcard-author">
+          <div class="rauthor-img"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=80&q=80" alt="Pedro" onerror="this.style.background='#282828'"/></div>
+          <div><div class="rauthor-name">Pedro Almeida</div><div class="rauthor-handle">@pedrorock · Google</div></div>
+        </div>
+      </div>
+
+      <div class="rcard">
+        <div class="rcard-stars">★★★★★</div>
+        <div class="rcard-text">Pedi o GODFATHER achando que era hype. Foi a melhor decisão de 2024. O wagyu derrete, o brie complementa e o molho ao vinho... absurdo. Voltarei sempre.</div>
+        <div class="rcard-author">
+          <div class="rauthor-img"><img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=80&q=80" alt="Julia" onerror="this.style.background='#282828'"/></div>
+          <div><div class="rauthor-name">Julia Menezes</div><div class="rauthor-handle">@juliaeats · Google</div></div>
+        </div>
+      </div>
+
+      <div class="rcard">
+        <div class="rcard-stars">★★★★★</div>
+        <div class="rcard-text">A vibe do lugar é o que me trouxe. A comida é o que me faz voltar. BLACKOUT + IPA Riot é a dupla perfeita. Ambiente incrível, staff que manja e fritas no ponto certo.</div>
+        <div class="rcard-author">
+          <div class="rauthor-img"><img src="https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?auto=format&fit=crop&w=80&q=80" alt="Rodrigo" onerror="this.style.background='#282828'"/></div>
+          <div><div class="rauthor-name">Rodrigo Castro</div><div class="rauthor-handle">@rodrigorc · Google</div></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="fz-cta-strip r rd2">
+      <div>
+        <div class="fz-cta-txt">Pronto pra entrar no <span>caos?</span></div>
+        <div class="fz-cta-sub">Reservas · Eventos privados · Mesa para grupos → (11) 99988-7766</div>
+      </div>
+      <button class="btn-red" style="cursor:none;font-family:'Bebas Neue';font-size:1.1rem;letter-spacing:.2em;border:none" onclick="document.getElementById('collection').scrollIntoView({behavior:'smooth'})">⚡ Fazer Pedido</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer>
+  <div class="container">
+    <div class="ft-inner">
+      <div class="ft-brand">
+        <a href="#" class="ft-logo"><span>RIOT</span> BURGER</a>
+        <p>Rock 'N' Roll Burgeria desde 2019. Burgers sem desculpa, ambiente sem mediocridade e uma missão: ser o melhor do seu pedaço.</p>
+        <div class="ft-socials">
+          <a href="#" class="fsoc">ig</a><a href="#" class="fsoc">tk</a><a href="#" class="fsoc">yt</a><a href="#" class="fsoc">wa</a>
+        </div>
+      </div>
+      <div class="ft-col"><h4>Menu</h4><ul>
+        <li><a href="#collection">The Collection</a></li>
+        <li><a href="#drops">Limited Drops</a></li>
+        <li><a href="#menu-rapido">Cardápio Completo</a></li>
+        <li><a href="#">Combos</a></li>
+        <li><a href="#">Bebidas</a></li>
+      </ul></div>
+      <div class="ft-col"><h4>O Lugar</h4><ul>
+        <li><a href="#">Rua Augusta, 888 · Consolação</a></li>
+        <li><a href="#">São Paulo · SP</a></li>
+        <li><a href="#">(11) 99988-7766</a></li>
+        <li><a href="#">riotburger@sp.com</a></li>
+        <li><a href="#">@riotburgersp</a></li>
+      </ul></div>
+      <div class="ft-col"><h4>Horários</h4><ul>
+        <li><a href="#">Seg–Sex: 12h às 00h</a></li>
+        <li><a href="#">Sábado: 12h às 02h</a></li>
+        <li><a href="#">Domingo: 12h às 22h</a></li>
+        <li><a href="#">Happy Hour: 17h–20h</a></li>
+        <li><a href="#">Delivery: iFood & Rappi</a></li>
+      </ul></div>
+    </div>
+    <div class="ft-bottom">
+      <div class="ft-copy">© 2024 RIOT BURGER · Rock 'N' Roll Burgeria · São Paulo · Todos os direitos reservados</div>
+      <div class="ft-rights">Feito para quem não aceita o mediano</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// CURSOR
+const cur=document.getElementById('cur'),curR=document.getElementById('curR');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+(function a(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;curR.style.left=rx+'px';curR.style.top=ry+'px';requestAnimationFrame(a)})();
+
+// NAV SCROLL
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('sc',scrollY>80));
+
+// CURSOR RING ROTATION
+let ang=0;
+(function rot(){ang+=.5;curR.style.transform=`translate(-50%,-50%) rotate(${ang}deg)`;requestAnimationFrame(rot)})();
+
+// MENU TABS
+document.querySelectorAll('.mrt').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.mrt').forEach(b=>b.classList.remove('on'));
+    btn.classList.add('on');
+    const m=btn.dataset.m;
+    document.querySelectorAll('.mritem').forEach(it=>{
+      const show=it.dataset.m===m;
+      it.style.display=show?'flex':'none';
+      if(show)it.classList.add('vis');else it.classList.remove('vis');
+    });
+  });
+});
+
+// SCROLL REVEAL
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{
+  if(e.isIntersecting){e.target.classList.add('v');obs.unobserve(e.target)}
+}),{threshold:.1});
+document.querySelectorAll('.r,.rl,.rr').forEach(el=>obs.observe(el));
+
+// ORDER BUTTONS
+document.querySelectorAll('.bcard-order').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    const orig=this.textContent;
+    this.textContent='✓';this.style.background='var(--yellow)';this.style.color='#000';
+    setTimeout(()=>{this.textContent=orig;this.style.background='';this.style.color='';},1400);
+  });
+});
+
+// NAV PEDIDO
+document.querySelector('.npedido').addEventListener('click',()=>document.getElementById('collection').scrollIntoView({behavior:'smooth'}));
+
+// PARALLAX hero bg text subtle
+window.addEventListener('scroll',()=>{
+  const el=document.querySelector('.hero-bg-text span');
+  if(el)el.style.transform=`translateY(${scrollY*.15}px)`;
+});
+
+// CURSOR ring glow pulse on red sections
+const sections=[document.getElementById('manifesto')];
+window.addEventListener('scroll',()=>{
+  const inRed=sections.some(s=>{
+    if(!s)return false;const r=s.getBoundingClientRect();return r.top<window.innerHeight/2&&r.bottom>window.innerHeight/2;
+  });
+  curR.style.borderColor=inRed?'rgba(255,255,255,.5)':'';
+});
+</script>
+</body>
+</html>
