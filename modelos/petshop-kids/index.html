@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patinhas Mágicas 🐾</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+
+/* ══════════════════════════════════
+   TOKENS
+══════════════════════════════════ */
+:root {
+  --pink:   #FF6BB5;
+  --yellow: #FFD93D;
+  --teal:   #4ECDC4;
+  --purple: #C77DFF;
+  --orange: #FF9551;
+  --green:  #6BCB77;
+  --blue:   #5EB4FF;
+  --red:    #FF6B6B;
+  --cream:  #FFFEF5;
+  --dark:   #2B2D42;
+  --shadow: 5px 5px 0px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--cream);
+  color: var(--dark);
+  overflow-x: hidden;
+  cursor: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><text y='26' font-size='26'>🐾</text></svg>") 16 16, auto;
+}
+
+/* scrollbar */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--yellow); }
+::-webkit-scrollbar-thumb { background: var(--pink); border-radius: 10px; border: 2px solid var(--yellow); }
+
+/* ══════════════════════════════════
+   CONFETTI
+══════════════════════════════════ */
+.confetti-wrap {
+  position: fixed; inset: 0; pointer-events: none; z-index: 200; overflow: hidden;
+}
+.confetti-piece {
+  position: absolute; top: -20px;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  animation: confetti-fall linear forwards;
+  opacity: 0;
+}
+@keyframes confetti-fall {
+  0%   { transform: translateY(0) rotate(0deg);   opacity: 1; }
+  100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+
+/* ══════════════════════════════════
+   NAV
+══════════════════════════════════ */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: white;
+  border-bottom: 4px solid var(--dark);
+  padding: 0.8rem 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  box-shadow: 0 4px 0 var(--dark);
+}
+.nav-logo {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1.9rem; font-weight: 700;
+  color: var(--dark);
+  display: flex; align-items: center; gap: 0.4rem;
+  text-decoration: none;
+}
+.nav-logo .paw { font-size: 1.6rem; animation: wiggle 2s ease-in-out infinite; display: inline-block; }
+@keyframes wiggle {
+  0%,100% { transform: rotate(-10deg); }
+  50%      { transform: rotate(10deg); }
+}
+.nav-logo span { color: var(--pink); }
+
+.nav-links { display: flex; gap: 0.4rem; list-style: none; flex-wrap: wrap; }
+.nav-links a {
+  display: inline-block;
+  font-family: 'Fredoka', sans-serif; font-size: 1rem; font-weight: 600;
+  color: var(--dark); text-decoration: none;
+  padding: 0.35rem 0.9rem; border-radius: 50px;
+  border: 3px solid transparent;
+  transition: all 0.2s;
+}
+.nav-links a:hover { border-color: var(--dark); background: var(--yellow); transform: translateY(-2px); }
+.nav-cta {
+  background: var(--pink) !important;
+  color: white !important;
+  border: 3px solid var(--dark) !important;
+  box-shadow: var(--shadow) var(--dark);
+  transition: all 0.15s !important;
+}
+.nav-cta:hover { transform: translate(-2px,-2px) !important; box-shadow: 7px 7px 0 var(--dark) !important; }
+
+/* ══════════════════════════════════
+   REVEAL
+══════════════════════════════════ */
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.pop-in { opacity: 0; transform: scale(0.8); transition: opacity 0.5s cubic-bezier(.34,1.56,.64,1), transform 0.5s cubic-bezier(.34,1.56,.64,1); }
+.pop-in.visible { opacity: 1; transform: scale(1); }
+
+/* ══════════════════════════════════
+   SECTION LABEL
+══════════════════════════════════ */
+.label-tag {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-family: 'Fredoka', sans-serif; font-size: 1rem; font-weight: 600;
+  padding: 0.35rem 1.1rem; border-radius: 50px;
+  border: 3px solid var(--dark);
+  box-shadow: var(--shadow) var(--dark);
+  margin-bottom: 1.2rem;
+}
+
+/* ══════════════════════════════════
+   HERO
+══════════════════════════════════ */
+#hero {
+  background: var(--yellow);
+  border-bottom: 4px solid var(--dark);
+  padding: 5rem 2rem 0;
+  position: relative; overflow: hidden;
+  min-height: 92vh;
+  display: flex; flex-direction: column; align-items: center;
+}
+
+/* polka dot BG */
+#hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(0,0,0,0.06) 2px, transparent 2px);
+  background-size: 32px 32px;
+}
+
+.hero-floaters {
+  position: absolute; inset: 0; pointer-events: none;
+}
+.floater {
+  position: absolute;
+  font-size: 2.5rem;
+  animation: float-around ease-in-out infinite;
+  user-select: none;
+}
+@keyframes float-around {
+  0%,100% { transform: translateY(0) rotate(-8deg) scale(1); }
+  33%      { transform: translateY(-18px) rotate(8deg) scale(1.1); }
+  66%      { transform: translateY(-8px) rotate(-4deg) scale(0.95); }
+}
+
+.hero-inner {
+  position: relative; z-index: 2;
+  text-align: center; max-width: 800px; margin: 0 auto;
+}
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: white; border: 3px solid var(--dark);
+  border-radius: 50px; padding: 0.4rem 1.2rem;
+  font-family: 'Fredoka', sans-serif; font-size: 1rem; font-weight: 600;
+  box-shadow: 4px 4px 0 var(--dark);
+  margin-bottom: 2rem;
+  animation: bounce-in 0.6s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes bounce-in {
+  from { opacity: 0; transform: scale(0.5); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.hero-h1 {
+  font-family: 'Fredoka', sans-serif;
+  font-size: clamp(3.5rem, 8vw, 7rem);
+  font-weight: 700;
+  line-height: 1.0;
+  color: var(--dark);
+  margin-bottom: 1.5rem;
+  animation: slide-up 0.7s ease both 0.2s;
+}
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero-h1 .word-pink { color: var(--pink); display: inline-block; }
+.hero-h1 .word-teal { color: var(--teal); display: inline-block; }
+
+/* squiggly underline SVG */
+.squiggle-wrap { display: inline-block; position: relative; }
+.squiggle-wrap svg { position: absolute; bottom: -8px; left: 0; width: 100%; }
+
+.hero-p {
+  font-size: 1.25rem; line-height: 1.7; color: var(--dark);
+  max-width: 520px; margin: 0 auto 2.5rem;
+  animation: slide-up 0.7s ease both 0.35s;
+  font-weight: 600;
+}
+
+.hero-btns {
+  display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+  animation: slide-up 0.7s ease both 0.5s;
+}
+.btn-fun {
+  font-family: 'Fredoka', sans-serif; font-size: 1.2rem; font-weight: 600;
+  padding: 0.8rem 2rem; border-radius: 50px;
+  border: 3px solid var(--dark);
+  box-shadow: 5px 5px 0 var(--dark);
+  text-decoration: none; display: inline-flex;
+  align-items: center; gap: 0.5rem;
+  transition: all 0.12s;
+  cursor: pointer; background: none;
+}
+.btn-fun:hover { transform: translate(-3px,-3px); box-shadow: 8px 8px 0 var(--dark); }
+.btn-fun:active { transform: translate(2px,2px); box-shadow: 2px 2px 0 var(--dark); }
+.btn-pink  { background: var(--pink);   color: white; }
+.btn-white { background: white;         color: var(--dark); }
+.btn-teal  { background: var(--teal);   color: white; }
+.btn-green { background: var(--green);  color: white; }
+.btn-purple{ background: var(--purple); color: white; }
+.btn-orange{ background: var(--orange); color: white; }
+
+/* hero image area */
+.hero-pets-row {
+  position: relative; z-index: 2;
+  display: flex; justify-content: center; gap: 1.5rem;
+  margin-top: 3rem; flex-wrap: wrap; align-items: flex-end;
+}
+.hero-pet-card {
+  background: white; border: 4px solid var(--dark);
+  border-radius: 20px; overflow: hidden;
+  box-shadow: 8px 8px 0 var(--dark);
+  transition: transform 0.2s;
+}
+.hero-pet-card:hover { transform: translateY(-8px) rotate(-2deg); }
+.hero-pet-card img { display: block; object-fit: cover; }
+.hero-pet-card.big   { width: 260px; height: 300px; transform: rotate(-3deg); }
+.hero-pet-card.small { width: 180px; height: 200px; }
+.hero-pet-card.mid   { width: 220px; height: 260px; transform: rotate(2deg); }
+
+/* wave */
+.wave-divider { display: block; width: 100%; overflow: hidden; line-height: 0; }
+.wave-divider svg { display: block; }
+
+/* ══════════════════════════════════
+   ABOUT
+══════════════════════════════════ */
+#about {
+  background: white;
+  padding: 6rem 2rem;
+  position: relative;
+}
+.about-inner {
+  max-width: 1100px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 4rem; align-items: center;
+}
+.about-photo-cluster { position: relative; height: 480px; }
+
+.photo-blob {
+  position: absolute;
+  border: 4px solid var(--dark);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 7px 7px 0 var(--dark);
+  transition: transform 0.3s;
+}
+.photo-blob img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.photo-blob:hover { transform: scale(1.04) rotate(2deg); }
+
+.pb1 { width: 260px; height: 300px; top: 0; left: 0; transform: rotate(-4deg); background: var(--pink); }
+.pb2 { width: 210px; height: 240px; bottom: 0; right: 20px; transform: rotate(5deg); background: var(--teal); }
+
+.sticker {
+  position: absolute;
+  background: var(--yellow);
+  border: 3px solid var(--dark);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2.5rem;
+  box-shadow: 4px 4px 0 var(--dark);
+  animation: spin-slow 8s linear infinite;
+}
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.sticker-text-wrap {
+  position: absolute;
+  background: var(--orange);
+  border: 3px solid var(--dark);
+  border-radius: 16px;
+  padding: 0.8rem 1.2rem;
+  box-shadow: 4px 4px 0 var(--dark);
+  text-align: center;
+  font-family: 'Fredoka', sans-serif;
+}
+.sticker-text-wrap strong { font-size: 2rem; display: block; color: white; line-height: 1; }
+.sticker-text-wrap span  { font-size: 0.8rem; color: white; font-weight: 700; }
+
+.about-text h2 {
+  font-family: 'Fredoka', sans-serif;
+  font-size: clamp(2.2rem, 3.5vw, 3rem);
+  font-weight: 700; line-height: 1.2;
+  margin-bottom: 1.2rem; color: var(--dark);
+}
+.about-text p {
+  font-size: 1.05rem; line-height: 1.85;
+  color: #555; margin-bottom: 1.2rem; font-weight: 600;
+}
+.about-chips {
+  display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.5rem;
+}
+.chip {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 1rem;
+  padding: 0.4rem 1rem; border-radius: 50px;
+  border: 3px solid var(--dark);
+  box-shadow: 3px 3px 0 var(--dark);
+}
+
+/* ══════════════════════════════════
+   GALLERY
+══════════════════════════════════ */
+#gallery {
+  background: var(--pink);
+  border-top: 4px solid var(--dark);
+  border-bottom: 4px solid var(--dark);
+  padding: 5rem 2rem;
+  position: relative;
+}
+#gallery::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.15) 2px, transparent 2px);
+  background-size: 28px 28px;
+}
+
+.gallery-header { text-align: center; margin-bottom: 3.5rem; position: relative; z-index: 1; }
+.gallery-header h2 {
+  font-family: 'Fredoka', sans-serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700; color: white; margin-bottom: 0.7rem;
+  text-shadow: 4px 4px 0 var(--dark);
+}
+.gallery-header p { color: rgba(255,255,255,0.9); font-size: 1.1rem; font-weight: 600; }
+
+.polaroid-grid {
+  max-width: 1100px; margin: 0 auto;
+  display: flex; flex-wrap: wrap;
+  justify-content: center; gap: 1.8rem;
+  position: relative; z-index: 1;
+}
+.polaroid {
+  background: white;
+  border: 3px solid var(--dark);
+  border-radius: 6px;
+  padding: 0.7rem 0.7rem 3rem;
+  box-shadow: 7px 7px 0 var(--dark);
+  transition: transform 0.3s cubic-bezier(.34,1.56,.64,1);
+  cursor: pointer;
+}
+.polaroid:hover { transform: rotate(0deg) scale(1.08) translateY(-10px) !important; z-index: 10; }
+.polaroid img {
+  display: block; object-fit: cover;
+  border-radius: 3px;
+}
+.polaroid-name {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1.05rem; font-weight: 600;
+  text-align: center; margin-top: 0.6rem;
+  color: var(--dark);
+}
+.polaroid-sub { font-size: 0.78rem; text-align: center; color: #999; font-weight: 600; }
+
+/* ══════════════════════════════════
+   SERVICES
+══════════════════════════════════ */
+#services {
+  background: var(--cream);
+  padding: 6rem 2rem;
+}
+.services-inner { max-width: 1100px; margin: 0 auto; }
+.section-title-row { text-align: center; margin-bottom: 3.5rem; }
+.section-title-row h2 {
+  font-family: 'Fredoka', sans-serif;
+  font-size: clamp(2.2rem, 4vw, 3.5rem);
+  font-weight: 700; color: var(--dark); margin-bottom: 0.7rem;
+}
+.section-title-row p { font-size: 1.05rem; color: #666; font-weight: 600; max-width: 500px; margin: 0 auto; }
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.service-card {
+  background: white;
+  border: 4px solid var(--dark);
+  border-radius: 24px;
+  padding: 2rem 1.5rem;
+  box-shadow: var(--shadow) var(--dark);
+  transition: transform 0.18s cubic-bezier(.34,1.56,.64,1), box-shadow 0.18s;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.service-card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 8px;
+}
+.sc1::before { background: var(--pink); }
+.sc2::before { background: var(--teal); }
+.sc3::before { background: var(--purple); }
+.sc4::before { background: var(--orange); }
+.sc5::before { background: var(--green); }
+.sc6::before { background: var(--blue); }
+
+.service-card:hover { transform: translate(-4px,-4px); box-shadow: 9px 9px 0 var(--dark); }
+
+.service-emoji {
+  font-size: 3.5rem; display: block;
+  margin-bottom: 1rem;
+  animation: bounce-idle 2.5s ease-in-out infinite;
+}
+@keyframes bounce-idle {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+.service-card h3 {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1.4rem; font-weight: 700;
+  color: var(--dark); margin-bottom: 0.6rem;
+}
+.service-card p { font-size: 0.9rem; color: #666; line-height: 1.7; font-weight: 600; }
+.service-price {
+  display: inline-block; margin-top: 1rem;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1.2rem; font-weight: 700;
+  padding: 0.3rem 1rem; border-radius: 50px;
+  border: 2px solid var(--dark);
+}
+.sp1 { background: #FFE0EF; color: var(--pink); }
+.sp2 { background: #D9F7F5; color: #2aaa9e; }
+.sp3 { background: #EDE0FF; color: var(--purple); }
+.sp4 { background: #FFE9D6; color: var(--orange); }
+.sp5 { background: #D6F5DA; color: #3a9b45; }
+.sp6 { background: #D6EEFF; color: #2a7fcf; }
+
+/* ══════════════════════════════════
+   SCHEDULE
+══════════════════════════════════ */
+#schedule {
+  background: var(--teal);
+  border-top: 4px solid var(--dark);
+  border-bottom: 4px solid var(--dark);
+  padding: 6rem 2rem;
+}
+.schedule-inner {
+  max-width: 1000px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 3rem; align-items: start;
+}
+.schedule-box {
+  background: white;
+  border: 4px solid var(--dark);
+  border-radius: 24px; padding: 2.5rem;
+  box-shadow: 8px 8px 0 var(--dark);
+}
+.schedule-box h2 {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 2rem; font-weight: 700;
+  color: var(--dark); margin-bottom: 0.5rem;
+}
+.schedule-box > p {
+  font-size: 0.95rem; color: #666; margin-bottom: 1.8rem; font-weight: 600;
+}
+.schedule-list { list-style: none; }
+.schedule-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.9rem 0; border-bottom: 2px dashed rgba(0,0,0,0.1);
+}
+.schedule-row:last-child { border-bottom: none; }
+.schedule-row .day {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1.05rem; font-weight: 600; color: var(--dark);
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.schedule-row .time {
+  font-family: 'Fredoka', sans-serif; font-size: 0.95rem; font-weight: 600;
+  background: var(--teal); color: white;
+  padding: 0.3rem 0.9rem; border-radius: 50px;
+  border: 2px solid var(--dark);
+}
+.schedule-row .time.closed { background: #f0f0f0; color: #999; }
+
+.agenda-box {
+  background: var(--yellow);
+  border: 4px solid var(--dark);
+  border-radius: 24px; padding: 2.5rem;
+  box-shadow: 8px 8px 0 var(--dark);
+}
+.agenda-box h3 {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1.8rem; font-weight: 700;
+  color: var(--dark); margin-bottom: 0.8rem;
+}
+.agenda-box p { font-size: 0.95rem; color: var(--dark); font-weight: 600; margin-bottom: 1.5rem; opacity: 0.8; line-height: 1.7; }
+.agenda-steps { list-style: none; margin-bottom: 1.8rem; }
+.agenda-step {
+  display: flex; gap: 1rem; align-items: flex-start;
+  margin-bottom: 1rem;
+}
+.step-bubble {
+  min-width: 34px; height: 34px;
+  background: var(--dark); color: white;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Fredoka', sans-serif; font-size: 1rem; font-weight: 700;
+}
+.step-text { font-size: 0.95rem; color: var(--dark); font-weight: 700; padding-top: 0.4rem; line-height: 1.5; }
+
+/* ══════════════════════════════════
+   BENEFITS
+══════════════════════════════════ */
+#benefits {
+  background: var(--cream);
+  padding: 6rem 2rem;
+}
+.benefits-inner { max-width: 1100px; margin: 0 auto; }
+
+.benefits-cards {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem; margin-bottom: 3rem;
+}
+.benefit-card {
+  background: white;
+  border: 4px solid var(--dark);
+  border-radius: 20px; padding: 1.8rem;
+  box-shadow: var(--shadow) var(--dark);
+  display: flex; gap: 1.2rem; align-items: flex-start;
+  transition: transform 0.2s cubic-bezier(.34,1.56,.64,1);
+}
+.benefit-card:hover { transform: translate(-3px,-3px); }
+.benefit-icon {
+  font-size: 2.5rem; min-width: 52px; height: 52px;
+  background: var(--yellow); border: 3px solid var(--dark);
+  border-radius: 14px; display: flex; align-items: center; justify-content: center;
+}
+.benefit-icon.bi-pink   { background: #FFE0EF; }
+.benefit-icon.bi-teal   { background: #D9F7F5; }
+.benefit-icon.bi-purple { background: #EDE0FF; }
+.benefit-icon.bi-green  { background: #D6F5DA; }
+.benefit-text h4 {
+  font-family: 'Fredoka', sans-serif; font-size: 1.2rem; font-weight: 700;
+  color: var(--dark); margin-bottom: 0.4rem;
+}
+.benefit-text p { font-size: 0.88rem; color: #666; line-height: 1.7; font-weight: 600; }
+
+.diff-banner {
+  background: var(--purple);
+  border: 4px solid var(--dark);
+  border-radius: 24px;
+  padding: 3rem;
+  box-shadow: 8px 8px 0 var(--dark);
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 1.5rem; text-align: center;
+}
+.diff-box { color: white; }
+.diff-box .big-emoji { font-size: 3rem; display: block; margin-bottom: 0.7rem; }
+.diff-box h4 { font-family: 'Fredoka', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.3rem; }
+.diff-box p { font-size: 0.82rem; opacity: 0.85; line-height: 1.6; font-weight: 600; }
+
+/* ══════════════════════════════════
+   CONTACT
+══════════════════════════════════ */
+#contact {
+  background: var(--green);
+  border-top: 4px solid var(--dark);
+  padding: 6rem 2rem;
+  position: relative; overflow: hidden;
+}
+#contact::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.12) 2px, transparent 2px);
+  background-size: 30px 30px;
+}
+.contact-inner {
+  max-width: 1000px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1.4fr;
+  gap: 3rem; align-items: start;
+  position: relative; z-index: 1;
+}
+.contact-info h2 {
+  font-family: 'Fredoka', sans-serif;
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-weight: 700; color: white; margin-bottom: 1rem;
+  text-shadow: 3px 3px 0 rgba(0,0,0,0.2);
+}
+.contact-info p { color: rgba(255,255,255,0.9); font-size: 1rem; line-height: 1.7; font-weight: 600; margin-bottom: 2rem; }
+
+.contact-card {
+  background: white; border: 4px solid var(--dark);
+  border-radius: 16px; padding: 1rem 1.2rem;
+  box-shadow: 5px 5px 0 var(--dark);
+  display: flex; align-items: center; gap: 1rem;
+  margin-bottom: 1rem;
+}
+.contact-card-icon {
+  font-size: 1.5rem; width: 44px; height: 44px;
+  background: var(--yellow); border: 3px solid var(--dark); border-radius: 12px;
+  display: flex; align-items: center; justify-content: center; min-width: 44px;
+}
+.contact-card-text strong {
+  display: block; font-family: 'Fredoka', sans-serif;
+  font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--pink);
+}
+.contact-card-text span { font-size: 0.95rem; font-weight: 700; color: var(--dark); }
+
+.contact-form-box {
+  background: white; border: 4px solid var(--dark);
+  border-radius: 24px; padding: 2.5rem;
+  box-shadow: 8px 8px 0 var(--dark);
+}
+.contact-form-box h3 {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1.6rem; font-weight: 700; color: var(--dark); margin-bottom: 1.5rem;
+}
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.form-group { margin-bottom: 1rem; }
+.form-group label {
+  display: block; font-family: 'Fredoka', sans-serif;
+  font-size: 0.95rem; font-weight: 600; color: var(--dark); margin-bottom: 0.4rem;
+}
+.form-group input, .form-group select, .form-group textarea {
+  width: 100%; padding: 0.75rem 1rem;
+  border: 3px solid var(--dark); border-radius: 12px;
+  font-family: 'Nunito', sans-serif; font-size: 0.95rem; font-weight: 600;
+  background: var(--cream); color: var(--dark);
+  outline: none; resize: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+  border-color: var(--pink); box-shadow: 3px 3px 0 var(--pink);
+}
+.form-submit {
+  width: 100%;
+  font-family: 'Fredoka', sans-serif; font-size: 1.2rem; font-weight: 700;
+  background: var(--pink); color: white;
+  border: 4px solid var(--dark); border-radius: 50px;
+  padding: 0.9rem; cursor: pointer;
+  box-shadow: 5px 5px 0 var(--dark);
+  transition: all 0.15s;
+}
+.form-submit:hover { transform: translate(-2px,-2px); box-shadow: 7px 7px 0 var(--dark); }
+.form-submit:active { transform: translate(2px,2px); box-shadow: 2px 2px 0 var(--dark); }
+
+/* ══════════════════════════════════
+   FOOTER
+══════════════════════════════════ */
+footer {
+  background: var(--dark);
+  border-top: 4px solid var(--dark);
+  color: white; padding: 3rem 2rem 2rem;
+}
+.footer-inner {
+  max-width: 1100px; margin: 0 auto;
+  display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 3rem; margin-bottom: 2.5rem;
+}
+.footer-brand .logo {
+  font-family: 'Fredoka', sans-serif; font-size: 1.8rem; font-weight: 700;
+  color: white; display: flex; align-items: center; gap: 0.3rem; margin-bottom: 1rem;
+}
+.footer-brand .logo span { color: var(--pink); }
+.footer-brand p { font-size: 0.9rem; opacity: 0.65; line-height: 1.7; max-width: 220px; font-weight: 600; }
+
+.footer-socials { display: flex; gap: 0.6rem; margin-top: 1.2rem; }
+.soc-btn {
+  width: 40px; height: 40px; border-radius: 10px;
+  border: 2px solid rgba(255,255,255,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; text-decoration: none;
+  transition: background 0.2s, transform 0.2s;
+}
+.soc-btn:hover { background: var(--pink); transform: translateY(-3px); }
+
+.footer-col h4 {
+  font-family: 'Fredoka', sans-serif; font-size: 1rem; font-weight: 700;
+  color: var(--yellow); margin-bottom: 1rem; letter-spacing: 0.05em;
+}
+.footer-col a {
+  display: block; color: rgba(255,255,255,0.65);
+  text-decoration: none; font-size: 0.9rem; font-weight: 600;
+  margin-bottom: 0.5rem; transition: color 0.2s;
+}
+.footer-col a:hover { color: white; }
+
+.footer-bottom {
+  max-width: 1100px; margin: 0 auto;
+  padding-top: 1.5rem; border-top: 2px solid rgba(255,255,255,0.1);
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 0.85rem; color: rgba(255,255,255,0.45); font-weight: 600;
+}
+.footer-animals { letter-spacing: 0.3em; font-size: 1.3rem; }
+
+/* ── WHATSAPP ── */
+.wa-float {
+  position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 90;
+  width: 60px; height: 60px; background: #25D366;
+  border: 4px solid var(--dark); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.8rem; text-decoration: none;
+  box-shadow: 5px 5px 0 var(--dark);
+  animation: bounce-wa 2s ease-in-out infinite;
+  transition: transform 0.2s;
+}
+.wa-float:hover { transform: scale(1.1); }
+@keyframes bounce-wa {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* ══════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════ */
+@media (max-width: 900px) {
+  nav { padding: 0.7rem 1rem; }
+  .nav-links { display: none; }
+  .about-inner, .contact-inner, .schedule-inner { grid-template-columns: 1fr; gap: 2rem; }
+  .about-photo-cluster { height: 280px; }
+  .pb1 { width: 180px; height: 200px; }
+  .pb2 { width: 150px; height: 170px; right: 0; }
+  .services-grid { grid-template-columns: 1fr 1fr; }
+  .benefits-cards { grid-template-columns: 1fr; }
+  .diff-banner { grid-template-columns: repeat(2,1fr); }
+  .footer-inner { grid-template-columns: 1fr 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+  .hero-pets-row { gap: 1rem; }
+  .hero-pet-card.big { width: 190px; height: 220px; }
+  .hero-pet-card.small { width: 130px; height: 150px; }
+  .hero-pet-card.mid { width: 160px; height: 190px; }
+  #hero, #services, #benefits { padding: 4rem 1.5rem; }
+  #gallery, #schedule, #contact { padding: 4rem 1.5rem; }
+  #about { padding: 4rem 1.5rem; }
+}
+@media (max-width: 600px) {
+  .services-grid { grid-template-columns: 1fr; }
+  .diff-banner { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+<a href="../" style="position:fixed;left:16px;bottom:16px;z-index:9999;padding:10px 13px;border-radius:999px;background:rgba(43,45,66,.88);color:#fff;border:3px solid #2B2D42;font:700 12px Nunito,system-ui,sans-serif;text-decoration:none;box-shadow:4px 4px 0 #FFD93D">Kynovia / Modelos</a>
+
+<!-- CONFETTI -->
+<div class="confetti-wrap" id="confettiWrap"></div>
+
+<!-- WHATSAPP -->
+<a href="https://wa.me/5511999999999" class="wa-float" target="_blank">💬</a>
+
+<!-- ══ NAV ══ -->
+<nav>
+  <a class="nav-logo" href="#">
+    <span class="paw">🐾</span>
+    <span>Patinhas <span>Mágicas</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">Quem Somos</a></li>
+    <li><a href="#gallery">Galeria</a></li>
+    <li><a href="#services">Serviços</a></li>
+    <li><a href="#schedule">Agenda</a></li>
+    <li><a href="#benefits">Diferenciais</a></li>
+    <li><a href="#contact" class="nav-cta">Agendar 🐾</a></li>
+  </ul>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section id="hero">
+  <!-- floating animals -->
+  <div class="hero-floaters">
+    <span class="floater" style="top:10%;left:3%;animation-duration:4s;font-size:3rem">🐶</span>
+    <span class="floater" style="top:20%;right:5%;animation-duration:5s;font-size:2.5rem;animation-delay:-1s">🐱</span>
+    <span class="floater" style="top:60%;left:5%;animation-duration:6s;font-size:2rem;animation-delay:-2s">🐇</span>
+    <span class="floater" style="top:70%;right:8%;animation-duration:4.5s;font-size:2.8rem;animation-delay:-0.5s">🦜</span>
+    <span class="floater" style="top:40%;left:2%;animation-duration:5.5s;font-size:1.8rem;animation-delay:-3s">⭐</span>
+    <span class="floater" style="top:15%;right:15%;animation-duration:3.5s;font-size:1.5rem;animation-delay:-1.5s">💖</span>
+    <span class="floater" style="bottom:25%;right:3%;animation-duration:4.8s;font-size:2rem;animation-delay:-2.5s">✨</span>
+    <span class="floater" style="bottom:30%;left:8%;animation-duration:6s;font-size:1.6rem;animation-delay:-4s">🌈</span>
+    <span class="floater" style="top:8%;left:25%;animation-duration:5s;font-size:1.4rem;animation-delay:-0.8s">🎀</span>
+    <span class="floater" style="top:5%;right:30%;animation-duration:4.2s;font-size:1.5rem;animation-delay:-3.5s">🌟</span>
+  </div>
+
+  <div class="hero-inner">
+    <div class="hero-badge bounce-in">🌈 O petshop mais fofo do mundo!</div>
+    <h1 class="hero-h1">
+      Seu pet<br>
+      <span class="word-pink">
+        <span class="squiggle-wrap">
+          merece
+          <svg viewBox="0 0 200 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 6 Q25 2 50 6 Q75 10 100 6 Q125 2 150 6 Q175 10 198 6"
+              stroke="#2B2D42" stroke-width="3" stroke-linecap="round" fill="none"/>
+          </svg>
+        </span>
+      </span>
+      <span class="word-teal">amor!</span>
+    </h1>
+    <p class="hero-p">
+      Banho, tosa, veterinário, hotel e muito carinho 💕<br>
+      Porque nosso pet é parte da família!
+    </p>
+    <div class="hero-btns">
+      <a href="#contact" class="btn-fun btn-pink">Agendar agora 🐾</a>
+      <a href="#services" class="btn-fun btn-white">Ver serviços ✨</a>
+    </div>
+  </div>
+
+  <!-- hero pet photos -->
+  <div class="hero-pets-row">
+    <div class="hero-pet-card small" style="transform:rotate(5deg)">
+      <img src="https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?auto=compress&cs=tinysrgb&w=400" width="180" height="200" alt="Gatinha fofa" loading="lazy">
+    </div>
+    <div class="hero-pet-card big">
+      <img src="https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&w=500" width="260" height="300" alt="Golden Retriever" loading="lazy">
+    </div>
+    <div class="hero-pet-card mid">
+      <img src="https://images.pexels.com/photos/2253275/pexels-photo-2253275.jpeg?auto=compress&cs=tinysrgb&w=450" width="220" height="260" alt="Cachorro fofo" loading="lazy">
+    </div>
+    <div class="hero-pet-card small" style="transform:rotate(-6deg)">
+      <img src="https://images.pexels.com/photos/326012/pexels-photo-326012.jpeg?auto=compress&cs=tinysrgb&w=400" width="180" height="200" alt="Coelho" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- wave -->
+<div class="wave-divider" style="background:white;margin-top:-2px;">
+  <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg"><path d="M0,0 C240,60 480,60 720,30 C960,0 1200,0 1440,40 L1440,0 Z" fill="#FFD93D"/></svg>
+</div>
+
+<!-- ══ ABOUT ══ -->
+<section id="about">
+  <div class="about-inner">
+    <!-- photos -->
+    <div class="about-photo-cluster reveal">
+      <div class="photo-blob pb1">
+        <img src="https://images.pexels.com/photos/5731855/pexels-photo-5731855.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Tosadora cuidando de um cachorro">
+      </div>
+      <div class="photo-blob pb2">
+        <img src="https://images.pexels.com/photos/2071873/pexels-photo-2071873.jpeg?auto=compress&cs=tinysrgb&w=500" alt="Gato fofo">
+      </div>
+      <!-- spinning sticker -->
+      <div class="sticker" style="width:80px;height:80px;top:38%;left:52%;transform:translate(-50%,-50%)">🐾</div>
+      <!-- years badge -->
+      <div class="sticker-text-wrap" style="bottom:50px;right:-10px;transform:rotate(4deg)">
+        <strong>8+</strong>
+        <span>anos de amor</span>
+      </div>
+    </div>
+
+    <!-- text -->
+    <div class="about-text reveal" style="transition-delay:0.15s">
+      <div class="label-tag" style="background:var(--yellow)">🏡 Quem Somos</div>
+      <h2>Mais do que um petshop —<br>somos sua <span style="color:var(--pink)">família</span>! 💖</h2>
+      <p>Desde 2016, o Patinhas Mágicas cuida dos pets com todo o amor do mundo. Somos aqueles que fazem o rabo balançar antes mesmo da porta abrir! 🐕</p>
+      <p>Nossa equipe é formada por pessoas que amam animais de verdade — veterinários, tosadores e cuidadores que tratam cada bichinho como se fosse o seu próprio pet em casa. 🏠✨</p>
+      <div class="about-chips">
+        <span class="chip" style="background:#FFE0EF">💚 Amor de verdade</span>
+        <span class="chip" style="background:#D9F7F5">🎓 Equipe formada</span>
+        <span class="chip" style="background:#EDE0FF">🏥 Suporte 24h</span>
+        <span class="chip" style="background:#FFE9D6">✨ Produtos top</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- wave -->
+<div class="wave-divider" style="background:var(--pink);margin-top:-2px;">
+  <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg"><path d="M0,40 C360,0 720,80 1080,20 C1260,0 1380,10 1440,30 L1440,0 Z" fill="white"/></svg>
+</div>
+
+<!-- ══ GALLERY ══ -->
+<section id="gallery">
+  <div class="gallery-header reveal">
+    <div class="label-tag" style="background:white;color:var(--pink)">📸 Galeria</div>
+    <h2>Nossos estrelinha 🌟</h2>
+    <p>Cada bichinho que passa por aqui rouba um pedacinho do nosso coração 💕</p>
+  </div>
+
+  <div class="polaroid-grid">
+    <div class="polaroid pop-in" style="transform:rotate(-4deg);transition-delay:0.05s">
+      <img src="https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&w=300" width="220" height="200" alt="Thor" loading="lazy">
+      <div class="polaroid-name">🐕 Thor</div>
+      <div class="polaroid-sub">Banho & Tosa completa</div>
+    </div>
+    <div class="polaroid pop-in" style="transform:rotate(3deg);transition-delay:0.1s">
+      <img src="https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?auto=compress&cs=tinysrgb&w=300" width="220" height="200" alt="Luna" loading="lazy">
+      <div class="polaroid-name">🐱 Luna</div>
+      <div class="polaroid-sub">Tosa higiênica</div>
+    </div>
+    <div class="polaroid pop-in" style="transform:rotate(-2deg);transition-delay:0.15s">
+      <img src="https://images.pexels.com/photos/2253275/pexels-photo-2253275.jpeg?auto=compress&cs=tinysrgb&w=300" width="220" height="200" alt="Fred" loading="lazy">
+      <div class="polaroid-name">🐩 Fred</div>
+      <div class="polaroid-sub">Tosa modelo teddy</div>
+    </div>
+    <div class="polaroid pop-in" style="transform:rotate(5deg);transition-delay:0.2s">
+      <img src="https://images.pexels.com/photos/326012/pexels-photo-326012.jpeg?auto=compress&cs=tinysrgb&w=300" width="220" height="200" alt="Bolinha" loading="lazy">
+      <div class="polaroid-name">🐇 Bolinha</div>
+      <div class="polaroid-sub">Consulta e cuidados</div>
+    </div>
+    <div class="polaroid pop-in" style="transform:rotate(-3deg);transition-delay:0.25s">
+      <img src="https://images.pexels.com/photos/1741205/pexels-photo-1741205.jpeg?auto=compress&cs=tinysrgb&w=300" width="220" height="200" alt="Mimi" loading="lazy">
+      <div class="polaroid-name">🐈 Mimi</div>
+      <div class="polaroid-sub">Spa felino</div>
+    </div>
+    <div class="polaroid pop-in" style="transform:rotate(4deg);transition-delay:0.3s">
+      <img src="https://images.pexels.com/photos/1462753/pexels-photo-1462753.jpeg?auto=compress&cs=tinysrgb&w=300" width="220" height="200" alt="Kiwi" loading="lazy">
+      <div class="polaroid-name">🦜 Kiwi</div>
+      <div class="polaroid-sub">Cuidados especiais</div>
+    </div>
+  </div>
+</section>
+
+<!-- wave -->
+<div class="wave-divider" style="background:var(--cream);margin-top:-2px;">
+  <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg"><path d="M0,20 C480,80 960,-20 1440,40 L1440,0 Z" fill="var(--pink)"/></svg>
+</div>
+
+<!-- ══ SERVICES ══ -->
+<section id="services">
+  <div class="services-inner">
+    <div class="section-title-row reveal">
+      <div class="label-tag" style="background:var(--orange);color:white">🛁 Serviços</div>
+      <h2>O que a gente faz com amor! ❤️</h2>
+      <p>Cada serviço pensado com muito carinho para deixar seu pet feliz e saudável</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card sc1 pop-in" style="transition-delay:0.05s">
+        <span class="service-emoji">🛁</span>
+        <h3>Banho & Tosa</h3>
+        <p>Shampoo premium, secagem carinhosa e acabamento lindo para seu pet brilhar!</p>
+        <span class="service-price sp1">A partir de R$ 60</span>
+      </div>
+      <div class="service-card sc2 pop-in" style="transition-delay:0.1s">
+        <span class="service-emoji">🩺</span>
+        <h3>Consulta Veterinária</h3>
+        <p>Vacinas, vermífugo, check-up e todo cuidado com a saúde do seu bichinho!</p>
+        <span class="service-price sp2">A partir de R$ 120</span>
+      </div>
+      <div class="service-card sc3 pop-in" style="transition-delay:0.15s">
+        <span class="service-emoji">🏨</span>
+        <h3>Hotel Pet</h3>
+        <p>Hospedagem aconchegante com brincadeiras, carinho e cuidados 24h!</p>
+        <span class="service-price sp3">A partir de R$ 80/dia</span>
+      </div>
+      <div class="service-card sc4 pop-in" style="transition-delay:0.2s">
+        <span class="service-emoji">✂️</span>
+        <h3>Tosa Especializada</h3>
+        <p>Tosadores experientes que fazem magia com cada raça e estilo!</p>
+        <span class="service-price sp4">A partir de R$ 80</span>
+      </div>
+      <div class="service-card sc5 pop-in" style="transition-delay:0.25s">
+        <span class="service-emoji">💆</span>
+        <h3>Spa & Estética</h3>
+        <p>Hidratação, aromaterapia e massagem relaxante. Seu pet vai adorar!</p>
+        <span class="service-price sp5">A partir de R$ 90</span>
+      </div>
+      <div class="service-card sc6 pop-in" style="transition-delay:0.3s">
+        <span class="service-emoji">🚗</span>
+        <h3>Busca & Leva</h3>
+        <p>Van especial e segura para buscar e trazer seu pet sem estresse!</p>
+        <span class="service-price sp6">A partir de R$ 30</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- wave -->
+<div class="wave-divider" style="background:var(--teal);margin-top:-2px;">
+  <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg"><path d="M0,30 C360,70 720,0 1080,50 C1260,70 1380,20 1440,10 L1440,0 Z" fill="var(--cream)"/></svg>
+</div>
+
+<!-- ══ SCHEDULE ══ -->
+<section id="schedule">
+  <div style="text-align:center;margin-bottom:2.5rem" class="reveal">
+    <div class="label-tag" style="background:white;color:var(--teal)">🕐 Horários & Agenda</div>
+    <h2 style="font-family:'Fredoka',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:700;color:white;text-shadow:3px 3px 0 rgba(0,0,0,0.15)">Sempre prontos para receber vocês! 🥰</h2>
+  </div>
+  <div class="schedule-inner">
+    <div class="schedule-box reveal">
+      <h2>📅 Horário de funcionamento</h2>
+      <p>Funcionamos em horários bem flexíveis para caber na sua rotina!</p>
+      <ul class="schedule-list">
+        <li class="schedule-row">
+          <span class="day">☀️ Segunda a Sexta</span>
+          <span class="time">08h – 20h</span>
+        </li>
+        <li class="schedule-row">
+          <span class="day">🌤 Sábado</span>
+          <span class="time">08h – 18h</span>
+        </li>
+        <li class="schedule-row">
+          <span class="day">🌸 Domingo</span>
+          <span class="time">09h – 14h</span>
+        </li>
+        <li class="schedule-row">
+          <span class="day">🎉 Feriados</span>
+          <span class="time closed">Consultar</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="agenda-box reveal" style="transition-delay:0.15s">
+      <h3>🗓️ Agendamento Online!</h3>
+      <p>Marca o horário do seu pet em pouquinhos passos — é super fácil e rápido! 🚀</p>
+      <ul class="agenda-steps">
+        <li class="agenda-step">
+          <span class="step-bubble">1</span>
+          <span class="step-text">Escolha o serviço que seu bichinho precisa 🐾</span>
+        </li>
+        <li class="agenda-step">
+          <span class="step-bubble">2</span>
+          <span class="step-text">Selecione um dia e horário disponível 📅</span>
+        </li>
+        <li class="agenda-step">
+          <span class="step-bubble">3</span>
+          <span class="step-text">Conta sobre o seu pet (raça, tamanho) 💕</span>
+        </li>
+        <li class="agenda-step">
+          <span class="step-bubble">4</span>
+          <span class="step-text">Receba a confirmação e traga o bichinho! 🎉</span>
+        </li>
+      </ul>
+      <a href="#contact" class="btn-fun btn-teal" style="display:inline-flex">Quero agendar! 🐾</a>
+    </div>
+  </div>
+</section>
+
+<!-- wave -->
+<div class="wave-divider" style="background:var(--cream);margin-top:-2px;">
+  <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg"><path d="M0,10 C480,70 960,0 1440,50 L1440,0 Z" fill="var(--teal)"/></svg>
+</div>
+
+<!-- ══ BENEFITS ══ -->
+<section id="benefits">
+  <div class="benefits-inner">
+    <div class="section-title-row reveal">
+      <div class="label-tag" style="background:var(--purple);color:white">⭐ Por que a gente?</div>
+      <h2>Por que escolher o<br><span style="color:var(--pink)">Patinhas Mágicas</span>? 🌟</h2>
+      <p>A gente não é só um petshop — somos um lugar onde a alegria e o amor falam mais alto!</p>
+    </div>
+
+    <div class="benefits-cards">
+      <div class="benefit-card pop-in" style="transition-delay:0.05s">
+        <div class="benefit-icon bi-teal">🎓</div>
+        <div class="benefit-text">
+          <h4>Equipe Super Preparada!</h4>
+          <p>Nossos profissionais são formados e treinados. Seu pet está em mãos carinhosas e competentes!</p>
+        </div>
+      </div>
+      <div class="benefit-card pop-in" style="transition-delay:0.1s">
+        <div class="benefit-icon bi-pink">🛡️</div>
+        <div class="benefit-text">
+          <h4>Ambiente Seguro & Divertido!</h4>
+          <p>Espaço todo pensado para o bem-estar animal, com monitoramento e separação por tamanho!</p>
+        </div>
+      </div>
+      <div class="benefit-card pop-in" style="transition-delay:0.15s">
+        <div class="benefit-icon bi-purple">🌿</div>
+        <div class="benefit-text">
+          <h4>Produtos de Qualidade!</h4>
+          <p>Só usamos produtos hipoalergênicos e premium. Nada de qualquer coisa para o seu bichinho!</p>
+        </div>
+      </div>
+      <div class="benefit-card pop-in" style="transition-delay:0.2s">
+        <div class="benefit-icon bi-green">📱</div>
+        <div class="benefit-text">
+          <h4>Fotos em Tempo Real!</h4>
+          <p>Você recebe fotinhos do seu pet durante o atendimento. Vai derreter de amor! 😍</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="diff-banner reveal">
+      <div class="diff-box">
+        <span class="big-emoji">⚡</span>
+        <h4>Atendimento Rápido</h4>
+        <p>Sem filas, sem espera. Pontualidade é coisa séria aqui!</p>
+      </div>
+      <div class="diff-box">
+        <span class="big-emoji">💳</span>
+        <h4>Pague do seu jeito</h4>
+        <p>Pix, cartão, dinheiro. Parcelamos sem juros!</p>
+      </div>
+      <div class="diff-box">
+        <span class="big-emoji">🎁</span>
+        <h4>Programa Fidelidade</h4>
+        <p>A cada 10 banhos, o 11º é de graça! 🎉</p>
+      </div>
+      <div class="diff-box">
+        <span class="big-emoji">🚗</span>
+        <h4>Busca & Entrega</h4>
+        <p>Buscamos seu pet com muito cuidado e carinho!</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- wave -->
+<div class="wave-divider" style="background:var(--green);margin-top:-2px;">
+  <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg"><path d="M0,40 C240,10 480,70 720,30 C960,0 1200,50 1440,20 L1440,0 Z" fill="var(--cream)"/></svg>
+</div>
+
+<!-- ══ CONTACT ══ -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="reveal">
+      <div class="label-tag" style="background:white;color:var(--green)">💌 Contato</div>
+      <h2 class="contact-info">Bora marcar<br>um horário? 🐾</h2>
+      <p>Tô com saudades do seu pet! Fala com a gente que a gente já cuida de tudo com muito amor e carinho 💕</p>
+
+      <div class="contact-card">
+        <div class="contact-card-icon">📍</div>
+        <div class="contact-card-text">
+          <strong>Endereço</strong>
+          <span>Rua dos Animais, 123 – Jardim Feliz, SP</span>
+        </div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-card-icon">📞</div>
+        <div class="contact-card-text">
+          <strong>Telefone</strong>
+          <span>(11) 99999-9999</span>
+        </div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-card-icon">📧</div>
+        <div class="contact-card-text">
+          <strong>E-mail</strong>
+          <span>oi@patinhasmagicas.com.br</span>
+        </div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-card-icon">💬</div>
+        <div class="contact-card-text">
+          <strong>WhatsApp</strong>
+          <span>(11) 99999-9999</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-form-box reveal" style="transition-delay:0.15s">
+      <h3>Agendar agora! 🐾</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Seu nome 😊</label>
+          <input type="text" placeholder="João Silva">
+        </div>
+        <div class="form-group">
+          <label>Telefone 📱</label>
+          <input type="tel" placeholder="(11) 99999-9999">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nome do pet 🐾</label>
+          <input type="text" placeholder="Thor">
+        </div>
+        <div class="form-group">
+          <label>Espécie 🐕</label>
+          <select>
+            <option value="">Escolha...</option>
+            <option>🐕 Cachorro</option>
+            <option>🐈 Gato</option>
+            <option>🐇 Coelho</option>
+            <option>🦜 Passarinho</option>
+            <option>Outro bichinho!</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Que serviço você quer? ✨</label>
+        <select>
+          <option value="">Seleciona aí...</option>
+          <option>🛁 Banho & Tosa</option>
+          <option>🩺 Consulta Veterinária</option>
+          <option>🏨 Hotel Pet</option>
+          <option>✂️ Tosa Especializada</option>
+          <option>💆 Spa & Estética</option>
+          <option>🚗 Busca & Leva</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Alguma mensagem? 💌</label>
+        <textarea rows="3" placeholder="Pode contar tudo sobre o seu pet..."></textarea>
+      </div>
+      <button class="form-submit" onclick="this.textContent='🎉 Enviado! A gente entra em contato!';this.style.background='#6BCB77'">
+        Enviar agendamento 🐾
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo">🐾 <span>Patinhas</span> Mágicas</div>
+      <p>Cuidando do seu pet com amor, alegria e muito carinho desde 2016! 💕</p>
+      <div class="footer-socials">
+        <a class="soc-btn" href="#">📸</a>
+        <a class="soc-btn" href="#">👍</a>
+        <a class="soc-btn" href="#">💬</a>
+        <a class="soc-btn" href="#">🎵</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Serviços</h4>
+      <a href="#">🛁 Banho & Tosa</a>
+      <a href="#">🩺 Consulta Vet</a>
+      <a href="#">🏨 Hotel Pet</a>
+      <a href="#">💆 Spa & Estética</a>
+      <a href="#">🚗 Busca & Leva</a>
+    </div>
+    <div class="footer-col">
+      <h4>Links</h4>
+      <a href="#about">Quem Somos</a>
+      <a href="#gallery">Galeria</a>
+      <a href="#schedule">Horários</a>
+      <a href="#benefits">Diferenciais</a>
+      <a href="#contact">Contato</a>
+    </div>
+    <div class="footer-col">
+      <h4>Horários</h4>
+      <a href="#">Seg–Sex: 08h–20h</a>
+      <a href="#">Sábado: 08h–18h</a>
+      <a href="#">Domingo: 09h–14h</a>
+      <a href="#">📍 São Paulo, SP</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2024 Patinhas Mágicas. Feito com muito 💖</span>
+    <span class="footer-animals">🐕 🐈 🐇 🦜</span>
+  </div>
+</footer>
+
+<script>
+// ── CONFETTI ──
+function makeConfetti() {
+  const wrap = document.getElementById('confettiWrap');
+  const colors = ['#FF6BB5','#FFD93D','#4ECDC4','#C77DFF','#FF9551','#6BCB77','#5EB4FF','#FF6B6B'];
+  const shapes = ['50%', '4px', '0'];
+
+  for (let i = 0; i < 60; i++) {
+    const p = document.createElement('div');
+    p.className = 'confetti-piece';
+    const size = 8 + Math.random() * 10;
+    p.style.cssText = `
+      width: ${size}px; height: ${size}px;
+      left: ${Math.random() * 100}vw;
+      background: ${colors[Math.floor(Math.random() * colors.length)]};
+      border-radius: ${shapes[Math.floor(Math.random() * shapes.length)]};
+      animation-duration: ${1.5 + Math.random() * 2.5}s;
+      animation-delay: ${Math.random() * 1.5}s;
+    `;
+    wrap.appendChild(p);
+    p.addEventListener('animationend', () => p.remove());
+  }
+}
+window.addEventListener('load', makeConfetti);
+
+// ── SCROLL REVEAL ──
+const allReveal = document.querySelectorAll('.reveal, .pop-in');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('visible');
+  });
+}, { threshold: 0.1 });
+allReveal.forEach(el => obs.observe(el));
+
+// ── NAV ACTIVE ──
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  let cur = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 120) cur = s.id;
+  });
+  navLinks.forEach(a => {
+    a.style.background = a.getAttribute('href') === '#'+cur ? '#FFD93D' : '';
+  });
+});
+
+// ── POLAROID CLICK SPARKLE ──
+document.querySelectorAll('.polaroid').forEach(p => {
+  p.addEventListener('click', () => {
+    const sparkles = ['✨','⭐','💖','🌟','🎉'];
+    for (let i = 0; i < 5; i++) {
+      const s = document.createElement('span');
+      s.textContent = sparkles[Math.floor(Math.random()*sparkles.length)];
+      s.style.cssText = `
+        position:fixed; font-size:1.5rem; pointer-events:none; z-index:9999;
+        left:${p.getBoundingClientRect().left + Math.random()*200}px;
+        top:${p.getBoundingClientRect().top + Math.random()*200}px;
+        animation: confetti-fall 1s ease forwards;
+      `;
+      document.body.appendChild(s);
+      setTimeout(() => s.remove(), 1000);
+    }
+  });
+});
+
+// ── SERVICE CARD JIGGLE ON HOVER ──
+document.querySelectorAll('.service-card').forEach((c, i) => {
+  c.querySelector('.service-emoji').style.animationDelay = `${i * 0.3}s`;
+});
+</script>
+</body>
+</html>
