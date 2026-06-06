@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kylia Performance — Kynovia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #09070F;
+  --bg2: #0D0B16;
+  --bg3: #151624;
+  --blue: #2563EB;
+  --blue-h: #1D4ED8;
+  --blue-l: #3B82F6;
+  --blue-xl: #60A5FA;
+  --blue-2xl: #93C5FD;
+  --border: rgba(255,255,255,0.08);
+  --text: #F4F4F5;
+  --text2: #A1A1AA;
+  --text3: #52525B;
+  --font: 'Inter', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+nav {
+  position: sticky; top: 0; z-index: 30;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px; padding: 0 32px;
+  background: rgba(9,7,15,0.84);
+  backdrop-filter: blur(24px) saturate(180%);
+  border-bottom: 1px solid var(--border);
+}
+.logo { font-size: 16px; font-weight: 700; color: var(--text); text-decoration: none; }
+.logo b { color: var(--blue-l); }
+.nav-links { display: flex; gap: 6px; list-style: none; }
+.nav-links a {
+  font-size: 13.5px; color: var(--text3); text-decoration: none;
+  padding: 6px 14px; border-radius: 6px; transition: .15s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--text2); background: rgba(255,255,255,0.04); }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 32px 72px; }
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding-top: 96px;
+  padding-bottom: 44px;
+  border-bottom: 1px solid var(--border);
+}
+.hero > * { position: relative; z-index: 1; }
+#canvas-bg {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  z-index: 0; opacity: 0.5;
+}
+.hero-grid-overlay {
+  position: absolute; inset: 0; z-index: 0;
+  background-image:
+    linear-gradient(rgba(59,130,246,0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59,130,246,0.045) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 70% 80% at 50% 40%, black 20%, transparent 80%);
+}
+.hero-glow {
+  position: absolute; z-index: 0; border-radius: 50%; filter: blur(110px); pointer-events: none;
+}
+.hero-glow-1 { width: 520px; height: 360px; top: -120px; right: -80px; background: radial-gradient(circle, rgba(37,99,235,0.16) 0%, transparent 65%); }
+.hero-glow-2 { width: 340px; height: 280px; bottom: 10px; left: -60px; background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%); }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 10px;
+  border-radius: 100px;
+  border: 1px solid rgba(59,130,246,0.22);
+  background: rgba(37,99,235,0.1);
+  padding: 6px 14px 6px 10px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--blue-2xl);
+}
+.badge-dot {
+  width: 7px; height: 7px; border-radius: 999px;
+  background: var(--blue-xl);
+  box-shadow: 0 0 14px rgba(96,165,250,.82);
+}
+.hero-grid {
+  display: grid;
+  gap: 26px;
+  align-items: start;
+  margin-top: 28px;
+  grid-template-columns: minmax(0, 1.05fr) minmax(300px, 0.95fr);
+}
+h1 {
+  font-size: clamp(42px, 5.3vw, 72px);
+  line-height: 1.02;
+  letter-spacing: -2.8px;
+  margin-bottom: 20px;
+}
+.hero-copy p {
+  max-width: 700px;
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--text2);
+}
+.hero-copy b,
+.hero-card b,
+.section-title b,
+.metric strong,
+.timeline-card strong { color: var(--blue-xl); font-weight: 600; }
+.cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 48px;
+  padding: 12px 20px;
+  border-radius: 14px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  transition: .18s;
+}
+.btn-primary {
+  border: 1px solid rgba(255,255,255,.16);
+  background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+  color: #fff;
+  box-shadow: 0 18px 40px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.14);
+}
+.btn-primary:hover {
+  background: linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08));
+}
+.btn-outline {
+  border: 1px solid var(--border);
+  background: rgba(0,0,0,.22);
+  color: var(--text);
+}
+.btn-outline:hover {
+  border-color: rgba(255,255,255,.15);
+  background: rgba(255,255,255,.04);
+}
+.hero-points {
+  display: grid;
+  gap: 12px;
+  margin-top: 28px;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+}
+.point {
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: rgba(0,0,0,.2);
+  padding: 16px;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text2);
+}
+.point strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.hero-stack { display: grid; gap: 12px; }
+.hero-card {
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: rgba(0,0,0,.18);
+  padding: 22px;
+}
+.hero-card p:first-child,
+.section-title .eyebrow,
+.card-eyebrow,
+.step-number,
+.timeline-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.hero-card p:first-child,
+.section-title .eyebrow,
+.card-eyebrow,
+.step-number,
+.timeline-label { color: var(--text3); }
+.hero-card p:last-child {
+  margin-top: 12px;
+  font-size: 17px;
+  line-height: 1.75;
+  color: rgba(250,250,250,.82);
+}
+.hero-card ul {
+  margin-top: 14px;
+  padding-left: 18px;
+  color: var(--text2);
+  display: grid;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 1.7;
+}
+.hero-card li::marker { color: var(--blue-xl); }
+.section {
+  margin-top: 24px;
+  border: 1px solid var(--border);
+  border-radius: 30px;
+  background: rgba(255,255,255,.03);
+  overflow: hidden;
+}
+.section-inner { padding: 30px; }
+.section-title { max-width: 720px; }
+.section-title h2 {
+  font-size: clamp(28px, 3.6vw, 42px);
+  line-height: 1.08;
+  letter-spacing: -1.6px;
+}
+.section-title p {
+  margin-top: 14px;
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--text2);
+}
+.ops-grid,
+.feature-grid,
+.flow-grid,
+.audience-grid,
+.metrics-grid {
+  display: grid;
+  gap: 16px;
+}
+.ops-grid { grid-template-columns: minmax(0,.92fr) minmax(0,1.08fr); }
+.ops-panel,
+.feature-card,
+.flow-step,
+.audience-card,
+.timeline-card,
+.metric {
+  border: 1px solid var(--border);
+  background: rgba(0,0,0,.18);
+}
+.ops-panel,
+.feature-card,
+.flow-step,
+.audience-card,
+.timeline-card,
+.metric { border-radius: 22px; }
+.ops-panel,
+.feature-card,
+.flow-step,
+.timeline-card,
+.metric { padding: 22px; }
+.ops-panel p,
+.feature-card p,
+.flow-step p,
+.audience-card,
+.timeline-card p,
+.metric p { color: var(--text2); line-height: 1.75; font-size: 14px; }
+.ops-panel h3,
+.feature-card h3,
+.flow-step h3,
+.timeline-card h3 { font-size: 22px; line-height: 1.25; margin-top: 14px; }
+.timeline {
+  display: grid;
+  gap: 14px;
+}
+.timeline-card {
+  padding: 18px;
+  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+}
+.timeline-card strong {
+  display: block;
+  margin-top: 8px;
+  font-size: 15px;
+  color: var(--text);
+}
+.timeline-card p { margin-top: 8px; }
+.metrics-grid {
+  margin-top: 24px;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+}
+.metric {
+  text-align: left;
+  background: rgba(255,255,255,.04);
+}
+.metric strong {
+  display: block;
+  font-size: 30px;
+  line-height: 1.05;
+  letter-spacing: -1.2px;
+}
+.metric p { margin-top: 10px; }
+.feature-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
+.feature-intro { margin-bottom: 24px; }
+.flow-grid { grid-template-columns: minmax(280px,.84fr) minmax(0,1.16fr); }
+.flow-list { display: grid; gap: 14px; }
+.step-head { display: flex; align-items: center; gap: 12px; }
+.step-line { flex: 1; height: 1px; background: rgba(255,255,255,.1); }
+.audience-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
+.audience-card {
+  padding: 18px;
+  font-size: 14px;
+  line-height: 1.8;
+}
+.final-cta { text-align: left; }
+.footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--border);
+  margin-top: 30px;
+  padding-top: 24px;
+  color: var(--text3);
+  font-size: 13px;
+}
+.footer-links { display: flex; gap: 16px; flex-wrap: wrap; }
+.footer-links a { color: var(--text2); text-decoration: none; }
+.footer-links a:hover { color: #fff; }
+@media (max-width: 980px) {
+  .hero-grid,
+  .ops-grid,
+  .feature-grid,
+  .flow-grid,
+  .audience-grid,
+  .metrics-grid { grid-template-columns: 1fr; }
+  .hero-points { grid-template-columns: 1fr; }
+}
+@media (max-width: 900px) {
+  nav { padding: 0 20px; }
+  .nav-links li:not(:last-child) { display: none; }
+  .wrap { padding: 0 20px 56px; }
+  .hero { padding-top: 80px; }
+  .section-inner { padding: 24px 20px; }
+}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../" class="logo">Kynov<b>ia</b></a>
+  <ul class="nav-links">
+    <li><a href="../../#servicos">Serviços</a></li>
+    <li><a href="../" class="active">Produtos</a></li>
+    <li><a href="../../modelos/">Modelos</a></li>
+    <li><a href="../../#sobre">Sobre</a></li>
+    <li><a href="../../#contato">Contato</a></li>
+  </ul>
+</nav>
+
+<main class="wrap">
+  <section class="hero">
+    <canvas id="canvas-bg"></canvas>
+    <div class="hero-grid-overlay"></div>
+    <div class="hero-glow hero-glow-1"></div>
+    <div class="hero-glow hero-glow-2"></div>
+
+    <div class="hero-badge"><span class="badge-dot"></span>Kylia Performance by Kynovia</div>
+
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <h1>Smart Goals. <b>Real Results.</b></h1>
+        <p>
+          Kylia Performance é um sistema de metas e performance para empresas
+          em crescimento. Ele conecta objetivos corporativos, metas departamentais,
+          Key Results, check-ins semanais e alertas de bloqueio em uma rotina
+          simples para líderes acompanharem execução com clareza.
+        </p>
+        <div class="cta-row">
+          <a href="../../#contato" class="btn btn-primary">Solicitar demonstração</a>
+          <a href="../" class="btn btn-outline">Ver outros produtos</a>
+        </div>
+        <div class="hero-points">
+          <div class="point"><strong>Cascata</strong>Crie objetivos corporativos e desdobre em metas por time, departamento ou área.</div>
+          <div class="point"><strong>Check-ins</strong>Acompanhe progresso, confiança, comentários e bloqueios em ciclos semanais.</div>
+          <div class="point"><strong>Alertas</strong>Veja rapidamente o que está atrasado, em risco ou sem atualização recente.</div>
+        </div>
+      </div>
+
+      <div class="hero-stack">
+        <div class="hero-card">
+          <p>O que a Kylia organiza</p>
+          <p>Objetivos, Key Results, owners, times, departamentos, progresso, confiança, bloqueios e histórico de check-ins <b>em um único sistema de gestão de performance</b>.</p>
+          <ul>
+            <li>Objetivos corporativos conectados aos objetivos departamentais.</li>
+            <li>Key Results com meta, valor atual, progresso e responsável.</li>
+            <li>Check-ins semanais com comentários, confiança e bloqueios.</li>
+          </ul>
+        </div>
+        <div class="hero-card">
+          <p>Para empresas em crescimento</p>
+          <p>A Kylia foi pensada para negócios que já precisam de mais disciplina na execução, mas não querem depender de planilhas, reuniões soltas e relatórios tardios para entender se a operação está avançando.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-inner ops-grid">
+      <div>
+        <div class="section-title">
+          <div class="eyebrow">Performance system</div>
+          <h2>Da estratégia da empresa à <b>execução de cada time</b></h2>
+          <p>A Kylia transforma metas em uma rotina acompanhável: define prioridades, conecta departamentos, mede progresso e mostra onde a execução precisa de atenção antes do ciclo sair do trilho.</p>
+        </div>
+        <div class="metrics-grid">
+          <div class="metric"><strong>Objetivos</strong><p>Defina metas corporativas e departamentais em cascata.</p></div>
+          <div class="metric"><strong>KRs</strong><p>Meça resultado com valor inicial, valor atual, meta e progresso automático.</p></div>
+          <div class="metric"><strong>Check-ins</strong><p>Registre confiança, comentários e bloqueios em uma cadência semanal.</p></div>
+        </div>
+      </div>
+      <div class="ops-panel">
+        <div class="timeline">
+          <div class="timeline-card">
+            <div class="timeline-label">01 — Direção</div>
+            <strong>A liderança define o foco corporativo</strong>
+            <p>Objetivos estratégicos deixam de ficar espalhados e passam a orientar a execução da empresa.</p>
+          </div>
+          <div class="timeline-card">
+            <div class="timeline-label">02 — Acompanhamento</div>
+            <strong>Times desdobram metas departamentais</strong>
+            <p>Cada departamento cria objetivos alinhados ao foco corporativo, com owner e Key Results claros.</p>
+          </div>
+          <div class="timeline-card">
+            <div class="timeline-label">03 — Ajuste</div>
+            <strong>A rotina mostra progresso e bloqueios</strong>
+            <p>Check-ins semanais revelam avanço, risco, confiança e impedimentos para ação rápida.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-inner">
+      <div class="section-title feature-intro">
+        <div class="eyebrow">Capacidades</div>
+        <h2>Tudo que a gestão precisa para <b>acompanhar performance sem perder contexto</b></h2>
+        <p>A Kylia não é apenas um quadro de OKRs. É uma camada operacional para transformar metas em acompanhamento, aprendizado e decisão.</p>
+      </div>
+      <div class="feature-grid">
+        <article class="feature-card">
+          <div class="card-eyebrow">Cascata de objetivos</div>
+          <h3>Conecta empresa, áreas e times</h3>
+          <p>Crie objetivos corporativos e desdobre em metas departamentais alinhadas, com clareza de owner e prioridade.</p>
+        </article>
+        <article class="feature-card">
+          <div class="card-eyebrow">Key Results</div>
+          <h3>Mede avanço de forma objetiva</h3>
+          <p>Configure KRs por percentual, número, moeda ou sim/não, com cálculo automático de progresso.</p>
+        </article>
+        <article class="feature-card">
+          <div class="card-eyebrow">Check-ins e alertas</div>
+          <h3>Mostra onde a execução precisa de atenção</h3>
+          <p>Registre atualizações semanais, confiança, comentários e bloqueios. A Kylia destaca atrasos, riscos e itens sem atualização.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-inner flow-grid">
+      <div class="section-title">
+        <div class="eyebrow">Fluxo</div>
+        <h2>Uma rotina simples para manter <b>metas vivas durante o ciclo</b></h2>
+        <p>A Kylia ajuda líderes e equipes a sair do planejamento estático para uma cadência real de acompanhamento.</p>
+      </div>
+
+      <div class="flow-list">
+        <article class="flow-step">
+          <div class="step-head"><span class="step-number">01</span><div class="step-line"></div></div>
+          <h3>Crie os objetivos corporativos</h3>
+          <p>Defina o foco estratégico da empresa para o ciclo.</p>
+        </article>
+        <article class="flow-step">
+          <div class="step-head"><span class="step-number">02</span><div class="step-line"></div></div>
+          <h3>Desdobre por time ou departamento</h3>
+          <p>Conecte objetivos departamentais aos objetivos corporativos.</p>
+        </article>
+        <article class="flow-step">
+          <div class="step-head"><span class="step-number">03</span><div class="step-line"></div></div>
+          <h3>Adicione Key Results mensuráveis</h3>
+          <p>Defina metas, responsáveis, valores atuais e critérios de sucesso.</p>
+        </article>
+        <article class="flow-step">
+          <div class="step-head"><span class="step-number">04</span><div class="step-line"></div></div>
+          <h3>Faça check-ins e aja sobre alertas</h3>
+          <p>Acompanhe progresso, confiança e bloqueios para corrigir rota com antecedência.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-inner">
+      <div class="section-title">
+        <div class="eyebrow">Para quem</div>
+        <h2>Para empresas que cresceram e precisam de <b>mais clareza na execução</b></h2>
+        <p>Ideal para negócios que já têm times, metas e prioridades, mas ainda sofrem para acompanhar execução com consistência.</p>
+      </div>
+      <div class="audience-grid" style="margin-top:28px;">
+        <div class="audience-card">Lideranças que precisam enxergar progresso, risco e bloqueios sem depender de reuniões longas.</div>
+        <div class="audience-card">Times que precisam entender como seu trabalho se conecta aos objetivos da empresa.</div>
+        <div class="audience-card">Empresas em crescimento que querem trocar planilhas soltas por uma rotina estruturada de performance.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-inner final-cta">
+      <div class="section-title">
+        <div class="eyebrow">Próximo passo</div>
+        <h2>Transforme metas em uma rotina de <b>execução acompanhável</b></h2>
+        <p>A Kylia Performance by Kynovia ajuda sua empresa a definir foco, medir progresso, identificar bloqueios e manter a gestão conectada ao que realmente precisa avançar.</p>
+      </div>
+      <div class="cta-row">
+        <a href="../../#contato" class="btn btn-primary">Solicitar demonstração</a>
+        <a href="../" class="btn btn-outline">Ver outros produtos</a>
+      </div>
+
+      <div class="footer">
+        <div>
+          <strong style="display:block;color:var(--text);margin-bottom:4px">Kynovia</strong>
+          <span>Produtos digitais para operação, relacionamento e crescimento.</span>
+        </div>
+        <div class="footer-links">
+          <a href="../../privacidade/">Política de privacidade</a>
+          <a href="../../termos/">Termos de uso</a>
+          <a href="../../#contato">Contato</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+(function(){
+  const cv = document.getElementById('canvas-bg');
+  if(!cv) return;
+  const ctx = cv.getContext('2d');
+  let W, H, nodes = [], RAF;
+  const N = 55, MAX_DIST = 160, BLUE = '59,130,246';
+
+  function resize(){
+    W = cv.width = cv.offsetWidth;
+    H = cv.height = cv.offsetHeight;
+  }
+
+  function mkNode(){
+    return {
+      x: Math.random()*W, y: Math.random()*H,
+      vx:(Math.random()-.5)*.35, vy:(Math.random()-.5)*.35,
+      r: Math.random()*1.4+.4
+    };
+  }
+
+  function init(){ resize(); nodes=[]; for(let i=0;i<N;i++) nodes.push(mkNode()); }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    nodes.forEach(n=>{
+      n.x+=n.vx; n.y+=n.vy;
+      if(n.x<0||n.x>W) n.vx*=-1;
+      if(n.y<0||n.y>H) n.vy*=-1;
+    });
+    for(let i=0;i<N;i++){
+      for(let j=i+1;j<N;j++){
+        const dx=nodes[i].x-nodes[j].x, dy=nodes[i].y-nodes[j].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<MAX_DIST){
+          ctx.beginPath();
+          ctx.strokeStyle=`rgba(${BLUE},${.18*(1-d/MAX_DIST)})`;
+          ctx.lineWidth=.6;
+          ctx.moveTo(nodes[i].x,nodes[i].y);
+          ctx.lineTo(nodes[j].x,nodes[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    nodes.forEach(n=>{
+      ctx.beginPath();
+      ctx.fillStyle=`rgba(${BLUE},.55)`;
+      ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+      ctx.fill();
+    });
+    RAF=requestAnimationFrame(draw);
+  }
+
+  init(); draw();
+  window.addEventListener('resize', ()=>{ cancelAnimationFrame(RAF); init(); draw(); });
+})();
+</script>
+</body>
+</html>

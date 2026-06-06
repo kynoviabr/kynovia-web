@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kynovia — Tecnologia que faz o negócio crescer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #09070F;
+  --bg2:      #0D0B16;
+  --bg3:      #151624;
+  --blue:     #2563EB;
+  --blue-h:   #1D4ED8;
+  --blue-l:   #3B82F6;
+  --blue-xl:  #60A5FA;
+  --blue-2xl: #93C5FD;
+  --border:   rgba(255,255,255,0.08);
+  --border-b: rgba(59,130,246,0.18);
+  --text:     #F4F4F5;
+  --text2:    #A1A1AA;
+  --text3:    #52525B;
+  --font:     'Inter', system-ui, sans-serif;
+  --mono:     'JetBrains Mono', monospace;
+  --r:        10px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px; height: 64px;
+  background: rgba(9,7,15,0.84);
+  backdrop-filter: blur(24px) saturate(180%);
+  border-bottom: 1px solid var(--border);
+}
+.logo { font-size: 16px; font-weight: 700; color: var(--text); text-decoration: none; letter-spacing: -0.2px; }
+.logo b { color: var(--blue-l); font-weight: 700; }
+.nav-links { display: flex; align-items: center; gap: 4px; list-style: none; }
+.nav-links a { font-size: 13.5px; color: var(--text3); text-decoration: none; padding: 6px 14px; border-radius: 6px; transition: color .15s, background .15s; font-weight: 500; letter-spacing: 0.01em; }
+.nav-links a:hover { color: var(--text2); background: rgba(255,255,255,0.04); }
+.nav-cta { background: var(--blue) !important; color: #fff !important; border-radius: 7px !important; }
+.nav-cta:hover { background: var(--blue-h) !important; color: #fff !important; }
+
+/* ── HERO ── */
+.hero {
+  position: relative; min-height: 100vh;
+  display: flex; align-items: center;
+  padding: 128px 48px 80px;
+  overflow: hidden;
+}
+#canvas-bg {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  z-index: 0; opacity: 0.5;
+}
+.hero-grid-overlay {
+  position: absolute; inset: 0; z-index: 0;
+  background-image:
+    linear-gradient(rgba(59,130,246,0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59,130,246,0.045) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 70% 80% at 50% 40%, black 20%, transparent 80%);
+}
+.hero-glow {
+  position: absolute; z-index: 0; border-radius: 50%; filter: blur(110px); pointer-events: none;
+}
+.hero-glow-1 { width: 650px; height: 500px; top: -120px; right: -80px; background: radial-gradient(circle, rgba(37,99,235,0.16) 0%, transparent 65%); }
+.hero-glow-2 { width: 400px; height: 350px; bottom: 60px; left: -60px; background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%); }
+.hero-content { position: relative; z-index: 1; max-width: 780px; }
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(37,99,235,0.10); border: 1px solid rgba(37,99,235,0.22);
+  border-radius: 100px; padding: 5px 14px 5px 8px;
+  font-family: var(--mono); font-size: 11.5px; color: var(--blue-2xl);
+  font-weight: 500; margin-bottom: 32px; letter-spacing: 0.04em;
+}
+.badge-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--blue-l);
+  box-shadow: 0 0 6px var(--blue-l), 0 0 12px rgba(59,130,246,0.4);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.8)} }
+
+h1 {
+  font-size: clamp(46px, 5.8vw, 84px);
+  font-weight: 700; letter-spacing: -3px; line-height: 1.01;
+  color: var(--text); margin-bottom: 28px;
+}
+.h1-dim { color: var(--text3); }
+.h1-blue {
+  color: transparent;
+  background: linear-gradient(92deg, var(--blue-xl) 0%, var(--blue-l) 50%, var(--blue-2xl) 100%);
+  -webkit-background-clip: text; background-clip: text;
+}
+#tw-word { display: inline; }
+#tw-static { display: inline; }
+#tw-cursor {
+  display: inline;
+  color: var(--blue-xl);
+  -webkit-text-fill-color: var(--blue-xl);
+  font-weight: 400;
+  font-size: 0.85em;
+  letter-spacing: -0.05em;
+  animation: cur-blink .75s step-end infinite;
+  vertical-align: baseline;
+  line-height: 1;
+}
+@keyframes cur-blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+.hero-sub { font-size: 17px; color: var(--text2); line-height: 1.7; max-width: 500px; margin-bottom: 44px; font-weight: 400; }
+
+.hero-ctas { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font); font-size: 14px; font-weight: 500;
+  padding: 11px 22px; border-radius: 8px; border: none;
+  cursor: pointer; text-decoration: none; transition: all .18s; letter-spacing: -.1px;
+}
+.btn-primary { background: var(--blue); color: #fff; }
+.btn-primary:hover { background: var(--blue-h); box-shadow: 0 0 0 4px rgba(37,99,235,.18), 0 8px 24px rgba(37,99,235,.28); transform: translateY(-1px); }
+.btn-outline { background: transparent; color: var(--text2); border: 1px solid var(--border); }
+.btn-outline:hover { color: var(--text); border-color: rgba(255,255,255,.13); background: rgba(255,255,255,.04); }
+
+/* STATS */
+.hero-stats {
+  display: flex; gap: 0; margin-top: 72px;
+  border-top: 1px solid var(--border);
+}
+.stat {
+  flex: 1; padding: 32px 32px 0 0;
+  border-right: 1px solid var(--border);
+}
+.stat:last-child { border-right: none; padding-right: 0; padding-left: 32px; }
+.stat:first-child { padding-left: 0; }
+.stat-val { font-size: 36px; font-weight: 700; letter-spacing: -2px; color: var(--text); line-height: 1; margin-bottom: 6px; }
+.stat-val b { color: var(--blue-l); font-weight: inherit; }
+.stat-lbl { font-size: 12.5px; color: var(--text3); line-height: 1.45; font-weight: 400; }
+
+/* ── MARQUEE ── */
+.marquee-wrap { overflow: hidden; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 18px 0; }
+.marquee-track { display: flex; gap: 48px; animation: mrq 30s linear infinite; width: max-content; }
+@keyframes mrq { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+.mt { font-family: var(--mono); font-size: 11.5px; color: var(--text3); white-space: nowrap; letter-spacing: 0.04em; }
+.ms { color: var(--blue); opacity: .35; }
+
+/* ── SECTIONS ── */
+.s { padding: 96px 48px; border-top: 1px solid var(--border); }
+.s-inner { max-width: 1080px; margin: 0 auto; }
+.lbl { font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); margin-bottom: 18px; }
+h2 { font-size: clamp(28px, 3.2vw, 44px); font-weight: 700; letter-spacing: -1.8px; line-height: 1.07; color: var(--text); margin-bottom: 14px; }
+h2 b { color: var(--blue-l); font-weight: inherit; }
+.desc { font-size: 15.5px; color: var(--text2); line-height: 1.65; max-width: 480px; font-weight: 400; }
+
+/* ── SERVICES GRID ── */
+.svc-head { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: end; margin-bottom: 48px; }
+.svc-grid {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
+  background: var(--border); gap: 1px;
+}
+.svc-card {
+  background: var(--bg2); padding: 32px 28px;
+  position: relative; overflow: hidden; transition: background .25s;
+  cursor: default;
+}
+.svc-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(59,130,246,0.05) 0%, transparent 60%);
+  opacity: 0; transition: opacity .3s;
+}
+.svc-card:hover { background: var(--bg3); }
+.svc-card:hover::before { opacity: 1; }
+
+/* animated border beam on hover */
+.svc-card::after {
+  content: ''; position: absolute; top: 0; left: -100%; width: 60%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--blue-l), transparent);
+  transition: none; opacity: 0;
+}
+.svc-card:hover::after {
+  opacity: 1;
+  animation: beam .6s ease forwards;
+}
+@keyframes beam { from{left:-100%} to{left:150%} }
+
+.svc-n { font-family: var(--mono); font-size: 10.5px; color: var(--text3); letter-spacing: 0.08em; margin-bottom: 18px; }
+.svc-ico { margin-bottom: 16px; }
+.svc-ico svg { width: 36px; height: 36px; stroke: var(--blue-xl); stroke-width: 1.3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.svc-card h3 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 10px; letter-spacing: -.2px; }
+.svc-card p { font-size: 13.5px; color: var(--text2); line-height: 1.65; font-weight: 400; }
+.svc-tag {
+  display: inline-block; margin-top: 16px;
+  font-family: var(--mono); font-size: 10px; font-weight: 500;
+  color: var(--blue-xl); background: rgba(37,99,235,0.09);
+  border: 1px solid rgba(59,130,246,0.18);
+  padding: 3px 9px; border-radius: 100px; letter-spacing: 0.05em; text-transform: uppercase;
+}
+
+/* ── ABOUT ── */
+.about-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; margin-top: 52px; }
+.about-copy h3 { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 10px; letter-spacing: -.2px; }
+.about-copy p { font-size: 14px; color: var(--text2); line-height: 1.72; font-weight: 400; margin-bottom: 22px; }
+.about-stack { display: flex; flex-direction: column; gap: 10px; }
+.ac {
+  display: flex; gap: 14px; align-items: flex-start;
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 10px; padding: 18px 20px;
+  transition: border-color .2s;
+}
+.ac:hover { border-color: var(--border-b); }
+.ac-ico { flex-shrink: 0; margin-top: 1px; }
+.ac-ico svg { width: 32px; height: 32px; stroke: var(--blue-xl); stroke-width: 1.3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.ac h4 { font-size: 13.5px; font-weight: 600; color: var(--text); margin-bottom: 4px; letter-spacing: -.1px; }
+.ac p { font-size: 13px; color: var(--text2); line-height: 1.6; font-weight: 400; }
+
+/* ── PROCESS ── */
+.proc-grid {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
+  background: var(--border); gap: 1px; margin-top: 52px;
+}
+.proc {
+  background: var(--bg2); padding: 32px 26px;
+  position: relative; transition: background .25s;
+}
+.proc:hover { background: var(--bg3); }
+.proc-n { font-family: var(--mono); font-size: 10.5px; color: var(--blue-l); letter-spacing: 0.08em; margin-bottom: 18px; display: block; font-weight: 500; }
+.proc h3 { font-size: 14.5px; font-weight: 600; color: var(--text); margin-bottom: 8px; letter-spacing: -.1px; }
+.proc p { font-size: 13px; color: var(--text2); line-height: 1.65; }
+
+/* ── RESULTS ── */
+.res-bg { background: var(--bg2); }
+.res-grid {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
+  background: var(--border); gap: 1px; margin-top: 52px;
+}
+.res {
+  background: var(--bg2); padding: 44px 36px;
+  transition: background .25s; position: relative; overflow: hidden;
+}
+.res:hover { background: var(--bg3); }
+.res-num { font-size: 56px; font-weight: 700; letter-spacing: -3px; color: var(--text); line-height: 1; margin-bottom: 8px; }
+.res-num b { color: var(--blue-l); font-weight: inherit; }
+.res h4 { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+.res p { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+/* ── TESTIMONIALS ── */
+.testi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-top: 52px; }
+.testi {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 12px; padding: 26px 24px; transition: border-color .2s;
+}
+.testi:hover { border-color: var(--border-b); }
+.testi-q { font-size: 14px; color: var(--text2); line-height: 1.7; font-weight: 400; margin-bottom: 22px; }
+.testi-q strong { color: var(--text); font-weight: 500; }
+.testi-author { display: flex; align-items: center; gap: 10px; }
+.tav { width: 34px; height: 34px; border-radius: 50%; background: var(--blue); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #fff; flex-shrink: 0; letter-spacing: .5px; }
+.tname { font-size: 12.5px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.trole { font-size: 11.5px; color: var(--text3); }
+
+/* ── ANIMATED DEMO CARD ── */
+.demo-section { padding: 96px 48px; border-top: 1px solid var(--border); }
+.demo-inner { max-width: 1080px; margin: 0 auto; }
+.demo-layout { display: grid; grid-template-columns: 1fr 1.1fr; gap: 72px; align-items: center; margin-top: 52px; }
+.demo-copy {}
+.demo-copy .lbl { margin-bottom: 18px; }
+.demo-copy h2 { margin-bottom: 14px; }
+.demo-copy p { font-size: 15px; color: var(--text2); line-height: 1.7; margin-bottom: 28px; }
+
+/* KANBAN ANIMATION */
+.kanban {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 14px; padding: 20px; overflow: hidden;
+}
+.kanban-header {
+  display: flex; gap: 6px; margin-bottom: 16px; align-items: center;
+}
+.kb-dot { width: 8px; height: 8px; border-radius: 50%; }
+.kb-dot-r { background: #EF4444; } .kb-dot-y { background: #F59E0B; } .kb-dot-g { background: #10B981; }
+.kb-title { font-family: var(--mono); font-size: 11px; color: var(--text3); margin-left: 6px; letter-spacing: .04em; }
+
+.kb-cols { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+.kb-col-title { font-family: var(--mono); font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+.kb-count { background: rgba(255,255,255,.06); border-radius: 100px; padding: 1px 7px; font-size: 9.5px; }
+
+.kb-card {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 7px; padding: 10px 12px; margin-bottom: 7px;
+  font-size: 11.5px; position: relative; overflow: hidden;
+}
+.kb-card-name { color: var(--text); font-weight: 500; margin-bottom: 4px; font-size: 12px; }
+.kb-card-tag { font-family: var(--mono); font-size: 9.5px; color: var(--text3); }
+.kb-card-badge {
+  display: inline-block; margin-top: 6px;
+  background: rgba(37,99,235,.12); color: var(--blue-xl);
+  border: 1px solid rgba(59,130,246,.2);
+  border-radius: 4px; padding: 1.5px 6px;
+  font-family: var(--mono); font-size: 9px; letter-spacing: .04em;
+}
+.kb-badge-g { background: rgba(16,185,129,.12) !important; color: #6EE7B7 !important; border-color: rgba(16,185,129,.2) !important; }
+.kb-badge-y { background: rgba(245,158,11,.1) !important; color: #FCD34D !important; border-color: rgba(245,158,11,.2) !important; }
+
+/* typing cursor animation */
+.kb-typing { font-family: var(--mono); font-size: 10.5px; color: var(--blue-xl); }
+.kb-cursor { display: inline-block; width: 1px; height: 11px; background: var(--blue-xl); margin-left: 1px; animation: blink-c .8s step-end infinite; vertical-align: middle; }
+@keyframes blink-c { 0%,100%{opacity:1} 50%{opacity:0} }
+
+/* ai activity bar */
+.ai-bar {
+  margin-top: 14px; padding: 10px 12px;
+  background: rgba(37,99,235,.06); border: 1px solid rgba(59,130,246,.14);
+  border-radius: 8px; display: flex; align-items: center; gap: 8px;
+}
+.ai-bar-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue-l); box-shadow: 0 0 6px var(--blue-l); animation: pulse-dot 1.5s ease-in-out infinite; flex-shrink: 0; }
+.ai-bar-text { font-family: var(--mono); font-size: 10.5px; color: var(--blue-2xl); }
+
+/* ── CTA ── */
+.cta-s { padding: 96px 48px; border-top: 1px solid var(--border); text-align: center; position: relative; overflow: hidden; }
+.cta-orb { position: absolute; width: 700px; height: 350px; top: 50%; left: 50%; transform: translate(-50%,-50%); background: radial-gradient(ellipse, rgba(37,99,235,.1) 0%, transparent 65%); pointer-events: none; }
+.cta-inner { position: relative; max-width: 560px; margin: 0 auto; }
+.cta-inner h2 { margin-bottom: 16px; }
+.cta-inner .desc { max-width: 100%; text-align: center; margin: 0 auto 40px; }
+.cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.cta-note { margin-top: 20px; font-size: 12.5px; color: var(--text3); }
+.cta-note a { color: var(--blue-xl); text-decoration: none; }
+
+/* ── FOOTER ── */
+footer { border-top: 1px solid var(--border); padding: 56px 48px 36px; }
+.ft { max-width: 1080px; margin: 0 auto; }
+.ft-top { display: grid; grid-template-columns: 1.8fr 1fr 1fr 1fr; gap: 56px; margin-bottom: 56px; }
+.ft-brand-d { font-size: 13px; color: var(--text3); line-height: 1.7; margin-top: 14px; font-weight: 400; max-width: 240px; }
+.ft-col-t { font-family: var(--mono); font-size: 10.5px; font-weight: 500; color: var(--text); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 14px; }
+.ft-col ul { list-style: none; }
+.ft-col li { margin-bottom: 8px; }
+.ft-col a { font-size: 13px; color: var(--text3); text-decoration: none; transition: color .15s; }
+.ft-col a:hover { color: var(--text2); }
+.ft-bottom { border-top: 1px solid var(--border); padding-top: 26px; display: flex; align-items: center; justify-content: space-between; }
+.ft-copy { font-size: 12px; color: var(--text3); }
+.ft-links { display: flex; gap: 20px; }
+.ft-links a { font-size: 12px; color: var(--text3); text-decoration: none; transition: color .15s; }
+.ft-links a:hover { color: var(--text2); }
+
+/* ── SCROLL REVEAL ── */
+.r { opacity: 0; transform: translateY(28px); transition: opacity .65s ease, transform .65s ease; }
+.r.v { opacity: 1; transform: none; }
+.r2 { transition-delay: .1s; }
+.r3 { transition-delay: .2s; }
+
+/* ── RESPONSIVE ── */
+@media(max-width:960px){
+  nav{padding:0 24px;}
+  .nav-links li:not(:last-child){display:none;}
+  .hero{padding:100px 24px 64px;}
+  .s{padding:64px 24px;}
+  .demo-section{padding:64px 24px;}
+  .cta-s{padding:64px 24px;}
+  footer{padding:48px 24px 28px;}
+  .svc-head{grid-template-columns:1fr; gap:20px;}
+  .svc-grid{grid-template-columns:1fr 1fr;}
+  .about-layout{grid-template-columns:1fr; gap:40px;}
+  .proc-grid{grid-template-columns:1fr 1fr;}
+  .res-grid{grid-template-columns:1fr;}
+  .testi-grid{grid-template-columns:1fr;}
+  .demo-layout{grid-template-columns:1fr; gap:40px;}
+  .ft-top{grid-template-columns:1fr 1fr; gap:36px;}
+  .ft-bottom{flex-direction:column;gap:14px;text-align:center;}
+  .hero-stats{flex-wrap:wrap;gap:0;}
+  .stat{flex: 0 0 50%; border-right:none; padding:24px 0 0 0; border-top:1px solid var(--border);}
+}
+@media(max-width:580px){
+  h1{letter-spacing:-2px;}
+  .svc-grid{grid-template-columns:1fr;}
+  .proc-grid{grid-template-columns:1fr;}
+  .ft-top{grid-template-columns:1fr;}
+  .kb-cols{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="./" class="logo">Kynov<b>ia</b></a>
+  <ul class="nav-links">
+    <li><a href="#servicos">Serviços</a></li>
+    <li><a href="#produtos">Produtos</a></li>
+    <li><a href="./modelos/">Modelos</a></li>
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#contato" class="nav-cta">Falar com a equipe</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <canvas id="canvas-bg"></canvas>
+  <div class="hero-grid-overlay"></div>
+  <div class="hero-glow hero-glow-1"></div>
+  <div class="hero-glow hero-glow-2"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge"><span class="badge-dot"></span>Tecnologia aplicada a negócios reais</div>
+    <h1>
+      <span class="h1-dim">Seu negócio</span><br>
+      cresce enquanto <span class="h1-blue">a</span><br>
+      <span class="h1-blue"><span id="tw-word">tecnologia</span><span id="tw-static"> trabalha</span><span id="tw-cursor">_</span></span>
+    </h1>
+    <p class="hero-sub">Desenvolvemos websites, portais e sistemas sob medida — e automatizamos captação de leads, operações comerciais e processos internos com inteligência artificial.</p>
+    <div class="hero-ctas">
+      <a href="#contato" class="btn btn-primary">
+        Falar com um especialista
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="./produtos/" class="btn btn-outline">Ver produtos</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-val">Web<b>.</b></div>
+        <div class="stat-lbl">Websites e experiências<br>digitais sob medida</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val">IA<b>.</b></div>
+        <div class="stat-lbl">Captação, triagem<br>e automação comercial</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val">Ops<b>.</b></div>
+        <div class="stat-lbl">Processos internos com<br>mais clareza operacional</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val">Prod<b>.</b></div>
+        <div class="stat-lbl">Produtos próprios para<br>crescimento e gestão</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="mt">Next.js</span><span class="mt ms">//</span>
+    <span class="mt">Node.js</span><span class="mt ms">//</span>
+    <span class="mt">OpenAI GPT-4o</span><span class="mt ms">//</span>
+    <span class="mt">WhatsApp API</span><span class="mt ms">//</span>
+    <span class="mt">N8N & Make</span><span class="mt ms">//</span>
+    <span class="mt">Python</span><span class="mt ms">//</span>
+    <span class="mt">PostgreSQL</span><span class="mt ms">//</span>
+    <span class="mt">AWS & Vercel</span><span class="mt ms">//</span>
+    <span class="mt">React</span><span class="mt ms">//</span>
+    <span class="mt">Google Cloud</span><span class="mt ms">//</span>
+    <span class="mt">Stripe</span><span class="mt ms">//</span>
+    <span class="mt">Supabase</span><span class="mt ms">//</span>
+    <span class="mt">Next.js</span><span class="mt ms">//</span>
+    <span class="mt">Node.js</span><span class="mt ms">//</span>
+    <span class="mt">OpenAI GPT-4o</span><span class="mt ms">//</span>
+    <span class="mt">WhatsApp API</span><span class="mt ms">//</span>
+    <span class="mt">N8N & Make</span><span class="mt ms">//</span>
+    <span class="mt">Python</span><span class="mt ms">//</span>
+    <span class="mt">PostgreSQL</span><span class="mt ms">//</span>
+    <span class="mt">AWS & Vercel</span><span class="mt ms">//</span>
+    <span class="mt">React</span><span class="mt ms">//</span>
+    <span class="mt">Google Cloud</span><span class="mt ms">//</span>
+    <span class="mt">Stripe</span><span class="mt ms">//</span>
+    <span class="mt">Supabase</span><span class="mt ms">//</span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="s" id="servicos">
+  <div class="s-inner">
+    <div class="svc-head r">
+      <div>
+        <div class="lbl">// Serviços</div>
+        <h2>O que a<br>Kynovia <b>faz</b></h2>
+      </div>
+      <p class="desc">Projetos sob medida para empresas que precisam vender melhor, operar com mais consistência e transformar processos em tecnologia útil.</p>
+    </div>
+    <div class="svc-grid r r2">
+
+      <div class="svc-card">
+        <div class="svc-n">01</div>
+        <div class="svc-ico"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="12"/><ellipse cx="18" cy="18" rx="5.5" ry="12"/><line x1="6" y1="18" x2="30" y2="18"/><path d="M7.5 12.5c2.8 1.3 6.5 2 10.5 2s7.7-.7 10.5-2"/><path d="M7.5 23.5c2.8-1.3 6.5-2 10.5-2s7.7.7 10.5 2"/></svg></div>
+        <h3>Websites & Landing Pages</h3>
+        <p>Sites institucionais, landing pages de alta conversão e e-commerces. Design único, performance máxima e SEO técnico desde a fundação.</p>
+        <span class="svc-tag">Design + Dev</span>
+      </div>
+
+      <div class="svc-card">
+        <div class="svc-n">02</div>
+        <div class="svc-ico"><svg viewBox="0 0 36 36"><rect x="4" y="6" width="28" height="24" rx="2"/><line x1="4" y1="13" x2="32" y2="13"/><line x1="13" y1="13" x2="13" y2="30"/><rect x="17" y="17" width="10" height="8" rx="1"/><circle cx="8" cy="9.5" r="1"/><circle cx="11" cy="9.5" r="1"/></svg></div>
+        <h3>Portais & Sistemas Web</h3>
+        <p>Portais B2B, plataformas SaaS e sistemas internos. Desenvolvemos o software certo para o seu negócio, escalável e seguro.</p>
+        <span class="svc-tag">Full-stack</span>
+      </div>
+
+      <div class="svc-card">
+        <div class="svc-n">03</div>
+        <div class="svc-ico"><svg viewBox="0 0 36 36"><rect x="7" y="12" width="22" height="17" rx="3"/><circle cx="13" cy="21" r="1.8"/><circle cx="23" cy="21" r="1.8"/><line x1="18" y1="6" x2="18" y2="12"/><circle cx="18" cy="5" r="1.8"/><line x1="7" y1="24" x2="4" y2="24"/><line x1="29" y1="24" x2="32" y2="24"/><line x1="14" y1="25.5" x2="22" y2="25.5"/></svg></div>
+        <h3>Captação de Leads com IA</h3>
+        <p>Agentes de IA que respondem e qualificam leads no WhatsApp 24h por dia, sem depender de humano no primeiro contato.</p>
+        <span class="svc-tag">IA + WhatsApp</span>
+      </div>
+
+      <div class="svc-card">
+        <div class="svc-n">04</div>
+        <div class="svc-ico"><svg viewBox="0 0 36 36"><rect x="4" y="22" width="6" height="10" rx="1"/><rect x="15" y="14" width="6" height="18" rx="1"/><rect x="26" y="6" width="6" height="26" rx="1"/><polyline points="7,16 18,10 29,4"/><circle cx="7" cy="16" r="1.5" fill="currentColor" stroke="none"/><circle cx="18" cy="10" r="1.5" fill="currentColor" stroke="none"/><circle cx="29" cy="4" r="1.5" fill="currentColor" stroke="none"/></svg></div>
+        <h3>Gestão de Leads com IA</h3>
+        <p>Pipeline integrado com fluxos automáticos de nutrição, follow-up e scoring. Zero lead perdido por falta de acompanhamento.</p>
+        <span class="svc-tag">CRM + Automação</span>
+      </div>
+
+      <div class="svc-card">
+        <div class="svc-n">05</div>
+        <div class="svc-ico"><svg viewBox="0 0 36 36"><path d="M20 4L9 20h10l-3 12 17-16H24L20 4z"/></svg></div>
+        <h3>Automações de Processos</h3>
+        <p>Eliminamos tarefas manuais via N8N, Make e APIs. Integre sistemas, economize horas e reduza erros operacionais.</p>
+        <span class="svc-tag">N8N + Make</span>
+      </div>
+
+      <div class="svc-card">
+        <div class="svc-n">06</div>
+        <div class="svc-ico"><svg viewBox="0 0 36 36"><path d="M15 21a6 6 0 0 0 8.5 0l4.5-4.5a6 6 0 0 0-8.5-8.5L17 10"/><path d="M21 15a6 6 0 0 0-8.5 0L8 19.5a6 6 0 0 0 8.5 8.5L19 26"/></svg></div>
+        <h3>Integrações & APIs</h3>
+        <p>Conectamos seus sistemas, CRMs e ferramentas em um fluxo único, coerente e sem retrabalho manual.</p>
+        <span class="svc-tag">Integrações</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- DEMO / PRODUCT VISUAL -->
+<section class="demo-section" id="produtos">
+  <div class="demo-inner">
+    <div class="demo-layout">
+      <div class="demo-copy r">
+        <div class="lbl">// Produtos</div>
+        <h2>Soluções prontas<br>para <b>acelerar a operação</b></h2>
+        <p>Além dos projetos sob medida, a Kynovia também desenvolve produtos próprios para vendas, atendimento e gestão. O WIA, o Clinova AI e a Kylia Performance by Kynovia já mostram essa direção.</p>
+        <a href="./produtos/" class="btn btn-outline">
+          Ver área de produtos ↗
+        </a>
+      </div>
+      <div class="r r2">
+        <div class="kanban">
+          <div class="kanban-header">
+            <div class="kb-dot kb-dot-r"></div>
+            <div class="kb-dot kb-dot-y"></div>
+            <div class="kb-dot kb-dot-g"></div>
+            <span class="kb-title">kynovia / pipeline comercial</span>
+          </div>
+          <div class="kb-cols">
+            <div>
+              <div class="kb-col-title">Novos <span class="kb-count">3</span></div>
+              <div class="kb-card">
+                <div class="kb-card-name">Clínica Orion</div>
+                <div class="kb-card-tag">WhatsApp · há 2min</div>
+                <div class="kb-card-badge">aguardando IA</div>
+              </div>
+              <div class="kb-card">
+                <div class="kb-card-name">Grupo Nativa</div>
+                <div class="kb-card-tag">WhatsApp · há 8min</div>
+                <div class="kb-card-badge">em qualificação</div>
+              </div>
+            </div>
+            <div>
+              <div class="kb-col-title">Qualificados <span class="kb-count">2</span></div>
+              <div class="kb-card">
+                <div class="kb-card-name">Viva Ensino</div>
+                <div class="kb-card-tag">Operação comercial · 15 pessoas</div>
+                <div class="kb-card-badge kb-badge-g">pronto p/ vendas</div>
+              </div>
+              <div class="kb-card">
+                <div class="kb-card-name">Prisma Tech</div>
+                <div class="kb-card-tag">Operação comercial · urgência alta</div>
+                <div class="kb-card-badge kb-badge-g">pronto p/ vendas</div>
+              </div>
+            </div>
+            <div>
+              <div class="kb-col-title">Reunião <span class="kb-count">1</span></div>
+              <div class="kb-card">
+                <div class="kb-card-name">Master Clínicas</div>
+                <div class="kb-card-tag">Amanhã · 14h00</div>
+                <div class="kb-card-badge kb-badge-y">agendado</div>
+              </div>
+            </div>
+          </div>
+          <div class="ai-bar">
+            <div class="ai-bar-dot"></div>
+            <span class="ai-bar-text" id="ai-typing">IA qualificando Grupo Nativa<span class="kb-cursor"></span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOBRE -->
+<section class="s" id="sobre">
+  <div class="s-inner">
+    <div class="r">
+      <div class="lbl">// Sobre a Kynovia</div>
+      <h2>Tecnologia que não fica<br><b>só no papel</b></h2>
+    </div>
+    <div class="about-layout r r2">
+      <div class="about-copy">
+        <h3>Quem somos</h3>
+        <p>A Kynovia é uma empresa de tecnologia focada em ajudar negócios a crescerem com soluções digitais reais — não promessas vazias.</p>
+        <p>Desenvolvemos desde o site institucional até sistemas, automações e produtos próprios. Nossa especialidade é entender o problema do negócio e construir a solução mais direta para ele.</p>
+        <p>Hoje, a Kynovia se organiza em três frentes claras: <strong style="color:var(--text);font-weight:500;">serviços sob medida</strong>, <strong style="color:var(--text);font-weight:500;">produtos próprios</strong> e <strong style="color:var(--text);font-weight:500;">modelos de websites</strong> prontos para adaptação.</p>
+        <a href="./produtos/" class="btn btn-outline" style="margin-top:8px;display:inline-flex;">Conhecer os produtos ↗</a>
+      </div>
+      <div class="about-stack">
+        <div class="ac">
+          <div class="ac-ico"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="10"/><circle cx="16" cy="16" r="5"/><circle cx="16" cy="16" r="1.5" fill="currentColor" stroke="none"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="16" y1="26" x2="16" y2="30"/><line x1="2" y1="16" x2="6" y2="16"/><line x1="26" y1="16" x2="30" y2="16"/></svg></div>
+          <div><h4>Foco em impacto, não em complexidade</h4><p>A tecnologia entra para resolver um problema real do negócio, não para criar mais camada, mais ritual e mais dependência.</p></div>
+        </div>
+        <div class="ac">
+          <div class="ac-ico"><svg viewBox="0 0 32 32"><path d="M12 4a6 6 0 0 0-6 6v1a4 4 0 0 0 0 7v1a6 6 0 0 0 6 6"/><path d="M20 4a6 6 0 0 1 6 6v1a4 4 0 0 1 0 7v1a6 6 0 0 1-6 6"/><line x1="12" y1="16" x2="20" y2="16"/><line x1="12" y1="11" x2="12" y2="21"/><line x1="20" y1="11" x2="20" y2="21"/><line x1="16" y1="8" x2="16" y2="24"/></svg></div>
+          <div><h4>IA aplicada, não prometida</h4><p>Usamos inteligência artificial onde ela realmente faz diferença. Sem buzzword e sem prova de conceito que nunca chega na operação.</p></div>
+        </div>
+        <div class="ac">
+          <div class="ac-ico"><svg viewBox="0 0 32 32"><circle cx="10" cy="10" r="4"/><circle cx="22" cy="10" r="4"/><path d="M2 28a8 8 0 0 1 16 0"/><path d="M18 28a8 8 0 0 1 10-6.5"/></svg></div>
+          <div><h4>Direção técnica e visão de produto</h4><p>Não pensamos só em entregar tela. Pensamos em arquitetura, operação, adoção e evolução do que está sendo construído.</p></div>
+        </div>
+        <div class="ac">
+          <div class="ac-ico"><svg viewBox="0 0 32 32"><path d="M8 4h4l2 6-3 2a14 14 0 0 0 8 8l2-3 6 2v4a2 2 0 0 1-2 2A22 22 0 0 1 6 6a2 2 0 0 1 2-2z"/></svg></div>
+          <div><h4>Comunicação direta</h4><p>Você fala com quem está pensando e construindo a solução. Menos ruído, menos repasse e mais clareza na tomada de decisão.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESSO -->
+<section class="s" id="processo">
+  <div class="s-inner">
+    <div class="r">
+      <div class="lbl">// Como trabalhamos</div>
+      <h2>Do problema à solução,<br><b>sem enrolação</b></h2>
+      <p class="desc" style="margin-top:12px">Sem ritual exagerado e sem camadas desnecessárias. A ideia é entender o problema, desenhar a solução certa e evoluir com clareza.</p>
+    </div>
+    <div class="proc-grid r r2">
+      <div class="proc"><span class="proc-n">01 // Diagnóstico</span><h3>Entendemos o negócio</h3><p>Mapeamos seus gargalos reais e onde a tecnologia gera mais valor. Sem promessas vazias.</p></div>
+      <div class="proc"><span class="proc-n">02 // Estratégia</span><h3>Desenhamos a solução</h3><p>Definimos arquitetura, escopo e prioridades. Você vê o que vai ser construído antes de uma linha de código.</p></div>
+      <div class="proc"><span class="proc-n">03 // Construção</span><h3>Desenvolvemos em ciclos</h3><p>Sprints curtos com entregas reais. Você acompanha e dá feedback ao longo do processo.</p></div>
+      <div class="proc"><span class="proc-n">04 // Crescimento</span><h3>Medimos e evoluímos</h3><p>Após a entrega, monitoramos métricas e evoluímos a solução junto com o seu negócio.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTADOS -->
+<section class="s res-bg" id="resultados">
+  <div class="s-inner">
+    <div class="r"><div class="lbl">// Onde atuamos</div><h2>Frentes em que a Kynovia <b>gera valor</b></h2></div>
+    <div class="res-grid r r2">
+      <div class="res">
+        <div class="res-num">Vendas<b>.</b></div>
+        <h4>Captação, resposta e qualificação</h4>
+        <p>Produtos e automações para melhorar o primeiro contato, a continuidade da conversa e a passagem para o time comercial.</p>
+      </div>
+      <div class="res">
+        <div class="res-num">Ops<b>.</b></div>
+        <h4>Processos, agenda e acompanhamento</h4>
+        <p>Tecnologia para dar mais clareza operacional, menos retrabalho e mais consistência no que a equipe precisa executar.</p>
+      </div>
+      <div class="res">
+        <div class="res-num">Gestão<b>.</b></div>
+        <h4>Metas, leitura e priorização</h4>
+        <p>Soluções para transformar direção estratégica em acompanhamento mais visível, com foco no que realmente precisa avançar.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="s">
+  <div class="s-inner">
+    <div class="r"><div class="lbl">// Estrutura da Kynovia</div><h2>Como a oferta está <b>organizada hoje</b></h2></div>
+    <div class="testi-grid r r2">
+      <div class="testi">
+        <p class="testi-q"><strong>Serviços sob medida</strong><br><br>Websites, sistemas, integrações e automações construídos para o contexto específico de cada operação.</p>
+        <div class="testi-author"><div class="tav">01</div><div><div class="tname">Serviços</div><div class="trole">Projetos sob demanda</div></div></div>
+      </div>
+      <div class="testi">
+        <p class="testi-q"><strong>Produtos próprios</strong><br><br>Soluções da Kynovia para vendas, atendimento, operação e gestão que evoluem como plataforma própria.</p>
+        <div class="testi-author"><div class="tav">02</div><div><div class="tname">Produtos</div><div class="trole">WIA, Clínicas e Kylia Performance</div></div></div>
+      </div>
+      <div class="testi">
+        <p class="testi-q"><strong>Modelos de websites</strong><br><br>Estruturas prontas para segmentos diferentes, já navegáveis, que aceleram a apresentação e a decisão comercial.</p>
+        <div class="testi-author"><div class="tav">03</div><div><div class="tname">Modelos</div><div class="trole">Vitrine navegável</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-s" id="contato">
+  <div class="cta-orb"></div>
+  <div class="cta-inner r">
+    <div class="lbl" style="display:flex;justify-content:center;">// Próximo passo</div>
+    <h2>Pronto para a tecnologia<br><b>trabalhar pelo seu negócio?</b></h2>
+    <p class="desc">Conte o seu desafio. A gente analisa e mostra o que faz sentido construir — sem compromisso.</p>
+    <div class="cta-btns">
+      <a href="mailto:contato@kynovia.com.br" class="btn btn-primary">
+        Falar com a equipe
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="./produtos/" class="btn btn-outline">Ver produtos</a>
+    </div>
+    <p class="cta-note">Ou explore a área de <a href="./produtos/">produtos</a> e <a href="./modelos/">modelos</a>.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft">
+    <div class="ft-top">
+      <div>
+        <a href="./" class="logo">Kynov<b>ia</b></a>
+        <p class="ft-brand-d">Tecnologia que faz o negócio crescer. Websites, sistemas, automações e IA aplicada para resultados reais.</p>
+      </div>
+      <div class="ft-col"><div class="ft-col-t">Serviços</div><ul><li><a href="#servicos">Websites</a></li><li><a href="#servicos">Portais & Sistemas</a></li><li><a href="#servicos">Captação com IA</a></li><li><a href="#servicos">Automações</a></li><li><a href="#servicos">Integrações</a></li></ul></div>
+      <div class="ft-col"><div class="ft-col-t">Produtos</div><ul><li><a href="./produtos/wia/">WIA</a></li><li><a href="./produtos/clinicas-estetica/">Clinova AI</a></li><li><a href="./produtos/okr/">Kylia Performance</a></li><li><a href="./modelos/">Portfólio de Websites</a></li></ul></div>
+      <div class="ft-col"><div class="ft-col-t">Contato</div><ul><li><a href="mailto:contato@kynovia.com.br">E-mail</a></li><li><a href="#contato">Próximo passo</a></li><li><a href="./produtos/">Produtos</a></li></ul></div>
+    </div>
+    <div class="ft-bottom">
+      <span class="ft-copy">© 2025 Kynovia. Todos os direitos reservados.</span>
+      <div class="ft-links"><a href="./privacidade/">Privacidade</a><a href="./termos/">Termos de uso</a></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── CANVAS PARTICLE NETWORK ── */
+(function(){
+  const cv = document.getElementById('canvas-bg');
+  const ctx = cv.getContext('2d');
+  let W, H, nodes = [], RAF;
+  const N = 55, MAX_DIST = 160, BLUE = '59,130,246';
+
+  function resize(){
+    W = cv.width  = cv.offsetWidth;
+    H = cv.height = cv.offsetHeight;
+  }
+
+  function mkNode(){
+    return {
+      x: Math.random()*W, y: Math.random()*H,
+      vx:(Math.random()-.5)*.35, vy:(Math.random()-.5)*.35,
+      r: Math.random()*1.4+.4
+    };
+  }
+
+  function init(){ resize(); nodes=[]; for(let i=0;i<N;i++) nodes.push(mkNode()); }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    // update
+    nodes.forEach(n=>{
+      n.x+=n.vx; n.y+=n.vy;
+      if(n.x<0||n.x>W) n.vx*=-1;
+      if(n.y<0||n.y>H) n.vy*=-1;
+    });
+    // edges
+    for(let i=0;i<N;i++){
+      for(let j=i+1;j<N;j++){
+        const dx=nodes[i].x-nodes[j].x, dy=nodes[i].y-nodes[j].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<MAX_DIST){
+          ctx.beginPath();
+          ctx.strokeStyle=`rgba(${BLUE},${.18*(1-d/MAX_DIST)})`;
+          ctx.lineWidth=.6;
+          ctx.moveTo(nodes[i].x,nodes[i].y);
+          ctx.lineTo(nodes[j].x,nodes[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    // dots
+    nodes.forEach(n=>{
+      ctx.beginPath();
+      ctx.fillStyle=`rgba(${BLUE},.55)`;
+      ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+      ctx.fill();
+    });
+    RAF=requestAnimationFrame(draw);
+  }
+
+  init(); draw();
+  window.addEventListener('resize', ()=>{ cancelAnimationFrame(RAF); init(); draw(); });
+})();
+
+/* ── COUNTER ANIMATION ── */
+function animateCount(el){
+  if(el.dataset.done) return;
+  el.dataset.done=1;
+  const target=+el.dataset.count;
+  const suffix=el.dataset.suffix||'';
+  const prefix=el.dataset.prefix||'';
+  const dur=1400, start=performance.now();
+  function tick(now){
+    const p=Math.min((now-start)/dur,1);
+    const ease=1-Math.pow(1-p,3);
+    const val=Math.round(ease*target);
+    el.textContent=prefix+val+'<b>'+suffix+'</b>';
+    el.innerHTML=prefix+val+'<b>'+suffix+'</b>';
+    if(p<1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+/* ── INTERSECTION OBSERVER ── */
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting) return;
+    e.target.classList.add('v');
+    // counter trigger
+    e.target.querySelectorAll('[data-count]').forEach(animateCount);
+    // if the element itself is a counter
+    if(e.target.dataset.count) animateCount(e.target);
+  });
+}, { threshold: 0.13 });
+
+document.querySelectorAll('.r').forEach(el=>io.observe(el));
+document.querySelectorAll('[data-count]').forEach(el=>io.observe(el));
+
+/* ── TYPING ANIMATION in AI bar ── */
+(function(){
+  const lines = [
+    'IA qualificando Grupo Nativa',
+    'Identificando urgência: alta',
+    'Perfil: B2B, 20+ pessoas',
+    'Movendo para "Qualificados"',
+    'Notificando vendedor...',
+    'IA qualificando Clínica Orion',
+  ];
+  let li=0, ci=0, el=document.getElementById('ai-typing');
+  function type(){
+    const line=lines[li];
+    if(ci<line.length){
+      el.innerHTML=line.substring(0,ci+1)+'<span class="kb-cursor"></span>';
+      ci++; setTimeout(type, 45);
+    } else {
+      setTimeout(()=>{ ci=0; li=(li+1)%lines.length; type(); }, 1800);
+    }
+  }
+  type();
+})();
+</script>
+</body>
+</html>
+<script>
+/* ── HERO TYPEWRITER ── */
+(function(){
+  const wordEl   = document.getElementById('tw-word');
+  const staticEl = document.getElementById('tw-static');
+
+  const DELAY_TYPE   = 80;
+  const DELAY_DELETE = 40;
+  const PAUSE_FULL   = 2000;
+  const PAUSE_EMPTY  = 300;
+
+  // "Kynovia" = "Kynov" (branco) + "ia" (azul herdado do gradiente)
+  const WHITE = '-webkit-text-fill-color:var(--text);color:var(--text)';
+  const SPLIT = 5; // índice onde termina "Kynov"
+
+  function wordHTML(word, charCount){
+    const visible = word.slice(0, charCount);
+    if(word === 'Kynovia'){
+      const white = visible.slice(0, SPLIT);
+      const blue  = visible.slice(SPLIT);
+      return (white ? `<span style="${WHITE}">${white}</span>` : '') + blue;
+    }
+    return visible;
+  }
+
+  function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
+
+  async function typeWord(word){
+    for(let i = 0; i <= word.length; i++){
+      wordEl.innerHTML = wordHTML(word, i);
+      await sleep(DELAY_TYPE + Math.random() * 28);
+    }
+  }
+
+  async function deleteWord(word){
+    for(let i = word.length; i >= 0; i--){
+      wordEl.innerHTML = wordHTML(word, i);
+      await sleep(DELAY_DELETE + Math.random() * 18);
+    }
+  }
+
+  async function typeStatic(text){
+    for(let i = 0; i <= text.length; i++){
+      staticEl.textContent = text.slice(0, i);
+      await sleep(DELAY_TYPE + Math.random() * 28);
+    }
+  }
+
+  async function deleteStatic(text){
+    for(let i = text.length; i >= 0; i--){
+      staticEl.textContent = text.slice(0, i);
+      await sleep(DELAY_DELETE + Math.random() * 18);
+    }
+  }
+
+  async function run(){
+    wordEl.innerHTML     = '';
+    staticEl.textContent = '';
+
+    await sleep(800);
+
+    // 1. Digita "tecnologia"
+    await typeWord('tecnologia');
+    // 2. Digita " trabalha"
+    await typeStatic(' trabalha');
+    // 3. Pausa
+    await sleep(PAUSE_FULL);
+    // 4. Apaga " trabalha"
+    await deleteStatic(' trabalha');
+    // 5. Apaga "tecnologia"
+    await deleteWord('tecnologia');
+
+    await sleep(PAUSE_EMPTY);
+
+    // 6. Digita "Kynovia" — Kynov branco, ia azul
+    await typeWord('Kynovia');
+    // 7. Digita " trabalha" — cursor fica piscando
+    await typeStatic(' trabalha');
+  }
+
+  run();
+})();
+</script>

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Produtos — Kynovia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #09070F;
+  --bg2:      #0D0B16;
+  --bg3:      #151624;
+  --blue:     #2563EB;
+  --blue-h:   #1D4ED8;
+  --blue-l:   #3B82F6;
+  --blue-xl:  #60A5FA;
+  --blue-2xl: #93C5FD;
+  --border:   rgba(255,255,255,0.08);
+  --border-b: rgba(59,130,246,0.18);
+  --text:     #F4F4F5;
+  --text2:    #A1A1AA;
+  --text3:    #52525B;
+  --font:     'Inter', system-ui, sans-serif;
+  --mono:     'JetBrains Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+nav {
+  position: sticky; top: 0; z-index: 30;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px; padding: 0 32px;
+  background: rgba(9,7,15,0.84);
+  backdrop-filter: blur(24px) saturate(180%);
+  border-bottom: 1px solid var(--border);
+}
+.logo { font-size: 16px; font-weight: 700; color: var(--text); text-decoration: none; }
+.logo b { color: var(--blue-l); }
+.nav-links { display: flex; gap: 6px; list-style: none; }
+.nav-links a {
+  font-size: 13.5px; color: var(--text3); text-decoration: none;
+  padding: 6px 14px; border-radius: 6px; transition: .15s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--text2); background: rgba(255,255,255,0.04); }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 32px 72px; }
+
+.hero {
+  position: relative;
+  overflow: hidden;
+}
+.hero > * {
+  position: relative;
+  z-index: 1;
+}
+#canvas-bg {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  z-index: 0; opacity: 0.5;
+}
+.hero-grid-overlay {
+  position: absolute; inset: 0; z-index: 0;
+  background-image:
+    linear-gradient(rgba(59,130,246,0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59,130,246,0.045) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 70% 80% at 50% 40%, black 20%, transparent 80%);
+}
+.hero-glow {
+  position: absolute; z-index: 0; border-radius: 50%; filter: blur(110px); pointer-events: none;
+}
+.hero-glow-1 { width: 520px; height: 360px; top: -120px; right: -80px; background: radial-gradient(circle, rgba(37,99,235,0.16) 0%, transparent 65%); }
+.hero-glow-2 { width: 340px; height: 280px; bottom: 10px; left: -60px; background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%); }
+
+.hero {
+  padding-top: 96px;
+  padding-bottom: 56px;
+  border-bottom: 1px solid var(--border);
+}
+.lbl {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--text3); margin-bottom: 20px;
+}
+h1 {
+  font-size: clamp(40px, 5.5vw, 76px);
+  line-height: 1.02; letter-spacing: -2.5px; margin-bottom: 22px;
+}
+.hero p {
+  max-width: 720px; font-size: 17px; line-height: 1.75; color: var(--text2);
+}
+.hero b {
+  color: var(--blue-xl); font-weight: 600;
+}
+.grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 16px; margin-top: 48px;
+}
+.card-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 28px;
+  transition: border-color .2s, background .2s, transform .2s;
+}
+.card:hover {
+  border-color: var(--border-b);
+  background: var(--bg3);
+  transform: translateY(-2px);
+}
+.num {
+  font-family: var(--mono); font-size: 10.5px; color: var(--text3);
+  letter-spacing: .08em; margin-bottom: 18px;
+}
+.card h2 {
+  font-size: 22px; line-height: 1.12; letter-spacing: -0.8px; margin-bottom: 12px;
+}
+.card p {
+  font-size: 14px; line-height: 1.7; color: var(--text2); margin-bottom: 18px;
+}
+.card ul {
+  list-style: none;
+  display: grid;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.card li {
+  position: relative;
+  padding-left: 16px;
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--text2);
+}
+.card li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--blue-xl);
+  box-shadow: 0 0 12px rgba(96,165,250,.55);
+}
+.tag {
+  display: inline-block;
+  font-family: var(--mono); font-size: 10px; letter-spacing: .05em;
+  text-transform: uppercase;
+  color: var(--blue-xl);
+  background: rgba(37,99,235,0.09);
+  border: 1px solid rgba(59,130,246,0.18);
+  padding: 4px 9px; border-radius: 100px;
+}
+.section {
+  padding-top: 56px;
+}
+.section h3 {
+  font-size: 28px; letter-spacing: -1px; margin-bottom: 12px;
+}
+.section p {
+  max-width: 760px; color: var(--text2); line-height: 1.75;
+}
+.cta-row {
+  display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px;
+}
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 11px 20px; border-radius: 8px; text-decoration: none;
+  font-size: 14px; font-weight: 500; transition: .18s;
+}
+.btn-primary { background: var(--blue); color: #fff; }
+.btn-primary:hover { background: var(--blue-h); }
+.btn-outline { border: 1px solid var(--border); color: var(--text2); }
+.btn-outline:hover { color: var(--text); border-color: rgba(255,255,255,.14); background: rgba(255,255,255,.04); }
+footer {
+  border-top: 1px solid var(--border);
+  margin-top: 72px; padding: 32px; color: var(--text3);
+  font-size: 12px;
+}
+@media (max-width: 900px) {
+  .grid { grid-template-columns: 1fr; }
+  .hero { padding-top: 80px; }
+  nav { padding: 0 20px; }
+  .nav-links li:not(:last-child) { display: none; }
+  .wrap { padding: 0 20px 56px; }
+}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../" class="logo">Kynov<b>ia</b></a>
+  <ul class="nav-links">
+    <li><a href="../#servicos">Serviços</a></li>
+    <li><a href="./" class="active">Produtos</a></li>
+    <li><a href="../modelos/">Modelos</a></li>
+    <li><a href="../#sobre">Sobre</a></li>
+    <li><a href="../#contato">Contato</a></li>
+  </ul>
+</nav>
+
+<main class="wrap">
+  <section class="hero">
+    <canvas id="canvas-bg"></canvas>
+    <div class="hero-grid-overlay"></div>
+    <div class="hero-glow hero-glow-1"></div>
+    <div class="hero-glow hero-glow-2"></div>
+    <div class="lbl">// Produtos</div>
+    <h1>Soluções próprias para <b>vendas, operação e gestão</b></h1>
+    <p>
+      Aqui entram os produtos da Kynovia que nascem para resolver problemas
+      recorrentes de operação, vendas e gestão. Cada solução tem um recorte
+      diferente, mas todas seguem a mesma lógica: menos improviso e mais
+      clareza no que precisa acontecer.
+    </p>
+  </section>
+
+  <section class="grid" aria-label="Lista de produtos">
+    <a class="card-link" href="./wia/">
+      <article class="card">
+        <div class="num">01</div>
+        <h2>WIA</h2>
+        <p>
+          Agente comercial com IA para WhatsApp. Responde leads em segundos,
+          qualifica com perguntas progressivas e entrega a oportunidade pronta
+          para o vendedor humano.
+        </p>
+        <ul>
+          <li>Primeiro contato sem fila humana.</li>
+          <li>Qualificação ao longo da conversa.</li>
+          <li>Passagem limpa para vendas.</li>
+        </ul>
+        <span class="tag">Produto ativo</span>
+      </article>
+    </a>
+
+    <a class="card-link" href="./clinicas-estetica/">
+      <article class="card">
+        <div class="num">02</div>
+        <h2>Clínicas de Estética</h2>
+        <p>
+          Produto voltado para atendimento, agenda comercial e relacionamento
+          com pacientes, com foco em dar mais consistência à operação da
+          clínica e ao crescimento da receita.
+        </p>
+        <ul>
+          <li>Atendimento inicial com mais contexto.</li>
+          <li>Melhor conexão entre interesse e avaliação.</li>
+          <li>Mais continuidade no relacionamento.</li>
+        </ul>
+        <span class="tag">Em estruturação</span>
+      </article>
+    </a>
+
+    <a class="card-link" href="./okr/">
+      <article class="card">
+        <div class="num">03</div>
+        <h2>Kylia Performance</h2>
+        <p>
+          Sistema de metas e performance para empresas em crescimento, com foco
+          em objetivos corporativos, Key Results, check-ins e leitura clara da
+          execução por liderança e times.
+        </p>
+        <ul>
+          <li>Objetivos e KRs em cascata por time.</li>
+          <li>Check-ins com confiança e bloqueios.</li>
+          <li>Alertas para risco e atraso de execução.</li>
+        </ul>
+        <span class="tag">Produto ativo</span>
+      </article>
+    </a>
+  </section>
+
+  <section class="section">
+    <div class="lbl">// Próximo passo</div>
+    <h3>Explore a direção de cada produto e aprofunde um por vez.</h3>
+    <p>
+      A estrutura da área já está montada. Agora o trabalho passa a ser
+      aprofundar o posicionamento, a copy e a demonstração de cada produto no
+      seu próprio ritmo, sem perder a coerência do conjunto.
+    </p>
+    <div class="cta-row">
+      <a href="../" class="btn btn-outline">Voltar ao institucional</a>
+      <a href="../modelos/" class="btn btn-primary">Ver modelos</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  © 2025 Kynovia. Área de produtos em estruturação.
+</footer>
+
+<script>
+(function(){
+  const cv = document.getElementById('canvas-bg');
+  if(!cv) return;
+  const ctx = cv.getContext('2d');
+  let W, H, nodes = [], RAF;
+  const N = 55, MAX_DIST = 160, BLUE = '59,130,246';
+
+  function resize(){
+    W = cv.width = cv.offsetWidth;
+    H = cv.height = cv.offsetHeight;
+  }
+
+  function mkNode(){
+    return {
+      x: Math.random()*W, y: Math.random()*H,
+      vx:(Math.random()-.5)*.35, vy:(Math.random()-.5)*.35,
+      r: Math.random()*1.4+.4
+    };
+  }
+
+  function init(){ resize(); nodes=[]; for(let i=0;i<N;i++) nodes.push(mkNode()); }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    nodes.forEach(n=>{
+      n.x+=n.vx; n.y+=n.vy;
+      if(n.x<0||n.x>W) n.vx*=-1;
+      if(n.y<0||n.y>H) n.vy*=-1;
+    });
+    for(let i=0;i<N;i++){
+      for(let j=i+1;j<N;j++){
+        const dx=nodes[i].x-nodes[j].x, dy=nodes[i].y-nodes[j].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<MAX_DIST){
+          ctx.beginPath();
+          ctx.strokeStyle=`rgba(${BLUE},${.18*(1-d/MAX_DIST)})`;
+          ctx.lineWidth=.6;
+          ctx.moveTo(nodes[i].x,nodes[i].y);
+          ctx.lineTo(nodes[j].x,nodes[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    nodes.forEach(n=>{
+      ctx.beginPath();
+      ctx.fillStyle=`rgba(${BLUE},.55)`;
+      ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+      ctx.fill();
+    });
+    RAF=requestAnimationFrame(draw);
+  }
+
+  init(); draw();
+  window.addEventListener('resize', ()=>{ cancelAnimationFrame(RAF); init(); draw(); });
+})();
+</script>
+
+</body>
+</html>

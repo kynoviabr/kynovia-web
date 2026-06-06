@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clinova AI — Motor de Crescimento para Clínicas de Estética</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #09070F;
+  --bg2: #0D0B16;
+  --bg3: #151624;
+  --blue: #2563EB;
+  --blue-h: #1D4ED8;
+  --blue-l: #3B82F6;
+  --blue-xl: #60A5FA;
+  --blue-2xl: #93C5FD;
+  --border: rgba(255,255,255,0.08);
+  --text: #F4F4F5;
+  --text2: #A1A1AA;
+  --text3: #52525B;
+  --font: 'Inter', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+nav {
+  position: sticky; top: 0; z-index: 30;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px; padding: 0 32px;
+  background: rgba(9,7,15,0.84);
+  backdrop-filter: blur(24px) saturate(180%);
+  border-bottom: 1px solid var(--border);
+}
+.logo { font-size: 16px; font-weight: 700; color: var(--text); text-decoration: none; }
+.logo b { color: var(--blue-l); }
+.nav-links { display: flex; gap: 6px; list-style: none; }
+.nav-links a {
+  font-size: 13.5px; color: var(--text3); text-decoration: none;
+  padding: 6px 14px; border-radius: 6px; transition: .15s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--text2); background: rgba(255,255,255,0.04); }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 32px 72px; }
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding-top: 96px;
+  padding-bottom: 44px;
+  border-bottom: 1px solid var(--border);
+}
+.hero > * { position: relative; z-index: 1; }
+#canvas-bg {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  z-index: 0; opacity: 0.5;
+}
+.hero-grid-overlay {
+  position: absolute; inset: 0; z-index: 0;
+  background-image:
+    linear-gradient(rgba(59,130,246,0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59,130,246,0.045) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 70% 80% at 50% 40%, black 20%, transparent 80%);
+}
+.hero-glow {
+  position: absolute; z-index: 0; border-radius: 50%; filter: blur(110px); pointer-events: none;
+}
+.hero-glow-1 { width: 520px; height: 360px; top: -120px; right: -80px; background: radial-gradient(circle, rgba(37,99,235,0.16) 0%, transparent 65%); }
+.hero-glow-2 { width: 340px; height: 280px; bottom: 10px; left: -60px; background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%); }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 10px;
+  border-radius: 100px;
+  border: 1px solid rgba(59,130,246,0.22);
+  background: rgba(37,99,235,0.1);
+  padding: 6px 14px 6px 10px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--blue-2xl);
+}
+.badge-dot {
+  width: 7px; height: 7px; border-radius: 999px;
+  background: var(--blue-xl);
+  box-shadow: 0 0 14px rgba(96,165,250,.82);
+}
+.hero-grid {
+  display: grid;
+  gap: 26px;
+  align-items: start;
+  margin-top: 28px;
+  grid-template-columns: minmax(0, 1.05fr) minmax(300px, 0.95fr);
+}
+h1 {
+  font-size: clamp(42px, 5.3vw, 72px);
+  line-height: 1.02;
+  letter-spacing: -2.8px;
+  margin-bottom: 20px;
+}
+.hero-copy p {
+  max-width: 700px;
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--text2);
+}
+.hero-copy b,
+.hero-card b,
+.section-title b,
+.metric strong,
+.timeline-card strong { color: var(--blue-xl); font-weight: 600; }
+.cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 48px;
+  padding: 12px 20px;
+  border-radius: 14px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  transition: .18s;
+}
+.btn-primary {
+  border: 1px solid rgba(255,255,255,.16);
+  background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+  color: #fff;
+  box-shadow: 0 18px 40px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.14);
+}
+.btn-primary:hover {
+  background: linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08));
+}
+.btn-outline {
+  border: 1px solid var(--border);
+  background: rgba(0,0,0,.22);
+  color: var(--text);
+}
+.btn-outline:hover {
+  border-color: rgba(255,255,255,.15);
+  background: rgba(255,255,255,.04);
+}
+.hero-points {
+  display: grid;
+  gap: 12px;
+  margin-top: 28px;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+}
+.point {
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: rgba(0,0,0,.2);
+  padding: 16px;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text2);
+}
+.point strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.hero-stack { display: grid; gap: 12px; }
+.hero-card {
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: rgba(0,0,0,.18);
+  padding: 22px;
+}
+.hero-card p:first-child,
+.section-title .eyebrow,
+.card-eyebrow,
+.step-number,
+.timeline-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.hero-card p:first-child,
+.section-title .eyebrow,
+.card-eyebrow,
+.step-number,
+.timeline-label { color: var(--text3); }
+.hero-card p:last-child {
+  margin-top: 12px;
+  font-size: 17px;
+  line-height: 1.75;
+  color: rgba(250,250,250,.82);
+}
+.hero-card ul {
+  margin-top: 14px;
+  padding-left: 18px;
+  color: var(--text2);
+  display: grid;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 1.7;
+}
+.hero-card li::marker { color: var(--blue-xl); }
+.section {
+  margin-top: 24px;
+  border: 1px solid var(--border);
+  border-radius: 30px;
+  background: rgba(255,255,255,.03);
+  overflow: hidden;
+}
+.section-inner { padding: 30px; }
+.section-title { max-width: 720px; }
+.section-title h2 {
+  font-size: clamp(28px, 3.6vw, 42px);
+  line-height: 1.08;
+  letter-spacing: -1.6px;
+}
+.section-title p {
+  margin-top: 14px;
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--text2);
+}
+.ops-grid,
+.feature-grid,
+.flow-grid,
+.audience-grid,
+.metrics-grid {
+  display: grid;
+  gap: 16px;
+}
+.ops-grid { grid-template-columns: minmax(0,.92fr) minmax(0,1.08fr); }
+.ops-panel,
+.feature-card,
+.flow-step,
+.audience-card,
+.timeline-card,
+.metric {
+  border: 1px solid var(--border);
+  background: rgba(0,0,0,.18);
+}
+.ops-panel,
+.feature-card,
+.flow-step,
+.audience-card,
+.timeline-card,
+.metric { border-radius: 22px; }
+.ops-panel,
+.feature-card,
+.flow-step,
+.timeline-card,
+.metric { padding: 22px; }
+.ops-panel p,
+.feature-card p,
+.flow-step p,
+.audience-card,
+.timeline-card p,
+.metric p { color: var(--text2); line-height: 1.75; font-size: 14px; }
+.ops-panel h3,
+.feature-card h3,
+.flow-step h3,
+.timeline-card h3 { font-size: 22px; line-height: 1.25; margin-top: 14px; }
+.timeline {
+  display: grid;
+  gap: 14px;
+}
+.timeline-card {
+  padding: 18px;
+  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+}
+.timeline-card strong {
+  display: block;
+  margin-top: 8px;
+  font-size: 15px;
+  color: var(--text);
+}
+.timeline-card p { margin-top: 8px; }
+.metrics-grid {
+  margin-top: 24px;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+}
+.metric {
+  text-align: left;
+  background: rgba(255,255,255,.04);
+}
+.metric strong {
+  display: block;
+  font-size: 30px;
+  line-height: 1.05;
+  letter-spacing: -1.2px;
+}
+.metric p { margin-top: 10px; }
+.feature-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
+.feature-intro { margin-bottom: 24px; }
+.flow-grid { grid-template-columns: minmax(280px,.84fr) minmax(0,1.16fr); }
+.flow-list { display: grid; gap: 14px; }
+.step-head { display: flex; align-items: center; gap: 12px; }
+.step-line { flex: 1; height: 1px; background: rgba(255,255,255,.1); }
+.audience-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
+.audience-card {
+  padding: 18px;
+  font-size: 14px;
+  line-height: 1.8;
+}
+.final-cta { text-align: left; }
+.footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--border);
+  margin-top: 30px;
+  padding-top: 24px;
+  color: var(--text3);
+  font-size: 13px;
+}
+.footer-links { display: flex; gap: 16px; flex-wrap: wrap; }
+.footer-links a { color: var(--text2); text-decoration: none; }
+.footer-links a:hover { color: #fff; }
+@media (max-width: 980px) {
+  .hero-grid,
+  .ops-grid,
+  .feature-grid,
+  .flow-grid,
+  .audience-grid,
+  .metrics-grid { grid-template-columns: 1fr; }
+  .hero-points { grid-template-columns: 1fr; }
+}
+@media (max-width: 900px) {
+  nav { padding: 0 20px; }
+  .nav-links li:not(:last-child) { display: none; }
+  .wrap { padding: 0 20px 56px; }
+  .hero { padding-top: 80px; }
+  .section-inner { padding: 24px 20px; }
+}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../" class="logo">Kynov<b>ia</b></a>
+  <ul class="nav-links">
+    <li><a href="../../#servicos">Serviços</a></li>
+    <li><a href="../" class="active">Produtos</a></li>
+    <li><a href="../../modelos/">Modelos</a></li>
+    <li><a href="../../#sobre">Sobre</a></li>
+    <li><a href="../../#contato">Contato</a></li>
+  </ul>
+</nav>
+
+<main class="wrap">
+  <section class="hero">
+    <canvas id="canvas-bg"></canvas>
+    <div class="hero-grid-overlay"></div>
+    <div class="hero-glow hero-glow-1"></div>
+    <div class="hero-glow hero-glow-2"></div>
+
+    <div class="hero-badge"><span class="badge-dot"></span>Clinova AI — SaaS para clínicas de estética e emagrecimento</div>
+
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <h1>O sistema que transforma sua clínica em uma <b>máquina de crescimento</b>.</h1>
+        <p>
+          Clinova AI não é um ERP. É um motor de vendas, retenção e gestão
+          construído do zero para clínicas de estética e emagrecimento — com
+          CRM Kanban, agenda inteligente, automação por WhatsApp e um
+          <b>copiloto de IA</b> para o gestor tomar decisões com dados reais.
+        </p>
+        <div class="cta-row">
+          <a href="../../#contato" class="btn btn-primary">Solicitar demonstração</a>
+          <a href="../" class="btn btn-outline">Ver outros produtos</a>
+        </div>
+        <div class="hero-points">
+          <div class="point"><strong>Mais conversão</strong>Pipeline visual de leads com análise de crédito automática, proposta e contrato integrados ao fluxo de venda.</div>
+          <div class="point"><strong>Mais retenção</strong>Renovação automática de pacientes, alertas de churn e NPS em tempo real para o comercial agir antes do paciente sumir.</div>
+          <div class="point"><strong>Mais controle</strong>Dashboard do gestor com KPIs por área — Comercial, Financeiro, Operação e Pessoas — e alertas configuráveis por clínica.</div>
+        </div>
+      </div>
+
+      <div class="hero-stack">
+        <div class="hero-card">
+          <p>O que o Clinova AI resolve</p>
+          <p>Leads que somem sem resposta, contratos sem assinatura, pacientes que terminam o tratamento e nunca mais voltam, agenda sem visibilidade — tudo isso vira <b>processo rastreável e mensurável</b>.</p>
+          <ul>
+            <li>Funil comercial do lead até o fechamento em Kanban visual.</li>
+            <li>Sessões, evolução e feedback integrados à jornada do paciente.</li>
+            <li>Renovação automática detectada na antepenúltima sessão.</li>
+          </ul>
+        </div>
+        <div class="hero-card">
+          <p>Inteligência embutida</p>
+          <p>O sistema já aprende com seus dados. No futuro próximo, um <b>LLM copiloto</b> sugere a próxima ação para cada área do negócio — sem o gestor precisar interpretar gráficos.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-inner ops-grid">
+      <div>
+        <div class="section-title">
+          <div class="eyebrow">Jornada completa</div>
+          <h2>Do primeiro contato ao <b>próximo contrato</b></h2>
+          <p>A maioria dos sistemas para clínicas gerencia o que já aconteceu. O Clinova AI gerencia o que vai acontecer — antecipando churn, sinalizando renovação e acionando o comercial antes que a oportunidade esfrie.</p>
+        </div>
+        <div class="metrics-grid">
+          <div class="metric"><strong>Leads</strong><p>Pipeline Kanban com 8 etapas, análise de crédito automática e histórico de interações por lead.</p></div>
+          <div class="metric"><strong>Sessões</strong><p>Controle de saldo contratado versus realizado, com alerta de renovação na antepenúltima sessão.</p></div>
+          <div class="metric"><strong>Retenção</strong><p>NPS periódico, sinalizador de insatisfação em tempo real e lista de espera com agente de monitoramento a cada 2h.</p></div>
+        </div>
+      </div>
+      <div class="ops-panel">
+        <div class="timeline">
+          <div class="timeline-card">
+            <div class="timeline-label">01 — Captação</div>
+            <strong>Lead entra no CRM Kanban</strong>
+            <p>Cadastro rápido sem sair da tela. Análise de crédito disparada automaticamente ao confirmar avaliação. Flag visual de risco para o comercial.</p>
+          </div>
+          <div class="timeline-card">
+            <div class="timeline-label">02 — Conversão</div>
+            <strong>Proposta, contrato e pagamento integrados</strong>
+            <p>Proposta com validação de margem em tempo real. Contrato gerado automaticamente com fluxo obrigatório de upload e confirmação. Elegibilidade de boleto calculada pelo sistema.</p>
+          </div>
+          <div class="timeline-card">
+            <div class="timeline-label">03 — Execução e retenção</div>
+            <strong>Sessões, agenda e WhatsApp automatizados</strong>
+            <p>Lembrete D-1 por WhatsApp com confirmação em um clique. Agenda diária às 09h. Renovação automática acionada quando o paciente se aproxima do fim do tratamento.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-inner">
+      <div class="section-title feature-intro">
+        <div class="eyebrow">Módulos do produto</div>
+        <h2>Tudo que uma clínica precisa para <b>crescer com dados</b></h2>
+        <p>Cada módulo foi desenhado para eliminar um ponto de perda de receita específico. Juntos, formam o fluxo completo da clínica sem a complexidade de um ERP.</p>
+      </div>
+      <div class="feature-grid">
+        <article class="feature-card">
+          <div class="card-eyebrow">CRM Kanban</div>
+          <h3>Pipeline visual do lead ao paciente ativo</h3>
+          <p>Funil de 8 etapas com drag-and-drop, análise de crédito automática, registro de interações e radar comercial — incluindo alertas de renovações sem ação e leads parados.</p>
+        </article>
+        <article class="feature-card">
+          <div class="card-eyebrow">Agenda Inteligente</div>
+          <h3>Lista de espera, WhatsApp e reatribuição em tempo real</h3>
+          <p>Agente monitora a lista de espera a cada 2h e notifica a recepção quando surge vaga. Lembrete D-1, cancelamento e confirmação via WhatsApp sem intervenção manual.</p>
+        </article>
+        <article class="feature-card">
+          <div class="card-eyebrow">Renovação Automática</div>
+          <h3>O comercial age antes do paciente terminar o tratamento</h3>
+          <p>Sistema detecta a antepenúltima sessão e cria tarefa comercial automaticamente com sugestão de próximo tratamento, LTV do paciente e histórico de satisfação no card.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-inner flow-grid">
+      <div class="section-title">
+        <div class="eyebrow">Dashboard do Gestor</div>
+        <h2>KPIs e alertas por área, <b>não uma tela de números</b></h2>
+        <p>Quatro abas — Comercial, Financeiro, Operação e Pessoas — cada uma com KPIs de estado e alertas de ação. O gestor vê onde está o problema em menos de 10 segundos e age diretamente do dashboard.</p>
+      </div>
+
+      <div class="flow-list">
+        <article class="flow-step">
+          <div class="step-head"><span class="step-number">Comercial</span><div class="step-line"></div></div>
+          <h3>Meta, pipeline e renovações em um lugar só</h3>
+          <p>Meta vs. realizado com to-go em R$, receita no pipeline, ranking de vendedores, alertas de propostas sem resposta e renovações críticas com SLA configurável.</p>
+        </article>
+        <article class="flow-step">
+          <div class="step-head"><span class="step-number">Financeiro</span><div class="step-line"></div></div>
+          <h3>Receita real, margem por tratamento e LTV</h3>
+          <p>Receita realizada, LTV médio por paciente, receita por tratamento e margem bruta calculada a partir dos custos diretos cadastrados — sem depender de planilha ou ERP externo.</p>
+        </article>
+        <article class="flow-step">
+          <div class="step-head"><span class="step-number">Operação</span><div class="step-line"></div></div>
+          <h3>Agenda, anamneses e lista de espera sob controle</h3>
+          <p>Sessões do dia com status, taxa de no-show por profissional, alertas de paciente sem anamnese válida com sessão hoje e lista de espera ativa com matches pendentes.</p>
+        </article>
+        <article class="flow-step">
+          <div class="step-head"><span class="step-number">Pessoas</span><div class="step-line"></div></div>
+          <h3>NPS, ranking de profissionais e risco de churn</h3>
+          <p>Satisfação média por profissional e por tratamento, detratores sem contato, feedback negativo por procedimento e pacientes em risco de churn identificados automaticamente.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-inner">
+      <div class="section-title">
+        <div class="eyebrow">Para quem</div>
+        <h2>Clínicas que já têm demanda e precisam de <b>processo para crescer</b></h2>
+        <p>O Clinova AI foi construído para clínicas que já estão operando mas perdem receita por falta de processo — leads que somem, pacientes que não renovam e gestores que não têm visibilidade real do negócio.</p>
+      </div>
+      <div class="audience-grid" style="margin-top:28px;">
+        <div class="audience-card">Clínicas com equipe comercial que precisa de pipeline, metas e rastreabilidade de cada lead do primeiro contato ao fechamento.</div>
+        <div class="audience-card">Gestores que tomam decisões por intuição e querem dashboards com alertas reais — não relatórios para ler no fim do mês.</div>
+        <div class="audience-card">Clínicas que dependem de recorrência e renovação de pacientes como principal fonte de receita e precisam automatizar esse processo.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-inner final-cta">
+      <div class="section-title">
+        <div class="eyebrow">Próximo passo</div>
+        <h2>Veja o Clinova AI funcionando <b>na sua realidade</b></h2>
+        <p>Cada clínica tem um ponto de perda de receita diferente. Nosso primeiro passo é entender o seu e mostrar como o Clinova AI resolve — sem apresentação genérica.</p>
+      </div>
+      <div class="cta-row">
+        <a href="../../#contato" class="btn btn-primary">Solicitar demonstração</a>
+        <a href="../" class="btn btn-outline">Ver outros produtos</a>
+      </div>
+
+      <div class="footer">
+        <div>
+          <strong style="display:block;color:var(--text);margin-bottom:4px">Kynovia</strong>
+          <span>Clinova AI — Motor de crescimento para clínicas de estética e emagrecimento.</span>
+        </div>
+        <div class="footer-links">
+          <a href="../../privacidade/">Política de privacidade</a>
+          <a href="../../termos/">Termos de uso</a>
+          <a href="../../#contato">Contato</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+(function(){
+  const cv = document.getElementById('canvas-bg');
+  if(!cv) return;
+  const ctx = cv.getContext('2d');
+  let W, H, nodes = [], RAF;
+  const N = 55, MAX_DIST = 160, BLUE = '59,130,246';
+
+  function resize(){
+    W = cv.width = cv.offsetWidth;
+    H = cv.height = cv.offsetHeight;
+  }
+
+  function mkNode(){
+    return {
+      x: Math.random()*W, y: Math.random()*H,
+      vx:(Math.random()-.5)*.35, vy:(Math.random()-.5)*.35,
+      r: Math.random()*1.4+.4
+    };
+  }
+
+  function init(){ resize(); nodes=[]; for(let i=0;i<N;i++) nodes.push(mkNode()); }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    nodes.forEach(n=>{
+      n.x+=n.vx; n.y+=n.vy;
+      if(n.x<0||n.x>W) n.vx*=-1;
+      if(n.y<0||n.y>H) n.vy*=-1;
+    });
+    for(let i=0;i<N;i++){
+      for(let j=i+1;j<N;j++){
+        const dx=nodes[i].x-nodes[j].x, dy=nodes[i].y-nodes[j].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<MAX_DIST){
+          ctx.beginPath();
+          ctx.strokeStyle=`rgba(${BLUE},${.18*(1-d/MAX_DIST)})`;
+          ctx.lineWidth=.6;
+          ctx.moveTo(nodes[i].x,nodes[i].y);
+          ctx.lineTo(nodes[j].x,nodes[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    nodes.forEach(n=>{
+      ctx.beginPath();
+      ctx.fillStyle=`rgba(${BLUE},.55)`;
+      ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+      ctx.fill();
+    });
+    RAF=requestAnimationFrame(draw);
+  }
+
+  init(); draw();
+  window.addEventListener('resize', ()=>{ cancelAnimationFrame(RAF); init(); draw(); });
+})();
+</script>
+</body>
+</html>

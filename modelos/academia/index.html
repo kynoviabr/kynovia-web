@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APEX Performance — Treinamento de alto desempenho</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0A0A0A;--bg2:#111111;--bg3:#181818;
+  --red:#E63946;--red2:#FF4D5A;--red3:#8B1A22;
+  --white:#F5F5F5;--white2:#B0B0B0;--white3:#505050;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.03);
+  --font-display:'Bebas Neue',sans-serif;
+  --font:'Inter',system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--white);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 60px;height:68px;background:rgba(10,10,10,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border2)}
+.nav-logo{font-family:var(--font-display);font-size:26px;color:var(--white);text-decoration:none;letter-spacing:.08em}
+.nav-logo span{color:var(--red)}
+.nav-links{display:flex;gap:28px;list-style:none}
+.nav-links a{font-size:12px;color:var(--white3);text-decoration:none;letter-spacing:.1em;text-transform:uppercase;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--white)}
+.nav-btn{font-size:12px;color:var(--white);background:var(--red);padding:10px 24px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;text-decoration:none;transition:background .2s}
+.nav-btn:hover{background:var(--red2)}
+
+/* HERO */
+.hero{position:relative;height:100vh;display:flex;align-items:center;overflow:hidden}
+.hero-bg{position:absolute;inset:0}
+.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:center 30%;filter:brightness(.3) saturate(.7)}
+.hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,10,10,0.95) 40%,rgba(10,10,10,0.4) 100%)}
+.hero-content{position:relative;z-index:1;padding:100px 60px 80px;max-width:680px;overflow:hidden}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;background:var(--red);padding:5px 14px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;margin-bottom:28px}
+.htdot{width:5px;height:5px;border-radius:50%;background:var(--white);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+h1{font-family:var(--font-display);font-size:clamp(60px,8vw,120px);line-height:.92;letter-spacing:.02em;color:var(--white);margin-bottom:8px;overflow:hidden}
+h1 .red{color:var(--red)}
+.hero-rule{width:80px;height:3px;background:var(--red);margin:28px 0}
+.hero-sub{font-size:16px;color:var(--white2);line-height:1.7;max-width:420px;margin-bottom:44px;font-weight:300}
+.hero-ctas{display:flex;gap:14px}
+.btn-red{font-size:13px;color:var(--white);background:var(--red);padding:16px 36px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;text-decoration:none;transition:all .2s}
+.btn-red:hover{background:var(--red2);transform:translateY(-1px)}
+.btn-white{font-size:13px;color:var(--white);background:transparent;padding:15px 32px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;text-decoration:none;border:1px solid var(--border);transition:all .2s}
+.btn-white:hover{border-color:rgba(255,255,255,.25);background:rgba(255,255,255,.05)}
+.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:64px;border-top:1px solid var(--border)}
+.hstat{padding:24px 0 0;border-right:1px solid var(--border)}
+.hstat:last-child{border-right:none}
+.hstat-val{font-family:var(--font-display);font-size:48px;letter-spacing:.02em;color:var(--white);line-height:1;margin-bottom:4px}
+.hstat-val span{color:var(--red)}
+.hstat-lbl{font-size:11px;color:var(--white3);letter-spacing:.08em;text-transform:uppercase;font-weight:400}
+
+/* MARQUEE */
+.strip{overflow:hidden;border-top:1px solid var(--border2);border-bottom:1px solid var(--border2);padding:16px 0;background:var(--bg2)}
+.strip-t{display:flex;gap:48px;animation:mrq 20s linear infinite;width:max-content}
+@keyframes mrq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.si{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--white3);white-space:nowrap;font-weight:500}
+.ss{color:var(--red);opacity:.5}
+
+/* SECTIONS */
+.s{padding:100px 60px;max-width:1160px;margin:0 auto}
+.sf{padding:100px 60px;border-top:1px solid var(--border)}
+.sfi{max-width:1160px;margin:0 auto}
+.lbl{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.ll{width:24px;height:2px;background:var(--red)}
+.lbl span{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--red);font-weight:600}
+h2{font-family:var(--font-display);font-size:clamp(44px,5vw,80px);line-height:.95;letter-spacing:.03em;color:var(--white);margin-bottom:18px}
+h2 .red{color:var(--red)}
+.desc{font-size:15px;color:var(--white2);line-height:1.75;max-width:460px;font-weight:300}
+
+/* PROGRAMS */
+.prog-head{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:52px}
+.prog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border2);border:1px solid var(--border2)}
+.prog{background:var(--bg2);padding:40px 32px;transition:background .25s;position:relative;overflow:hidden;cursor:pointer}
+.prog:hover{background:var(--bg3)}
+.prog::before{content:'';position:absolute;top:0;left:0;width:3px;height:0;background:var(--red);transition:height .3s}
+.prog:hover::before{height:100%}
+.prog-n{font-family:var(--font-display);font-size:11px;color:var(--white3);letter-spacing:.12em;margin-bottom:18px;display:block}
+.prog-ico{margin-bottom:18px}
+.prog-ico svg{width:36px;height:36px;stroke:var(--red);stroke-width:1.4;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.prog h3{font-family:var(--font-display);font-size:28px;letter-spacing:.04em;color:var(--white);margin-bottom:12px}
+.prog p{font-size:13.5px;color:var(--white2);line-height:1.65;font-weight:300;margin-bottom:20px}
+.prog-tag{display:inline-block;background:rgba(230,57,70,.12);color:var(--red2);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border:1px solid rgba(230,57,70,.2);font-weight:500}
+
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--border);overflow:hidden}
+.about-img{overflow:hidden;position:relative}
+.about-img img{width:100%;height:100%;min-height:560px;object-fit:cover;object-position:center;filter:grayscale(.2) brightness(.8);transition:transform .6s ease}
+.about-grid:hover .about-img img{transform:scale(1.04)}
+.about-img-overlay{position:absolute;inset:0;background:linear-gradient(to right,transparent 60%,var(--bg2) 100%)}
+.about-body{background:var(--bg2);padding:72px 56px;display:flex;flex-direction:column;justify-content:center}
+.about-body p{font-size:15px;color:var(--white2);line-height:1.8;font-weight:300;margin-bottom:20px}
+.about-rule{width:48px;height:2px;background:var(--red);margin:28px 0}
+.about-nums{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.anum-val{font-family:var(--font-display);font-size:44px;letter-spacing:.02em;color:var(--white);line-height:1;margin-bottom:4px}
+.anum-val span{color:var(--red)}
+.anum-lbl{font-size:11px;color:var(--white3);letter-spacing:.08em;text-transform:uppercase}
+
+/* COACHES */
+.coaches-bg{background:var(--bg2)}
+.coaches-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border2);border:1px solid var(--border2);margin-top:52px}
+.coach{background:var(--bg2);transition:background .25s;overflow:hidden}
+.coach:hover{background:var(--bg3)}
+.coach-img{aspect-ratio:3/4;overflow:hidden}
+.coach-img img{width:100%;height:100%;object-fit:cover;object-position:center top;filter:grayscale(.4);transition:filter .3s,transform .4s}
+.coach:hover .coach-img img{filter:grayscale(0);transform:scale(1.04)}
+.coach-body{padding:20px}
+.coach-name{font-family:var(--font-display);font-size:20px;letter-spacing:.04em;color:var(--white);margin-bottom:3px}
+.coach-role{font-size:11px;color:var(--red);letter-spacing:.1em;text-transform:uppercase;font-weight:600;margin-bottom:10px}
+.coach-desc{font-size:12.5px;color:var(--white3);line-height:1.6;font-weight:300}
+
+/* RESULTS */
+.res-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border2);border:1px solid var(--border2);margin-top:52px}
+.res{background:var(--bg2);padding:40px 32px;transition:background .25s;border-left:3px solid transparent;transition:all .25s}
+.res:hover{background:var(--bg3);border-left-color:var(--red)}
+.res-val{font-family:var(--font-display);font-size:60px;letter-spacing:.02em;color:var(--white);line-height:1;margin-bottom:8px}
+.res-val span{color:var(--red)}
+.res h4{font-size:14px;font-weight:600;color:var(--white);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
+.res p{font-size:13px;color:var(--white2);line-height:1.65;font-weight:300}
+
+/* TESTI */
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:52px}
+.testi{background:var(--bg2);border:1px solid var(--border);padding:32px 28px;transition:border-color .25s}
+.testi:hover{border-color:rgba(230,57,70,.25)}
+.tst-top{display:flex;gap:12px;align-items:center;margin-bottom:20px}
+.tst-avatar{width:44px;height:44px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2px solid var(--red3)}
+.tst-avatar img{width:100%;height:100%;object-fit:cover}
+.tst-name{font-size:13px;font-weight:600;color:var(--white);margin-bottom:2px}
+.tst-info{font-size:11.5px;color:var(--white3)}
+.tst-stars{display:flex;gap:2px;margin-bottom:14px}
+.tst-stars svg{width:12px;height:12px;fill:var(--red);stroke:none}
+.testi p{font-size:13.5px;color:var(--white2);line-height:1.7;font-weight:300}
+
+/* CTA */
+.cta-s{position:relative;overflow:hidden;border-top:1px solid var(--border)}
+.cta-bg-img{position:absolute;inset:0}
+.cta-bg-img img{width:100%;height:100%;object-fit:cover;filter:brightness(.1) saturate(.5)}
+.cta-bg-img::after{content:'';position:absolute;inset:0;background:rgba(10,10,10,.88)}
+.cta-inner{position:relative;z-index:1;padding:120px 60px;display:grid;grid-template-columns:1fr auto;gap:80px;align-items:center;max-width:1160px;margin:0 auto}
+.cta-copy h2{font-size:clamp(52px,6vw,90px);margin-bottom:16px}
+.cta-copy p{font-size:15px;color:var(--white2);line-height:1.7;font-weight:300;max-width:440px}
+.cta-action{flex-shrink:0;text-align:center}
+.cta-action-btn{display:block;font-size:13px;color:var(--white);background:var(--red);padding:18px 48px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;text-decoration:none;transition:all .2s;margin-bottom:14px}
+.cta-action-btn:hover{background:var(--red2);transform:translateY(-2px);box-shadow:0 8px 28px rgba(230,57,70,.3)}
+.cta-action-note{font-size:12px;color:var(--white3)}
+
+/* FOOTER */
+footer{background:var(--bg2);border-top:1px solid var(--border2);padding:60px 60px 36px}
+.ft{max-width:1160px;margin:0 auto}
+.ft-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:56px;margin-bottom:52px}
+.ft-logo{font-family:var(--font-display);font-size:24px;color:var(--white);margin-bottom:14px;letter-spacing:.06em}
+.ft-logo span{color:var(--red)}
+.ft-desc{font-size:13px;color:var(--white3);line-height:1.7;font-weight:300;max-width:210px}
+.ftct{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--white2);margin-bottom:16px;font-weight:600}
+.ft-col ul{list-style:none}
+.ft-col li{margin-bottom:9px}
+.ft-col a{font-size:13px;color:var(--white3);text-decoration:none;font-weight:300;transition:color .2s}
+.ft-col a:hover{color:var(--white)}
+.ft-bottom{border-top:1px solid var(--border2);padding-top:24px;display:flex;justify-content:space-between;align-items:center}
+.ftcopy{font-size:12px;color:var(--white3)}
+.ftk{font-size:12px;color:var(--white3)}
+.ftk a{color:var(--red3);text-decoration:none;transition:color .2s}
+.ftk a:hover{color:var(--red)}
+
+.r{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.r.v{opacity:1;transform:none}
+.rd2{transition-delay:.1s}.rd3{transition-delay:.2s}.rd4{transition-delay:.3s}
+
+@media(max-width:960px){
+  nav{padding:0 24px}.nav-links{display:none}
+  .hero-content{padding:88px 24px 60px}
+  .hero-stats{grid-template-columns:1fr 1fr}
+  .hstat{border-right:none;padding:20px 0 0}
+  .s{padding:72px 24px}.sf{padding:72px 24px}
+  footer{padding:52px 24px 28px}
+  .prog-head{grid-template-columns:1fr;gap:18px}
+  .prog-grid{grid-template-columns:1fr 1fr}
+  .about-grid{grid-template-columns:1fr}
+  .about-img img{min-height:300px}
+  .coaches-grid{grid-template-columns:1fr 1fr}
+  .res-grid{grid-template-columns:1fr}
+  .testi-grid{grid-template-columns:1fr}
+  .cta-inner{grid-template-columns:1fr;gap:40px;padding:72px 24px}
+  .cta-action{text-align:left}
+  .ft-top{grid-template-columns:1fr 1fr;gap:36px}
+  .ft-bottom{flex-direction:column;gap:12px;text-align:center}
+}
+@media(max-width:580px){
+  h1{font-size:clamp(60px,15vw,90px)}
+  .prog-grid{grid-template-columns:1fr}
+  .coaches-grid{grid-template-columns:1fr 1fr}
+  .about-nums{grid-template-columns:1fr 1fr}
+  .ft-top{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<a href="../" style="position:fixed;left:16px;bottom:16px;z-index:9999;padding:10px 13px;border-radius:999px;background:rgba(10,10,11,.82);color:#fff;border:1px solid rgba(255,255,255,.16);font:500 12px Inter,system-ui,sans-serif;text-decoration:none;backdrop-filter:blur(18px)">Kynovia / Modelos</a>
+
+<nav>
+  <a href="#" class="nav-logo">APE<span>X</span></a>
+  <ul class="nav-links">
+    <li><a href="#programas">Programas</a></li>
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#coaches">Coaches</a></li>
+    <li><a href="#resultados">Resultados</a></li>
+  </ul>
+  <a href="#contato" class="nav-btn">Começar agora</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg">
+    <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1600&h=900&fit=crop&crop=center&q=85" alt="APEX Performance Training"/>
+  </div>
+  <div class="hero-content">
+    <div class="hero-tag"><div class="htdot"></div>Alto desempenho</div>
+    <h1>SUPERE<br>SEUS<br><span class="red">LIMITES.</span></h1>
+    <div class="hero-rule"></div>
+    <p class="hero-sub">Treinamento funcional de alta intensidade, acompanhamento nutricional e metodologia baseada em ciência. Resultados reais para quem leva a sério.</p>
+    <div class="hero-ctas">
+      <a href="#contato" class="btn-red">Começar agora</a>
+      <a href="#programas" class="btn-white">Ver programas</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat"><div class="hstat-val" data-count="2400" data-suffix="+">0</div><div class="hstat-lbl">Alunos formados</div></div>
+      <div class="hstat"><div class="hstat-val" data-count="8" data-suffix=" anos">0</div><div class="hstat-lbl">De metodologia</div></div>
+      <div class="hstat"><div class="hstat-val" data-count="94" data-suffix="%">0</div><div class="hstat-lbl">Meta atingida</div></div>
+      <div class="hstat"><div class="hstat-val" data-count="12" data-suffix="">0</div><div class="hstat-lbl">Coaches certificados</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="strip">
+  <div class="strip-t">
+    <span class="si">Musculação</span><span class="ss">·</span>
+    <span class="si">Funcional</span><span class="ss">·</span>
+    <span class="si">HIIT</span><span class="ss">·</span>
+    <span class="si">Crosstraining</span><span class="ss">·</span>
+    <span class="si">Nutrição Esportiva</span><span class="ss">·</span>
+    <span class="si">Assessoria Online</span><span class="ss">·</span>
+    <span class="si">Treino Outdoor</span><span class="ss">·</span>
+    <span class="si">Performance Atlética</span><span class="ss">·</span>
+    <span class="si">Musculação</span><span class="ss">·</span>
+    <span class="si">Funcional</span><span class="ss">·</span>
+    <span class="si">HIIT</span><span class="ss">·</span>
+    <span class="si">Crosstraining</span><span class="ss">·</span>
+    <span class="si">Nutrição Esportiva</span><span class="ss">·</span>
+    <span class="si">Assessoria Online</span><span class="ss">·</span>
+    <span class="si">Treino Outdoor</span><span class="ss">·</span>
+    <span class="si">Performance Atlética</span><span class="ss">·</span>
+  </div>
+</div>
+
+<!-- PROGRAMAS -->
+<section class="sf" id="programas">
+  <div class="sfi">
+    <div class="prog-head r">
+      <div><div class="lbl"><div class="ll"></div><span>Programas</span></div><h2>ESCOLHA<br>SEU <span class="red">NÍVEL</span></h2></div>
+      <p class="desc">Programas desenhados para todos os perfis — do iniciante que quer começar do jeito certo ao atleta que busca o próximo nível.</p>
+    </div>
+    <div class="prog-grid r rd2">
+      <div class="prog">
+        <div class="prog-n">01</div>
+        <div class="prog-ico"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="14"/><path d="M12 18l4 4 8-8"/></svg></div>
+        <h3>Foundation</h3>
+        <p>Para quem está começando. Base sólida de movimento, condicionamento progressivo e hábitos que sustentam o resultado a longo prazo.</p>
+        <span class="prog-tag">Iniciante</span>
+      </div>
+      <div class="prog">
+        <div class="prog-n">02</div>
+        <div class="prog-ico"><svg viewBox="0 0 36 36"><path d="M6 30l6-12 6 6 6-10 6 16"/><path d="M3 30h30"/></svg></div>
+        <h3>Performance</h3>
+        <p>Intensidade calculada, periodização inteligente e foco em hipertrofia ou resistência. Para quem já treina e quer quebrar plateau.</p>
+        <span class="prog-tag">Intermediário</span>
+      </div>
+      <div class="prog">
+        <div class="prog-n">03</div>
+        <div class="prog-ico"><svg viewBox="0 0 36 36"><path d="M18 4l4 10h10l-8 6 3 10-9-6-9 6 3-10-8-6h10z"/></svg></div>
+        <h3>Elite</h3>
+        <p>Treinamento de atleta. Análise biomecânica, controle preciso de carga e recuperação, nutrição individualizada e acompanhamento diário.</p>
+        <span class="prog-tag">Avançado</span>
+      </div>
+      <div class="prog">
+        <div class="prog-n">04</div>
+        <div class="prog-ico"><svg viewBox="0 0 36 36"><circle cx="12" cy="10" r="4"/><circle cx="24" cy="10" r="4"/><path d="M4 30c0-4.4 3.6-8 8-8h12c4.4 0 8 3.6 8 8"/></svg></div>
+        <h3>Team Training</h3>
+        <p>Treinos em grupo com até 8 pessoas. A energia do coletivo com a atenção do treinador individual. Alta performance com preço acessível.</p>
+        <span class="prog-tag">Todos os níveis</span>
+      </div>
+      <div class="prog">
+        <div class="prog-n">05</div>
+        <div class="prog-ico"><svg viewBox="0 0 36 36"><rect x="8" y="8" width="20" height="14" rx="2"/><line x1="18" y1="22" x2="18" y2="28"/><line x1="12" y1="28" x2="24" y2="28"/><circle cx="14" cy="15" r="2"/><circle cx="22" cy="15" r="2"/></svg></div>
+        <h3>Online Coaching</h3>
+        <p>Planilha de treino personalizada, acompanhamento semanal por vídeo e suporte diário via app. Para quem não pode ou não quer treinar presencialmente.</p>
+        <span class="prog-tag">Remoto</span>
+      </div>
+      <div class="prog">
+        <div class="prog-n">06</div>
+        <div class="prog-ico"><svg viewBox="0 0 36 36"><path d="M18 4C10.3 4 4 10.3 4 18s6.3 14 14 14 14-6.3 14-14S25.7 4 18 4z"/><path d="M18 10v8l5 3"/></svg></div>
+        <h3>Nutrição Esportiva</h3>
+        <p>Avaliação nutricional completa, protocolo alimentar individualizado e suplementação estratégica para maximizar o resultado do seu treino.</p>
+        <span class="prog-tag">Complementar</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOBRE -->
+<section class="sf" id="sobre">
+  <div class="sfi">
+    <div class="about-grid r">
+      <div class="about-img">
+        <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=700&h=800&fit=crop&crop=center&q=85" alt="APEX Performance academia"/>
+        <div class="about-img-overlay"></div>
+      </div>
+      <div class="about-body">
+        <div class="lbl"><div class="ll"></div><span>Nossa metodologia</span></div>
+        <h2>CIÊNCIA<br>NO <span class="red">TREINO</span></h2>
+        <p>O APEX nasceu da insatisfação com academias tradicionais onde o aluno é um número. Aqui, cada pessoa tem uma história, um objetivo e um programa exclusivo.</p>
+        <p>Nossa metodologia combina ciência do esporte, tecnologia de monitoramento e o acompanhamento próximo de coaches certificados. Sem achismo, sem modinha — só o que funciona.</p>
+        <div class="about-rule"></div>
+        <div class="about-nums">
+          <div><div class="anum-val" data-count="2400" data-suffix="+">0</div><div class="anum-lbl">Alunos ativos</div></div>
+          <div><div class="anum-val" data-count="94" data-suffix="%">0</div><div class="anum-lbl">Meta atingida</div></div>
+          <div><div class="anum-val" data-count="8" data-suffix="">0</div><div class="anum-lbl">Anos de operação</div></div>
+          <div><div class="anum-val" data-count="12" data-suffix="">0</div><div class="anum-lbl">Coaches sênior</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COACHES -->
+<section class="sf coaches-bg" id="coaches">
+  <div class="sfi">
+    <div class="r"><div class="lbl"><div class="ll"></div><span>Equipe</span></div><h2>OS COACHES<br>QUE VÃO <span class="red">ALÉM</span></h2></div>
+    <div class="coaches-grid r rd2">
+      <div class="coach">
+        <div class="coach-img"><img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=533&fit=crop&crop=top&q=80" alt="Coach APEX"/></div>
+        <div class="coach-body"><div class="coach-name">Lucas Ferreira</div><div class="coach-role">Head Coach · Performance</div><div class="coach-desc">CREF certificado. Especialista em hipertrofia e periodização. Ex-atleta de crossfit nacional.</div></div>
+      </div>
+      <div class="coach">
+        <div class="coach-img"><img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400&h=533&fit=crop&crop=top&q=80" alt="Coach APEX"/></div>
+        <div class="coach-body"><div class="coach-name">Marina Costa</div><div class="coach-role">Coach · Funcional & HIIT</div><div class="coach-desc">Mestre em Ciências do Esporte. Especialista em treinamento funcional e reabilitação esportiva.</div></div>
+      </div>
+      <div class="coach">
+        <div class="coach-img"><img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=400&h=533&fit=crop&crop=top&q=80" alt="Nutricionista APEX"/></div>
+        <div class="coach-body"><div class="coach-name">André Lima</div><div class="coach-role">Coach · Força & Potência</div><div class="coach-desc">Especialista em biomecânica e levantamento olímpico. Formado em Educação Física pela EEFE-USP.</div></div>
+      </div>
+      <div class="coach">
+        <div class="coach-img"><img src="https://images.unsplash.com/photo-1594381898411-846e7d193883?w=400&h=533&fit=crop&crop=top&q=80" alt="Nutricionista APEX"/></div>
+        <div class="coach-body"><div class="coach-name">Juliana Neves</div><div class="coach-role">Nutricionista Esportiva</div><div class="coach-desc">CRN certificada. Especialista em nutrição aplicada ao esporte e composição corporal.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTADOS -->
+<section class="sf" id="resultados">
+  <div class="sfi">
+    <div class="r"><div class="lbl"><div class="ll"></div><span>Resultados</span></div><h2>NÚMEROS QUE<br><span class="red">NÃO MENTEM</span></h2></div>
+    <div class="res-grid r rd2">
+      <div class="res"><div class="res-val" data-count="94" data-suffix="%"><span>0%</span></div><h4>Meta atingida</h4><p>94% dos alunos que completam 90 dias de programa atingem o objetivo definido na avaliação inicial.</p></div>
+      <div class="res"><div class="res-val" data-count="8" data-suffix="kg">0</div><h4>Redução média de gordura</h4><p>Média de perda de gordura corporal nos primeiros 3 meses em alunos no programa Performance.</p></div>
+      <div class="res"><div class="res-val" data-count="2400" data-suffix="+">0</div><h4>Alunos formados</h4><p>Em 8 anos de operação, mais de 2.400 pessoas passaram pela metodologia APEX e transformaram seus corpos.</p></div>
+    </div>
+    <div class="testi-grid r rd2" style="margin-top:24px">
+      <div class="testi">
+        <div class="tst-top"><div class="tst-avatar"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=88&h=88&fit=crop&crop=face&q=80" alt=""/></div><div><div class="tst-name">Bruno Alves</div><div class="tst-info">Programa Elite · 6 meses</div></div></div>
+        <div class="tst-stars"><svg viewBox="0 0 12 12"><polygon points="6,1 7.5,4.5 11,5 8.5,7.5 9,11 6,9.5 3,11 3.5,7.5 1,5 4.5,4.5"/></svg><svg viewBox="0 0 12 12"><polygon points="6,1 7.5,4.5 11,5 8.5,7.5 9,11 6,9.5 3,11 3.5,7.5 1,5 4.5,4.5"/></svg><svg viewBox="0 0 12 12"><polygon points="6,1 7.5,4.5 11,5 8.5,7.5 9,11 6,9.5 3,11 3.5,7.5 1,5 4.5,4.5"/></svg><svg viewBox="0 0 12 12"><polygon points="6,1 7.5,4.5 11,5 8.5,7.5 9,11 6,9.5 3,11 3.5,7.5 1,5 4.5,4.5"/></svg><svg viewBox="0 0 12 12"><polygon points="6,1 7.5,4.5 11,5 8.5,7.5 9,11 6,9.5 3,11 3.5,7.5 1,5 4.5,4.5"/></svg></div>
+        <p>"Reduzi 12kg de gordura e ganhei massa. Mais do que o físico, mudei minha relação com o treinamento. O acompanhamento do Lucas foi diferente de tudo que já tive."</p>
+      </div>
+      <div class="testi">
+        <div class="tst-top"><div class="tst-avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=88&h=88&fit=crop&crop=face&q=80" alt=""/></div><div><div class="tst-name">Camila Prado</div><div class="tst-info">Programa Performance · 4 meses</div></div></div>
+        <div class="tst-stars"><svg viewBox="0 0 12 12"><polygon points="6,1 7.5,4.5 11,5 8.5,7.5 9,11 6,9.5 3,11 3.5,7.5 1,5 4.5,4.5"/></svg><svg viewBox="0 0 12 12"><polygon points="6,1 7.5,4.5 11,5 8.5,7.5 9,11 6,9.5 3,11 3.5,7.5 1,5 4.5,4.5"/></svg><svg viewBox="0 0 12 12"><polygon points="6,1 7.5,4.5 11,5 8.5,7.5 9,11 6,9.5 3,11 3.5,7.5 1,5 4.5,4.5"/></svg><svg viewBox="0 0 12 12"><polygon points="6,1 7.5,4.5 11,5 8.5,7.5 9,11 6,9.5 3,11 3.5,7.5 1,5 4.5,4.5"/></svg><svg viewBox="0 0 12 12"><polygon points="6,1 7.5,4.5 11,5 8.5,7.5 9,11 6,9.5 3,11 3.5,7.5 1,5 4.5,4.5"/></svg></div>
+        <p>"Em 4 meses fiz o que não consegui em 4 anos em outras academias. A metodologia é séria, o acompanhamento é real e os resultados falam por si."</p>
+      </div>
+      <div class="testi">
+        <div class="tst-top"><div class="tst-avatar"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=88&h=88&fit=crop&crop=face&q=80" alt=""/></div><div><div class="tst-name">Rafael Matos</div><div class="tst-info">Online Coaching · 3 meses</div></div></div>
+        <div class="tst-stars"><svg viewBox="0 0 12 12"><polygon points="6,1 7.5,4.5 11,5 8.5,7.5 9,11 6,9.5 3,11 3.5,7.5 1,5 4.5,4.5"/></svg><svg viewBox="0 0 12 12"><polygon points="6,1 7.5,4.5 11,5 8.5,7.5 9,11 6,9.5 3,11 3.5,7.5 1,5 4.5,4.5"/></svg><svg viewBox="0 0 12 12"><polygon points="6,1 7.5,4.5 11,5 8.5,7.5 9,11 6,9.5 3,11 3.5,7.5 1,5 4.5,4.5"/></svg><svg viewBox="0 0 12 12"><polygon points="6,1 7.5,4.5 11,5 8.5,7.5 9,11 6,9.5 3,11 3.5,7.5 1,5 4.5,4.5"/></svg><svg viewBox="0 0 12 12"><polygon points="6,1 7.5,4.5 11,5 8.5,7.5 9,11 6,9.5 3,11 3.5,7.5 1,5 4.5,4.5"/></svg></div>
+        <p>"Moro em outra cidade mas o online coaching do APEX é mais efetivo do que qualquer academia que já fui presencialmente. Suporte real, não planilha genérica."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-s" id="contato">
+  <div class="cta-bg-img"><img src="https://images.unsplash.com/photo-1549576490-b0b4831ef60a?w=1600&h=600&fit=crop&crop=center&q=80" alt=""/></div>
+  <div class="cta-inner r">
+    <div class="cta-copy">
+      <div class="lbl"><div class="ll"></div><span>Comece hoje</span></div>
+      <h2>SUA<br>MELHOR<br><span class="red">VERSÃO</span><br>COMEÇA<br>AGORA.</h2>
+    </div>
+    <div class="cta-action">
+      <a href="https://wa.me/5511999999999" class="cta-action-btn">Começar pelo WhatsApp</a>
+      <div class="cta-action-note">Avaliação gratuita · Sem fidelidade obrigatória</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="ft">
+    <div class="ft-top">
+      <div><div class="ft-logo">APE<span>X</span></div><p class="ft-desc">Treinamento funcional de alta performance em São Paulo. Metodologia baseada em ciência, resultado comprovado.</p></div>
+      <div class="ft-col"><div class="ftct">Programas</div><ul><li><a href="#">Foundation</a></li><li><a href="#">Performance</a></li><li><a href="#">Elite</a></li><li><a href="#">Team Training</a></li><li><a href="#">Online Coaching</a></li></ul></div>
+      <div class="ft-col"><div class="ftct">Sobre</div><ul><li><a href="#">Nossa história</a></li><li><a href="#">Os coaches</a></li><li><a href="#">Metodologia</a></li><li><a href="#">Resultados</a></li></ul></div>
+      <div class="ft-col"><div class="ftct">Contato</div><ul><li><a href="#">WhatsApp</a></li><li><a href="#">Instagram</a></li><li><a href="#">Localização</a></li><li><a href="#">Avaliação gratuita</a></li></ul></div>
+    </div>
+    <div class="ft-bottom">
+      <span class="ftcopy">© 2025 APEX Performance. Todos os direitos reservados.</span>
+      <span class="ftk">Site por <a href="https://kynovia.com.br" target="_blank">Kynovia</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('v');x.target.querySelectorAll('[data-count]').forEach(animCount);if(x.target.dataset.count)animCount(x.target)}}),{threshold:.12});
+document.querySelectorAll('.r').forEach(el=>io.observe(el));
+document.querySelectorAll('[data-count]').forEach(el=>io.observe(el));
+function animCount(el){
+  if(el.dataset.done)return;el.dataset.done=1;
+  const target=+el.dataset.count,suffix=el.dataset.suffix||'',dur=1600,start=performance.now();
+  function tick(now){const p=Math.min((now-start)/dur,1),ease=1-Math.pow(1-p,3);const val=target>=100?Math.round(ease*target).toLocaleString('pt-BR'):Math.round(ease*target);el.textContent=val+suffix;if(p<1)requestAnimationFrame(tick)}
+  requestAnimationFrame(tick);
+}
+</script>
+</body>
+</html>

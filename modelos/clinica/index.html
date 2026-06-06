@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lumina Clínica Estética — Beleza com Ciência</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:    #0C0B09;
+  --bg2:   #131210;
+  --bg3:   #1A1815;
+  --gold:  #C9A96E;
+  --gold2: #E8D5A3;
+  --gold3: #8B6F3E;
+  --cream: #F5EDD6;
+  --text:  #F0E8D5;
+  --text2: #9C8E78;
+  --text3: #5C5044;
+  --border: rgba(201,169,110,0.12);
+  --border2: rgba(201,169,110,0.06);
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans:  'Inter', system-ui, sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 60px; height: 72px;
+  background: rgba(12,11,9,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border2);
+  transition: background .3s;
+}
+.nav-logo {
+  font-family: var(--serif);
+  font-size: 22px; font-weight: 400;
+  color: var(--gold2); letter-spacing: 0.08em;
+  text-decoration: none;
+}
+.nav-logo span { font-style: italic; color: var(--gold); }
+.nav-links { display: flex; gap: 36px; list-style: none; }
+.nav-links a { font-size: 12px; color: var(--text2); text-decoration: none; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; transition: color .2s; }
+.nav-links a:hover { color: var(--gold2); }
+.nav-btn {
+  font-size: 11.5px; color: var(--bg); background: var(--gold);
+  padding: 10px 24px; border-radius: 1px; letter-spacing: 0.12em;
+  text-transform: uppercase; font-weight: 500; text-decoration: none;
+  transition: background .2s;
+}
+.nav-btn:hover { background: var(--gold2); }
+
+/* ── HERO ── */
+.hero {
+  position: relative; min-height: 100vh;
+  display: flex; align-items: center;
+  overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 70% at 75% 50%, rgba(201,169,110,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 20% 80%, rgba(201,169,110,0.04) 0%, transparent 50%),
+    linear-gradient(160deg, #0C0B09 0%, #151210 50%, #0E0C09 100%);
+}
+/* animated grain */
+.hero-grain {
+  position: absolute; inset: -50%; width: 200%; height: 200%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.03; pointer-events: none;
+  animation: drift 12s ease-in-out infinite alternate;
+}
+@keyframes drift { from{transform:translate(0,0)} to{transform:translate(-2%,-1%)} }
+
+/* gold line left */
+.hero-line {
+  position: absolute; left: 40px; top: 15%; bottom: 15%;
+  width: 1px; background: linear-gradient(to bottom, transparent, var(--gold3), transparent);
+  opacity: .4;
+}
+
+.hero-content {
+  position: relative; z-index: 1;
+  padding: 120px 60px 80px; max-width: 680px;
+}
+.hero-eyebrow {
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 32px;
+}
+.hero-eyebrow-line { width: 40px; height: 1px; background: var(--gold); opacity: .6; }
+.hero-eyebrow span {
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold); font-weight: 400;
+}
+
+h1 {
+  font-family: var(--serif);
+  font-size: clamp(52px, 6vw, 88px);
+  font-weight: 300; line-height: 1.04;
+  letter-spacing: -0.5px; color: var(--cream);
+  margin-bottom: 28px;
+}
+h1 em { font-style: italic; color: var(--gold2); }
+
+.hero-sub {
+  font-size: 15px; color: var(--text2); line-height: 1.75;
+  max-width: 440px; margin-bottom: 52px; font-weight: 300;
+  letter-spacing: 0.01em;
+}
+.hero-ctas { display: flex; gap: 16px; align-items: center; }
+.btn-gold {
+  font-size: 11.5px; color: var(--bg); background: var(--gold);
+  padding: 16px 36px; letter-spacing: 0.14em; text-transform: uppercase;
+  font-weight: 500; text-decoration: none; transition: all .25s;
+  border: 1px solid var(--gold);
+}
+.btn-gold:hover { background: var(--gold2); border-color: var(--gold2); transform: translateY(-1px); box-shadow: 0 8px 32px rgba(201,169,110,.2); }
+.btn-ghost-gold {
+  font-size: 11.5px; color: var(--gold); background: transparent;
+  padding: 15px 32px; letter-spacing: 0.14em; text-transform: uppercase;
+  font-weight: 400; text-decoration: none; transition: all .2s;
+  border: 1px solid rgba(201,169,110,.3);
+}
+.btn-ghost-gold:hover { border-color: var(--gold); color: var(--gold2); }
+
+/* floating card */
+.hero-card {
+  position: absolute; right: 80px; top: 50%;
+  transform: translateY(-50%);
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 2px; padding: 36px 32px; width: 280px;
+  animation: float 6s ease-in-out infinite;
+  z-index: 1;
+}
+@keyframes float {
+  0%,100% { transform: translateY(-50%) translateY(0); }
+  50%      { transform: translateY(-50%) translateY(-12px); }
+}
+.hc-label {
+  font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 20px; display: flex; align-items: center; gap: 8px;
+}
+.hc-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 6px var(--gold); animation: pulse-g 2s ease-in-out infinite; }
+@keyframes pulse-g { 0%,100%{opacity:1}50%{opacity:.3} }
+.hc-treatment { font-family: var(--serif); font-size: 18px; color: var(--cream); font-weight: 400; margin-bottom: 8px; }
+.hc-sub { font-size: 12px; color: var(--text2); margin-bottom: 24px; line-height: 1.5; }
+.hc-divider { height: 1px; background: var(--border); margin-bottom: 24px; }
+.hc-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.hc-row:last-child { margin-bottom: 0; }
+.hc-stat { font-size: 11px; color: var(--text3); }
+.hc-val { font-family: var(--serif); font-size: 20px; color: var(--gold2); font-weight: 400; }
+
+/* ── STRIP ── */
+.strip {
+  border-top: 1px solid var(--border2); border-bottom: 1px solid var(--border2);
+  padding: 22px 60px; display: flex; gap: 60px; align-items: center;
+  overflow: hidden;
+}
+.strip-track { display: flex; gap: 60px; animation: strip-move 20s linear infinite; white-space: nowrap; }
+.strip-item { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text3); font-weight: 400; }
+.strip-sep { color: var(--gold3); opacity: .5; }
+
+@keyframes strip-move { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+/* ── SECTIONS ── */
+.s { padding: 120px 60px; }
+.s-inner { max-width: 1140px; margin: 0 auto; }
+
+.s-label {
+  display: flex; align-items: center; gap: 16px; margin-bottom: 24px;
+}
+.s-label-line { width: 32px; height: 1px; background: var(--gold); opacity: .5; }
+.s-label span { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); }
+
+h2 {
+  font-family: var(--serif);
+  font-size: clamp(36px, 4vw, 64px);
+  font-weight: 300; letter-spacing: -0.3px; line-height: 1.1;
+  color: var(--cream); margin-bottom: 20px;
+}
+h2 em { font-style: italic; color: var(--gold2); }
+.s-desc { font-size: 15px; color: var(--text2); line-height: 1.75; max-width: 480px; font-weight: 300; }
+
+/* ── ABOUT ── */
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center; }
+.about-img-area {
+  position: relative; aspect-ratio: 3/4; background: var(--bg2);
+  border: 1px solid var(--border); overflow: hidden;
+}
+.about-img-placeholder {
+  position: absolute; inset: 0;
+  background: linear-gradient(160deg, var(--bg3) 0%, var(--bg2) 60%, rgba(201,169,110,.04) 100%);
+  display: flex; align-items: center; justify-content: center;
+}
+.about-img-icon { opacity: .12; }
+.about-img-icon svg { width: 80px; height: 80px; stroke: var(--gold); fill: none; stroke-width: .8; }
+.about-corner {
+  position: absolute; width: 48px; height: 48px;
+  border-color: var(--gold); border-style: solid; opacity: .25;
+}
+.about-corner-tl { top: 16px; left: 16px; border-width: 1px 0 0 1px; }
+.about-corner-br { bottom: 16px; right: 16px; border-width: 0 1px 1px 0; }
+.about-badge {
+  position: absolute; bottom: -24px; right: -24px;
+  background: var(--gold); padding: 28px 28px;
+  text-align: center;
+}
+.about-badge-num { font-family: var(--serif); font-size: 42px; color: var(--bg); font-weight: 400; line-height: 1; }
+.about-badge-lbl { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--bg3); margin-top: 4px; }
+.about-text { padding-left: 20px; }
+.about-text h2 { margin-bottom: 24px; }
+.about-text p { font-size: 15px; color: var(--text2); line-height: 1.8; font-weight: 300; margin-bottom: 20px; }
+.about-divider { width: 40px; height: 1px; background: var(--gold); opacity: .4; margin: 32px 0; }
+.about-nums { display: flex; gap: 40px; }
+.about-num-val { font-family: var(--serif); font-size: 36px; color: var(--gold2); font-weight: 300; line-height: 1; margin-bottom: 4px; }
+.about-num-lbl { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); }
+
+/* ── SERVICES ── */
+.services-bg { background: var(--bg2); border-top: 1px solid var(--border2); border-bottom: 1px solid var(--border2); }
+.services-head { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: end; margin-bottom: 72px; }
+.svc-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--border2); border: 1px solid var(--border2); }
+.svc {
+  background: var(--bg2); padding: 44px 36px;
+  transition: background .3s; position: relative; overflow: hidden;
+  cursor: default;
+}
+.svc:hover { background: var(--bg3); }
+.svc::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold3), transparent);
+  opacity: 0; transition: opacity .3s;
+}
+.svc:hover::before { opacity: 1; }
+.svc-num { font-family: var(--serif); font-size: 13px; color: var(--gold3); font-style: italic; margin-bottom: 24px; letter-spacing: 0.06em; }
+.svc-icon { margin-bottom: 20px; }
+.svc-icon svg { width: 32px; height: 32px; stroke: var(--gold); stroke-width: 1; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.svc h3 { font-family: var(--serif); font-size: 22px; color: var(--cream); font-weight: 400; margin-bottom: 14px; letter-spacing: .01em; }
+.svc p { font-size: 13.5px; color: var(--text2); line-height: 1.7; font-weight: 300; }
+.svc-more { display: inline-flex; align-items: center; gap: 8px; margin-top: 24px; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold3); text-decoration: none; transition: color .2s; }
+.svc-more:hover { color: var(--gold); }
+.svc-more svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 1.5; fill: none; }
+
+/* ── PROCESS ── */
+.proc-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 0; margin-top: 72px; }
+.proc {
+  padding: 48px 36px; border-right: 1px solid var(--border2);
+  position: relative; transition: background .3s;
+}
+.proc:last-child { border-right: none; }
+.proc:hover { background: var(--bg2); }
+.proc-n {
+  font-family: var(--serif); font-size: 56px; color: rgba(201,169,110,0.06);
+  font-weight: 300; line-height: 1; margin-bottom: 24px; letter-spacing: -2px;
+}
+.proc h3 { font-family: var(--serif); font-size: 20px; color: var(--cream); font-weight: 400; margin-bottom: 12px; }
+.proc p { font-size: 13px; color: var(--text2); line-height: 1.7; font-weight: 300; }
+
+/* ── TESTIMONIALS ── */
+.testi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 72px; }
+.testi {
+  border: 1px solid var(--border); padding: 40px 36px;
+  position: relative; transition: border-color .3s;
+}
+.testi:hover { border-color: rgba(201,169,110,.25); }
+.testi-quote-mark {
+  font-family: var(--serif); font-size: 72px; color: var(--gold3);
+  opacity: .25; line-height: .8; margin-bottom: 16px; font-weight: 300;
+}
+.testi p { font-family: var(--serif); font-size: 18px; color: var(--cream); line-height: 1.6; font-weight: 300; font-style: italic; margin-bottom: 28px; }
+.testi-divider { width: 30px; height: 1px; background: var(--gold); opacity: .4; margin-bottom: 20px; }
+.testi-name { font-size: 12px; color: var(--text); font-weight: 500; letter-spacing: 0.08em; margin-bottom: 4px; text-transform: uppercase; }
+.testi-role { font-size: 12px; color: var(--text3); font-weight: 300; }
+.stars { display: flex; gap: 3px; margin-bottom: 20px; }
+.stars svg { width: 12px; height: 12px; fill: var(--gold); stroke: none; }
+
+/* ── CTA ── */
+.cta-s {
+  position: relative; padding: 140px 60px; text-align: center; overflow: hidden;
+  border-top: 1px solid var(--border2);
+}
+.cta-bg {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(201,169,110,.06) 0%, transparent 70%);
+}
+.cta-inner { position: relative; max-width: 620px; margin: 0 auto; }
+.cta-inner h2 { font-size: clamp(36px,4vw,60px); margin-bottom: 20px; }
+.cta-inner p { font-size: 15px; color: var(--text2); line-height: 1.75; margin-bottom: 48px; font-weight: 300; }
+.cta-btns { display: flex; gap: 16px; justify-content: center; }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border2); padding: 64px 60px 40px;
+}
+.ft { max-width: 1140px; margin: 0 auto; }
+.ft-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 60px; }
+.ft-logo { font-family: var(--serif); font-size: 20px; color: var(--gold2); margin-bottom: 16px; }
+.ft-logo span { font-style: italic; }
+.ft-desc { font-size: 13px; color: var(--text3); line-height: 1.7; font-weight: 300; max-width: 220px; }
+.ft-col-t { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text2); margin-bottom: 20px; font-weight: 500; }
+.ft-col ul { list-style: none; }
+.ft-col li { margin-bottom: 10px; }
+.ft-col a { font-size: 13px; color: var(--text3); text-decoration: none; font-weight: 300; transition: color .2s; }
+.ft-col a:hover { color: var(--gold); }
+.ft-bottom { border-top: 1px solid var(--border2); padding-top: 28px; display: flex; justify-content: space-between; align-items: center; }
+.ft-copy { font-size: 12px; color: var(--text3); }
+.ft-kynovia { font-size: 12px; color: var(--text3); }
+.ft-kynovia a { color: var(--gold3); text-decoration: none; transition: color .2s; }
+.ft-kynovia a:hover { color: var(--gold); }
+
+/* ── SCROLL REVEAL ── */
+.r { opacity: 0; transform: translateY(32px); transition: opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1); }
+.r.v { opacity: 1; transform: none; }
+.rd2 { transition-delay: .1s; }
+.rd3 { transition-delay: .2s; }
+.rd4 { transition-delay: .3s; }
+
+/* ── RESPONSIVE ── */
+@media(max-width:1000px){
+  nav { padding: 0 32px; }
+  .nav-links { display: none; }
+  .hero-content { padding: 100px 32px 60px; }
+  .hero-card { display: none; }
+  .s { padding: 80px 32px; }
+  .strip { padding: 20px 32px; }
+  .cta-s { padding: 80px 32px; }
+  footer { padding: 48px 32px 32px; }
+  .about-grid { grid-template-columns: 1fr; gap: 60px; }
+  .about-badge { display: none; }
+  .about-text { padding-left: 0; }
+  .services-head { grid-template-columns: 1fr; gap: 24px; }
+  .svc-grid { grid-template-columns: 1fr 1fr; }
+  .proc-grid { grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border2); }
+  .proc { border-right: none; }
+  .testi-grid { grid-template-columns: 1fr; }
+  .ft-top { grid-template-columns: 1fr 1fr; gap: 40px; }
+  .ft-bottom { flex-direction: column; gap: 12px; text-align: center; }
+}
+@media(max-width:600px){
+  .svc-grid { grid-template-columns: 1fr; }
+  .proc-grid { grid-template-columns: 1fr; }
+  .ft-top { grid-template-columns: 1fr; }
+  .about-nums { gap: 24px; }
+  h1 { letter-spacing: -0.3px; }
+}
+</style>
+</head>
+<body>
+<a href="../" style="position:fixed;left:16px;bottom:16px;z-index:9999;padding:10px 13px;border-radius:999px;background:rgba(10,10,11,.82);color:#fff;border:1px solid rgba(255,255,255,.16);font:500 12px Inter,system-ui,sans-serif;text-decoration:none;backdrop-filter:blur(18px)">Kynovia / Modelos</a>
+
+<nav>
+  <a href="#" class="nav-logo">Lumina <span>Clínica</span></a>
+  <ul class="nav-links">
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#tratamentos">Tratamentos</a></li>
+    <li><a href="#processo">Processo</a></li>
+    <li><a href="#depoimentos">Depoimentos</a></li>
+  </ul>
+  <a href="#contato" class="nav-btn">Agendar consulta</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grain"></div>
+  <div class="hero-line"></div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <div class="hero-eyebrow-line"></div>
+      <span>Estética avançada & bem-estar</span>
+    </div>
+    <h1>Beleza que<br>nasce <em>de dentro,</em><br>brilha fora.</h1>
+    <p class="hero-sub">Protocolos exclusivos desenvolvidos por especialistas. Resultados visíveis e duradouros — com a ciência e o cuidado que você merece.</p>
+    <div class="hero-ctas">
+      <a href="#contato" class="btn-gold">Agendar avaliação gratuita</a>
+      <a href="#tratamentos" class="btn-ghost-gold">Ver tratamentos</a>
+    </div>
+  </div>
+
+  <div class="hero-card">
+    <div class="hc-label"><div class="hc-dot"></div>Próxima disponibilidade</div>
+    <div class="hc-treatment">Harmonização Facial</div>
+    <div class="hc-sub">Avaliação + protocolo personalizado incluso</div>
+    <div class="hc-divider"></div>
+    <div class="hc-row">
+      <span class="hc-stat">Duração</span>
+      <span class="hc-val">90 min</span>
+    </div>
+    <div class="hc-row">
+      <span class="hc-stat">Recuperação</span>
+      <span class="hc-val">Zero</span>
+    </div>
+    <div class="hc-row">
+      <span class="hc-stat">Resultado</span>
+      <span class="hc-val">Imediato</span>
+    </div>
+  </div>
+</section>
+
+<!-- STRIP -->
+<div class="strip">
+  <div class="strip-track">
+    <span class="strip-item">Harmonização Facial</span>
+    <span class="strip-sep">·</span>
+    <span class="strip-item">Bioestimuladores</span>
+    <span class="strip-sep">·</span>
+    <span class="strip-item">Skincare Avançado</span>
+    <span class="strip-sep">·</span>
+    <span class="strip-item">Toxina Botulínica</span>
+    <span class="strip-sep">·</span>
+    <span class="strip-item">Fios de PDO</span>
+    <span class="strip-sep">·</span>
+    <span class="strip-item">Preenchimento Labial</span>
+    <span class="strip-sep">·</span>
+    <span class="strip-item">Drenagem Linfática</span>
+    <span class="strip-sep">·</span>
+    <span class="strip-item">Peeling Químico</span>
+    <span class="strip-sep">·</span>
+    <span class="strip-item">Harmonização Facial</span>
+    <span class="strip-sep">·</span>
+    <span class="strip-item">Bioestimuladores</span>
+    <span class="strip-sep">·</span>
+    <span class="strip-item">Skincare Avançado</span>
+    <span class="strip-sep">·</span>
+    <span class="strip-item">Toxina Botulínica</span>
+    <span class="strip-sep">·</span>
+    <span class="strip-item">Fios de PDO</span>
+    <span class="strip-sep">·</span>
+    <span class="strip-item">Preenchimento Labial</span>
+    <span class="strip-sep">·</span>
+    <span class="strip-item">Drenagem Linfática</span>
+    <span class="strip-sep">·</span>
+    <span class="strip-item">Peeling Químico</span>
+    <span class="strip-sep">·</span>
+  </div>
+</div>
+
+<!-- SOBRE -->
+<section class="s" id="sobre">
+  <div class="s-inner">
+    <div class="about-grid">
+      <div class="about-img-area r">
+        <img
+          src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=700&h=940&fit=crop&crop=top&q=85"
+          alt="Especialista em estética realizando protocolo de skincare em paciente"
+          style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;"
+        />
+        <div class="about-corner about-corner-tl"></div>
+        <div class="about-corner about-corner-br"></div>
+        <div class="about-badge">
+          <div class="about-badge-num">12</div>
+          <div class="about-badge-lbl">Anos de<br>excelência</div>
+        </div>
+      </div>
+      <div class="about-text r rd2">
+        <div class="s-label"><div class="s-label-line"></div><span>Sobre a clínica</span></div>
+        <h2>Referência em<br>estética <em>de precisão</em></h2>
+        <p>A Lumina nasceu da convicção de que beleza e ciência caminham juntas. Fundada por especialistas com formação internacional, nossa clínica combina as técnicas mais avançadas do mercado com um atendimento verdadeiramente personalizado.</p>
+        <p>Cada protocolo é desenhado para o seu rosto, o seu momento e o resultado que você deseja. Sem padrões. Sem excessos. Só o que realça o melhor de você.</p>
+        <div class="about-divider"></div>
+        <div class="about-nums">
+          <div>
+            <div class="about-num-val" data-count="4800" data-suffix="+">0</div>
+            <div class="about-num-lbl">Pacientes atendidos</div>
+          </div>
+          <div>
+            <div class="about-num-val" data-count="98" data-suffix="%">0</div>
+            <div class="about-num-lbl">Satisfação</div>
+          </div>
+          <div>
+            <div class="about-num-val" data-count="12" data-suffix="">0</div>
+            <div class="about-num-lbl">Anos de mercado</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRATAMENTOS -->
+<section class="s services-bg" id="tratamentos">
+  <div class="s-inner">
+    <div class="services-head r">
+      <div>
+        <div class="s-label"><div class="s-label-line"></div><span>Tratamentos</span></div>
+        <h2>Protocolos <em>exclusivos</em><br>para cada objetivo</h2>
+      </div>
+      <p class="s-desc">Cada tratamento é conduzido por especialistas certificados, com produtos de origem europeia e tecnologia de última geração.</p>
+    </div>
+    <div class="svc-grid r rd2">
+
+      <div class="svc">
+        <div class="svc-num">I</div>
+        <div class="svc-icon"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="13"/><path d="M10 16c0-3.3 2.7-6 6-6s6 2.7 6 6-2.7 6-6 6"/><circle cx="16" cy="16" r="2"/></svg></div>
+        <h3>Harmonização Facial</h3>
+        <p>Reequilíbrio das proporções do rosto com ácido hialurônico e bioestimuladores. Resultado natural e sofisticado, sem exageros.</p>
+        <a href="#contato" class="svc-more">Saiba mais <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+
+      <div class="svc">
+        <div class="svc-num">II</div>
+        <div class="svc-icon"><svg viewBox="0 0 32 32"><path d="M16 4c-2 4-8 6-8 12a8 8 0 0 0 16 0c0-6-6-8-8-12z"/><path d="M12 20c0 2.2 1.8 4 4 4"/></svg></div>
+        <h3>Skincare Avançado</h3>
+        <p>Protocolos de rejuvenescimento com peelings, laser e ativos de alta concentração. Pele renovada, luminosa e saudável.</p>
+        <a href="#contato" class="svc-more">Saiba mais <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+
+      <div class="svc">
+        <div class="svc-num">III</div>
+        <div class="svc-icon"><svg viewBox="0 0 32 32"><path d="M8 24V12a8 8 0 0 1 16 0v12"/><line x1="5" y1="24" x2="27" y2="24"/><line x1="16" y1="8" x2="16" y2="20"/></svg></div>
+        <h3>Bioestimuladores</h3>
+        <p>Estímulo natural à produção de colágeno. Firmeza e estrutura que melhoram progressivamente ao longo dos meses.</p>
+        <a href="#contato" class="svc-more">Saiba mais <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+
+      <div class="svc">
+        <div class="svc-num">IV</div>
+        <div class="svc-icon"><svg viewBox="0 0 32 32"><path d="M6 16a10 10 0 0 1 20 0"/><path d="M6 16a10 10 0 0 0 20 0"/><circle cx="16" cy="16" r="3"/><line x1="16" y1="6" x2="16" y2="4"/></svg></div>
+        <h3>Toxina Botulínica</h3>
+        <p>Tratamento preciso para linhas de expressão. Aplicação criteriosa que preserva a naturalidade e a mobilidade do rosto.</p>
+        <a href="#contato" class="svc-more">Saiba mais <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+
+      <div class="svc">
+        <div class="svc-num">V</div>
+        <div class="svc-icon"><svg viewBox="0 0 32 32"><path d="M8 8l16 16M8 24L24 8"/><rect x="4" y="4" width="24" height="24" rx="12"/></svg></div>
+        <h3>Fios de PDO</h3>
+        <p>Lifting sem cirurgia com fios absorvíveis. Sustentação imediata e estímulo ao colágeno para um efeito duradouro.</p>
+        <a href="#contato" class="svc-more">Saiba mais <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+
+      <div class="svc">
+        <div class="svc-num">VI</div>
+        <div class="svc-icon"><svg viewBox="0 0 32 32"><path d="M16 4C9.4 4 4 9.4 4 16s5.4 12 12 12 12-5.4 12-12"/><path d="M22 4l6 6-6 6"/><line x1="28" y1="10" x2="16" y2="10"/></svg></div>
+        <h3>Corpo & Modelagem</h3>
+        <p>Redução de medidas, drenagem linfática e protocolos de celulite com tecnologia de radiofrequência e ultrassom focado.</p>
+        <a href="#contato" class="svc-more">Saiba mais <svg viewBox="0 0 14 14"><path d="M2 7h10M8 3l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PROCESSO -->
+<section class="s" id="processo">
+  <div class="s-inner">
+    <div class="r">
+      <div class="s-label"><div class="s-label-line"></div><span>Nossa metodologia</span></div>
+      <h2>Da consulta ao <em>resultado</em></h2>
+      <p class="s-desc">Um processo pensado para garantir segurança, conforto e os melhores resultados possíveis para cada paciente.</p>
+    </div>
+    <div class="proc-grid r rd2">
+      <div class="proc">
+        <div class="proc-n">01</div>
+        <h3>Avaliação gratuita</h3>
+        <p>Análise completa da pele e conversa detalhada sobre seus objetivos. Sem compromisso, sem pressão.</p>
+      </div>
+      <div class="proc">
+        <div class="proc-n">02</div>
+        <h3>Protocolo personalizado</h3>
+        <p>Desenvolvemos um plano exclusivo com os tratamentos ideais para o seu caso, respeitando seu ritmo e orçamento.</p>
+      </div>
+      <div class="proc">
+        <div class="proc-n">03</div>
+        <h3>Procedimento seguro</h3>
+        <p>Executado por especialistas certificados, em ambiente clínico totalmente esterilizado e confortável.</p>
+      </div>
+      <div class="proc">
+        <div class="proc-n">04</div>
+        <h3>Acompanhamento</h3>
+        <p>Suporte completo no pós-procedimento e retornos de avaliação para garantir que o resultado supere suas expectativas.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEPOIMENTOS -->
+<section class="s services-bg" id="depoimentos">
+  <div class="s-inner">
+    <div class="r">
+      <div class="s-label"><div class="s-label-line"></div><span>Depoimentos</span></div>
+      <h2>O que nossas <em>pacientes</em> dizem</h2>
+    </div>
+    <div class="testi-grid r rd2">
+      <div class="testi">
+        <div class="stars"><svg viewBox="0 0 12 12"><polygon points="6,1 7.5,4.5 11,5 8.5,7.5 9,11 6,9.5 3,11 3.5,7.5 1,5 4.5,4.5"/></svg><svg viewBox="0 0 12 12"><polygon points="6,1 7.5,4.5 11,5 8.5,7.5 9,11 6,9.5 3,11 3.5,7.5 1,5 4.5,4.5"/></svg><svg viewBox="0 0 12 12"><polygon points="6,1 7.5,4.5 11,5 8.5,7.5 9,11 6,9.5 3,11 3.5,7.5 1,5 4.5,4.5"/></svg><svg viewBox="0 0 12 12"><polygon points="6,1 7.5,4.5 11,5 8.5,7.5 9,11 6,9.5 3,11 3.5,7.5 1,5 4.5,4.5"/></svg><svg viewBox="0 0 12 12"><polygon points="6,1 7.5,4.5 11,5 8.5,7.5 9,11 6,9.5 3,11 3.5,7.5 1,5 4.5,4.5"/></svg></div>
+        <p>"A harmonização mudou minha relação com meu próprio rosto. O resultado foi exatamente o que eu queria — natural, elegante, só eu mesma em versão melhorada."</p>
+        <div class="testi-divider"></div>
+        <div class="testi-name">Camila Ferreira</div>
+        <div class="testi-role">Executiva · São Paulo</div>
+      </div>
+      <div class="testi">
+        <div class="stars"><svg viewBox="0 0 12 12"><polygon points="6,1 7.5,4.5 11,5 8.5,7.5 9,11 6,9.5 3,11 3.5,7.5 1,5 4.5,4.5"/></svg><svg viewBox="0 0 12 12"><polygon points="6,1 7.5,4.5 11,5 8.5,7.5 9,11 6,9.5 3,11 3.5,7.5 1,5 4.5,4.5"/></svg><svg viewBox="0 0 12 12"><polygon points="6,1 7.5,4.5 11,5 8.5,7.5 9,11 6,9.5 3,11 3.5,7.5 1,5 4.5,4.5"/></svg><svg viewBox="0 0 12 12"><polygon points="6,1 7.5,4.5 11,5 8.5,7.5 9,11 6,9.5 3,11 3.5,7.5 1,5 4.5,4.5"/></svg><svg viewBox="0 0 12 12"><polygon points="6,1 7.5,4.5 11,5 8.5,7.5 9,11 6,9.5 3,11 3.5,7.5 1,5 4.5,4.5"/></svg></div>
+        <p>"Vim com muito medo e saí encantada. A equipe explica cada detalhe, não apressam ninguém e o atendimento é impecável do início ao fim."</p>
+        <div class="testi-divider"></div>
+        <div class="testi-name">Renata Alves</div>
+        <div class="testi-role">Médica · Campinas</div>
+      </div>
+      <div class="testi">
+        <div class="stars"><svg viewBox="0 0 12 12"><polygon points="6,1 7.5,4.5 11,5 8.5,7.5 9,11 6,9.5 3,11 3.5,7.5 1,5 4.5,4.5"/></svg><svg viewBox="0 0 12 12"><polygon points="6,1 7.5,4.5 11,5 8.5,7.5 9,11 6,9.5 3,11 3.5,7.5 1,5 4.5,4.5"/></svg><svg viewBox="0 0 12 12"><polygon points="6,1 7.5,4.5 11,5 8.5,7.5 9,11 6,9.5 3,11 3.5,7.5 1,5 4.5,4.5"/></svg><svg viewBox="0 0 12 12"><polygon points="6,1 7.5,4.5 11,5 8.5,7.5 9,11 6,9.5 3,11 3.5,7.5 1,5 4.5,4.5"/></svg><svg viewBox="0 0 12 12"><polygon points="6,1 7.5,4.5 11,5 8.5,7.5 9,11 6,9.5 3,11 3.5,7.5 1,5 4.5,4.5"/></svg></div>
+        <p>"Os bioestimuladores superaram minhas expectativas. Três meses depois ainda recebo elogios. É o tipo de resultado que vale cada centavo investido."</p>
+        <div class="testi-divider"></div>
+        <div class="testi-name">Priscila Matos</div>
+        <div class="testi-role">Arquiteta · Rio de Janeiro</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-s" id="contato">
+  <div class="cta-bg"></div>
+  <div class="cta-inner r">
+    <div class="s-label" style="justify-content:center;"><div class="s-label-line"></div><span>Agende agora</span></div>
+    <h2>Sua melhor versão <em>começa aqui</em></h2>
+    <p>Avaliação gratuita, sem compromisso. Nossa equipe entra em contato em até 2 horas para confirmar o melhor horário para você.</p>
+    <div class="cta-btns">
+      <a href="https://wa.me/5511999999999" class="btn-gold">Agendar pelo WhatsApp</a>
+      <a href="tel:+5511999999999" class="btn-ghost-gold">Ligar agora</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft">
+    <div class="ft-top">
+      <div>
+        <div class="ft-logo">Lumina <span>Clínica</span></div>
+        <p class="ft-desc">Estética avançada com ciência, precisão e cuidado. Referência em harmonização facial e rejuvenescimento.</p>
+      </div>
+      <div class="ft-col"><div class="ft-col-t">Tratamentos</div><ul><li><a href="#">Harmonização Facial</a></li><li><a href="#">Skincare Avançado</a></li><li><a href="#">Bioestimuladores</a></li><li><a href="#">Toxina Botulínica</a></li><li><a href="#">Fios de PDO</a></li></ul></div>
+      <div class="ft-col"><div class="ft-col-t">Clínica</div><ul><li><a href="#">Sobre nós</a></li><li><a href="#">Nossa equipe</a></li><li><a href="#">Metodologia</a></li><li><a href="#">Depoimentos</a></li></ul></div>
+      <div class="ft-col"><div class="ft-col-t">Contato</div><ul><li><a href="#">WhatsApp</a></li><li><a href="#">Instagram</a></li><li><a href="#">Localização</a></li><li><a href="#">Agendamento</a></li></ul></div>
+    </div>
+    <div class="ft-bottom">
+      <span class="ft-copy">© 2025 Lumina Clínica Estética. Todos os direitos reservados.</span>
+      <span class="ft-kynovia">Site desenvolvido por <a href="https://kynovia.com.br" target="_blank">Kynovia</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* Scroll reveal */
+const io = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting){ x.target.classList.add('v'); x.target.querySelectorAll('[data-count]').forEach(animCount); if(x.target.dataset.count) animCount(x.target); } }), { threshold: 0.12 });
+document.querySelectorAll('.r').forEach(el => io.observe(el));
+document.querySelectorAll('[data-count]').forEach(el => io.observe(el));
+
+/* Counter */
+function animCount(el){
+  if(el.dataset.done) return; el.dataset.done=1;
+  const target=+el.dataset.count, suffix=el.dataset.suffix||'', dur=1600, start=performance.now();
+  function tick(now){
+    const p=Math.min((now-start)/dur,1), ease=1-Math.pow(1-p,3);
+    const val = target >= 100 ? Math.round(ease*target).toLocaleString('pt-BR') : Math.round(ease*target);
+    el.textContent=val+suffix;
+    if(p<1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+</script>
+</body>
+</html>

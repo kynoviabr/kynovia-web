@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Âme Restaurant — Fine Dining em São Paulo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07070A;--bg2:#0D0D12;--bg3:#131318;
+  --copper:#B87333;--copper2:#D4924A;--copper3:#8B5520;
+  --cream:#F0E8D8;--cream2:#C8B89A;--cream3:#7A6A55;
+  --text:#EDE4D4;--text2:#8A7A68;--text3:#504535;
+  --border:rgba(184,115,51,0.12);--border2:rgba(184,115,51,0.06);
+  --serif:'Playfair Display',Georgia,serif;
+  --sans:'Inter',system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 60px;height:72px;background:rgba(7,7,10,0.88);backdrop-filter:blur(24px);border-bottom:1px solid var(--border2)}
+.nav-logo{font-family:var(--serif);font-size:24px;color:var(--cream);text-decoration:none;letter-spacing:.06em;font-style:italic;font-weight:400}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{font-size:12px;color:var(--text2);text-decoration:none;letter-spacing:.14em;text-transform:uppercase;transition:color .2s}
+.nav-links a:hover{color:var(--copper2)}
+.nav-btn{font-size:11.5px;color:var(--bg);background:var(--copper);padding:10px 26px;letter-spacing:.12em;text-transform:uppercase;font-weight:500;text-decoration:none;transition:background .2s}
+.nav-btn:hover{background:var(--copper2)}
+
+/* HERO */
+.hero{position:relative;height:100vh;display:flex;align-items:flex-end;overflow:hidden}
+.hero-img{position:absolute;inset:0}
+.hero-img img{width:100%;height:100%;object-fit:cover;object-position:center;transform:scale(1.06);animation:kb 10s ease forwards}
+@keyframes kb{from{transform:scale(1.08)}to{transform:scale(1)}}
+.hero-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(7,7,10,0.97) 0%,rgba(7,7,10,0.55) 50%,rgba(7,7,10,0.15) 100%)}
+.hero-content{position:relative;z-index:1;padding:0 60px 90px;max-width:100%}
+.hero-eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:24px}
+.hel{width:36px;height:1px;background:var(--copper)}
+.hero-eyebrow span{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--copper);font-weight:400}
+h1{font-family:var(--serif);font-size:clamp(56px,7vw,110px);line-height:.95;color:var(--cream);letter-spacing:-1px;font-weight:400;margin-bottom:32px;font-style:italic}
+.hero-sub-row{display:flex;align-items:flex-end;justify-content:space-between;gap:48px}
+.hero-sub{font-size:15px;color:var(--text2);line-height:1.75;max-width:400px;font-weight:300}
+.hero-ctas{display:flex;gap:14px;flex-shrink:0}
+.btn-copper{font-size:11.5px;color:var(--bg);background:var(--copper);padding:15px 36px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;text-decoration:none;transition:all .2s}
+.btn-copper:hover{background:var(--copper2);transform:translateY(-1px)}
+.btn-g{font-size:11.5px;color:var(--copper);padding:14px 28px;letter-spacing:.14em;text-transform:uppercase;font-weight:400;text-decoration:none;border:1px solid rgba(184,115,51,.3);transition:all .2s}
+.btn-g:hover{border-color:var(--copper)}
+
+/* STRIP */
+.strip{overflow:hidden;border-top:1px solid var(--border2);border-bottom:1px solid var(--border2);padding:18px 0;background:var(--bg2)}
+.strip-t{display:flex;gap:56px;animation:mrq 28s linear infinite;width:max-content}
+@keyframes mrq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.si{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--text3);white-space:nowrap}
+.ss{color:var(--copper3);opacity:.5}
+
+/* SECTIONS */
+.s{padding:120px 60px;max-width:1160px;margin:0 auto}
+.sf{padding:120px 60px;border-top:1px solid var(--border2)}
+.sfi{max-width:1160px;margin:0 auto}
+.lbl{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+.ll{width:28px;height:1px;background:var(--copper);opacity:.6}
+.lbl span{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--copper);font-weight:400}
+h2{font-family:var(--serif);font-size:clamp(34px,3.8vw,62px);line-height:1.06;color:var(--cream);margin-bottom:18px;font-weight:400}
+h2 em{font-style:italic;color:var(--copper2)}
+.desc{font-size:15px;color:var(--text2);line-height:1.8;max-width:460px;font-weight:300}
+
+/* ABOUT SPLIT */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--border2);margin-top:0}
+.about-img-side img{width:100%;height:100%;min-height:560px;object-fit:cover;object-position:center;display:block;filter:brightness(.85)}
+.about-text-side{padding:72px 60px;display:flex;flex-direction:column;justify-content:center;background:var(--bg2)}
+.about-text-side p{font-size:15px;color:var(--text2);line-height:1.85;font-weight:300;margin-bottom:22px}
+.adiv{width:36px;height:1px;background:var(--copper);opacity:.4;margin:28px 0}
+.chef-row{display:flex;align-items:center;gap:16px}
+.chef-img{width:52px;height:52px;border-radius:50%;overflow:hidden;border:1px solid var(--border);flex-shrink:0}
+.chef-img img{width:100%;height:100%;object-fit:cover}
+.chef-name{font-family:var(--serif);font-size:16px;color:var(--cream);font-weight:400;margin-bottom:3px}
+.chef-title{font-size:11.5px;color:var(--text3);letter-spacing:.06em}
+
+/* MENU */
+.menu-bg{background:var(--bg2)}
+.menu-head{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:64px}
+.menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border2);border:1px solid var(--border2)}
+.menu-card{background:var(--bg2);display:grid;grid-template-columns:1fr 1fr;gap:0;transition:background .3s}
+.menu-card:hover{background:var(--bg3)}
+.menu-card-img{overflow:hidden}
+.menu-card-img img{width:100%;height:100%;min-height:280px;object-fit:cover;transition:transform .6s ease}
+.menu-card:hover .menu-card-img img{transform:scale(1.06)}
+.menu-card-body{padding:36px 32px;display:flex;flex-direction:column;justify-content:center}
+.menu-course{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--copper);margin-bottom:14px}
+.menu-card h3{font-family:var(--serif);font-size:24px;color:var(--cream);font-weight:400;margin-bottom:12px;line-height:1.2;font-style:italic}
+.menu-card p{font-size:13px;color:var(--text2);line-height:1.7;font-weight:300;margin-bottom:20px}
+.menu-price{font-family:var(--serif);font-size:20px;color:var(--copper2)}
+
+/* EXPERIENCE */
+.exp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border2);border:1px solid var(--border2);margin-top:64px}
+.exp-card{background:var(--bg);padding:48px 36px;text-align:center;transition:background .3s}
+.exp-card:hover{background:var(--bg2)}
+.exp-ico{font-size:0;margin:0 auto 20px;width:40px;height:40px}
+.exp-ico svg{width:40px;height:40px;stroke:var(--copper);stroke-width:1;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.exp-card h3{font-family:var(--serif);font-size:22px;color:var(--cream);font-weight:400;margin-bottom:12px;font-style:italic}
+.exp-card p{font-size:13.5px;color:var(--text2);line-height:1.7;font-weight:300}
+
+/* TESTI */
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:64px}
+.testi{border:1px solid var(--border2);padding:40px 32px;transition:border-color .3s}
+.testi:hover{border-color:var(--border)}
+.tquote{font-family:var(--serif);font-size:48px;color:var(--copper3);opacity:.35;line-height:.8;margin-bottom:16px}
+.testi p{font-family:var(--serif);font-size:18px;color:var(--cream);line-height:1.6;font-style:italic;font-weight:400;margin-bottom:28px}
+.tdiv{width:24px;height:1px;background:var(--border);margin-bottom:18px}
+.tname{font-size:12px;color:var(--text);font-weight:500;letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px}
+.trole{font-size:12px;color:var(--text3)}
+
+/* CTA */
+.cta-s{position:relative;padding:0;overflow:hidden;height:420px;display:flex;align-items:center;justify-content:center;text-align:center;border-top:1px solid var(--border2)}
+.cta-img{position:absolute;inset:0}
+.cta-img img{width:100%;height:100%;object-fit:cover;filter:brightness(.18) saturate(.5)}
+.cta-inner{position:relative;z-index:1;padding:0 24px;max-width:560px}
+.cta-inner h2{font-size:clamp(36px,4vw,60px);margin-bottom:18px}
+.cta-inner p{font-size:15px;color:var(--text2);margin-bottom:40px;font-weight:300}
+.cta-btns{display:flex;gap:14px;justify-content:center}
+
+/* FOOTER */
+footer{background:var(--bg2);border-top:1px solid var(--border2);padding:64px 60px 36px}
+.ft{max-width:1160px;margin:0 auto}
+.ft-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:56px;margin-bottom:56px}
+.ft-logo{font-family:var(--serif);font-size:22px;color:var(--cream);margin-bottom:14px;font-style:italic}
+.ft-desc{font-size:13px;color:var(--text3);line-height:1.7;font-weight:300;max-width:220px}
+.ftct{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--text2);margin-bottom:16px}
+.ft-col ul{list-style:none}
+.ft-col li{margin-bottom:9px}
+.ft-col a{font-size:13px;color:var(--text3);text-decoration:none;transition:color .2s}
+.ft-col a:hover{color:var(--copper)}
+.ft-bottom{border-top:1px solid var(--border2);padding-top:26px;display:flex;justify-content:space-between;align-items:center}
+.ftcopy{font-size:12px;color:var(--text3)}
+.ftk{font-size:12px;color:var(--text3)}
+.ftk a{color:var(--copper3);text-decoration:none;transition:color .2s}
+.ftk a:hover{color:var(--copper)}
+
+.r{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}
+.r.v{opacity:1;transform:none}
+.rd2{transition-delay:.1s}.rd3{transition-delay:.2s}
+
+@media(max-width:960px){
+  nav{padding:0 24px}.nav-links{display:none}
+  .hero-content{padding:0 24px 60px}
+  .hero-sub-row{flex-direction:column;gap:28px;align-items:flex-start}
+  h1{font-size:clamp(48px,10vw,80px)}
+  .s{padding:72px 24px}.sf{padding:72px 24px}
+  .cta-s{height:360px}
+  footer{padding:56px 24px 32px}
+  .about-grid{grid-template-columns:1fr}
+  .about-img-side img{min-height:320px}
+  .menu-head{grid-template-columns:1fr;gap:20px}
+  .menu-grid{grid-template-columns:1fr}
+  .menu-card{grid-template-columns:1fr}
+  .menu-card-img img{min-height:220px}
+  .exp-grid{grid-template-columns:1fr}
+  .testi-grid{grid-template-columns:1fr}
+  .ft-top{grid-template-columns:1fr 1fr;gap:36px}
+  .ft-bottom{flex-direction:column;gap:12px;text-align:center}
+}
+@media(max-width:580px){
+  .ft-top{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<a href="../" style="position:fixed;left:16px;bottom:16px;z-index:9999;padding:10px 13px;border-radius:999px;background:rgba(10,10,11,.82);color:#fff;border:1px solid rgba(255,255,255,.16);font:500 12px Inter,system-ui,sans-serif;text-decoration:none;backdrop-filter:blur(18px)">Kynovia / Modelos</a>
+
+<nav>
+  <a href="#" class="nav-logo">Âme</a>
+  <ul class="nav-links">
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#chef">Chef</a></li>
+    <li><a href="#experiencia">Experiência</a></li>
+    <li><a href="#reservas">Reservas</a></li>
+  </ul>
+  <a href="#reservas" class="nav-btn">Reservar mesa</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-img">
+    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1600&h=900&fit=crop&crop=center&q=90" alt="Fine dining Âme Restaurant São Paulo"/>
+  </div>
+  <div class="hero-content">
+    <div class="hero-eyebrow"><div class="hel"></div><span>Fine Dining · São Paulo</span></div>
+    <h1>Âme</h1>
+    <div class="hero-sub-row">
+      <p class="hero-sub">Uma experiência gastronômica que conecta ingredientes brasileiros às técnicas mais refinadas da culinária contemporânea. Cada prato é uma memória que você ainda não tem.</p>
+      <div class="hero-ctas">
+        <a href="#reservas" class="btn-copper">Reservar mesa</a>
+        <a href="#menu" class="btn-g">Ver o menu</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="strip">
+  <div class="strip-t">
+    <span class="si">Menu Degustação</span><span class="ss">·</span>
+    <span class="si">Carta de Vinhos</span><span class="ss">·</span>
+    <span class="si">Harmonização</span><span class="ss">·</span>
+    <span class="si">Sala Privativa</span><span class="ss">·</span>
+    <span class="si">Chef's Table</span><span class="ss">·</span>
+    <span class="si">Ingredientes Sazonais</span><span class="ss">·</span>
+    <span class="si">Experiência Omakase</span><span class="ss">·</span>
+    <span class="si">Menu Degustação</span><span class="ss">·</span>
+    <span class="si">Carta de Vinhos</span><span class="ss">·</span>
+    <span class="si">Harmonização</span><span class="ss">·</span>
+    <span class="si">Sala Privativa</span><span class="ss">·</span>
+    <span class="si">Chef's Table</span><span class="ss">·</span>
+    <span class="si">Ingredientes Sazonais</span><span class="ss">·</span>
+    <span class="si">Experiência Omakase</span><span class="ss">·</span>
+  </div>
+</div>
+
+<!-- SOBRE / CHEF -->
+<section class="sf" id="chef">
+  <div class="sfi">
+    <div class="about-grid r">
+      <div class="about-img-side">
+        <img src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=700&h=800&fit=crop&crop=center&q=85" alt="Chef Âme Restaurant"/>
+      </div>
+      <div class="about-text-side">
+        <div class="lbl"><div class="ll"></div><span>Nossa história</span></div>
+        <h2>Cozinha que<br>conta uma <em>história</em></h2>
+        <p>O Âme nasceu da obsessão do Chef Rafael Maia em traduzir os sabores do Brasil em uma linguagem contemporânea e sofisticada. Cada menu é construído em torno da estação — ingredientes no ápice, técnicas precisas, resultado inesquecível.</p>
+        <p>Com passagens por restaurantes com estrelas Michelin em Paris, Copenhague e Tóquio, Rafael traz ao Âme uma visão de mundo que celebra a riqueza da culinária brasileira sem abrir mão da excelência técnica.</p>
+        <div class="adiv"></div>
+        <div class="chef-row">
+          <div class="chef-img"><img src="https://images.unsplash.com/photo-1622021142947-da7dedc7c39a?w=100&h=100&fit=crop&crop=face&q=80" alt="Chef Rafael Maia"/></div>
+          <div>
+            <div class="chef-name">Rafael Maia</div>
+            <div class="chef-title">Chef executivo & fundador</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section class="sf menu-bg" id="menu">
+  <div class="sfi">
+    <div class="menu-head r">
+      <div><div class="lbl"><div class="ll"></div><span>Menu</span></div><h2>Pratos que <em>marcam</em></h2></div>
+      <p class="desc">Ingredientes sazonais selecionados diariamente. O menu muda de acordo com o que a natureza oferece de melhor em cada período do ano.</p>
+    </div>
+    <div class="menu-grid r rd2">
+      <div class="menu-card">
+        <div class="menu-card-img"><img src="https://images.unsplash.com/photo-1559847844-5315695dadae?w=500&h=400&fit=crop&q=80" alt="Entrada Âme"/></div>
+        <div class="menu-card-body">
+          <div class="menu-course">Entrada</div>
+          <h3>Vieiras com creme de mandioquinha e caviar de tapioca</h3>
+          <p>Vieiras frescas do litoral sul, creme sedoso de mandioquinha defumada e as esferas translúcidas de tapioca com tucupi.</p>
+          <div class="menu-price">R$ 89</div>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-card-img"><img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=500&h=400&fit=crop&q=80" alt="Prato principal Âme"/></div>
+        <div class="menu-card-body">
+          <div class="menu-course">Prato principal</div>
+          <h3>Costela de wagyu com farofa de cogumelos e molho de cachaça</h3>
+          <p>Wagyu nacional braseado por 48h, farofa de Paris com shimeji e shiitake, e redução de cachaça envelhecida em carvalho.</p>
+          <div class="menu-price">R$ 198</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIÊNCIA -->
+<section class="sf" id="experiencia">
+  <div class="sfi">
+    <div class="r"><div class="lbl"><div class="ll"></div><span>A experiência</span></div><h2>Mais do que uma <em>refeição</em></h2></div>
+    <div class="exp-grid r rd2">
+      <div class="exp-card">
+        <div class="exp-ico"><svg viewBox="0 0 40 40"><path d="M20 6c-7 0-12 5-12 12 0 5 3 9 7 11l5 5 5-5c4-2 7-6 7-11 0-7-5-12-12-12z"/><circle cx="20" cy="18" r="4"/></svg></div>
+        <h3>Sala privativa</h3>
+        <p>Espaço exclusivo para jantares corporativos, aniversários e ocasiões especiais. Capacidade para até 12 pessoas com cardápio personalizado.</p>
+      </div>
+      <div class="exp-card">
+        <div class="exp-ico"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="14"/><path d="M20 8v12l8 4"/></svg></div>
+        <h3>Chef's Table</h3>
+        <p>Até 6 convidados no coração da cozinha. Acompanhe cada etapa do preparo enquanto o Chef explica as técnicas e a história de cada ingrediente.</p>
+      </div>
+      <div class="exp-card">
+        <div class="exp-ico"><svg viewBox="0 0 40 40"><path d="M12 32c0-6 3-10 8-10s8 4 8 10"/><ellipse cx="20" cy="16" rx="6" ry="8"/><path d="M8 36h24"/></svg></div>
+        <h3>Harmonização guiada</h3>
+        <p>Nosso sommelier cria uma jornada de vinhos e destilados brasileiros que amplia cada sabor do menu degustação de 7 tempos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEPOIMENTOS -->
+<section class="sf">
+  <div class="sfi">
+    <div class="r"><div class="lbl"><div class="ll"></div><span>O que dizem</span></div><h2>Memórias que <em>ficam</em></h2></div>
+    <div class="testi-grid r rd2">
+      <div class="testi">
+        <div class="tquote">"</div>
+        <p>"Uma experiência completa. Cada prato chegou com uma história, cada vinho amplificou um sabor. Saímos transformados pela refeição."</p>
+        <div class="tdiv"></div>
+        <div class="tname">Fernanda Borges</div><div class="trole">Crítica gastronômica</div>
+      </div>
+      <div class="testi">
+        <div class="tquote">"</div>
+        <p>"O Chef's Table foi a melhor experiência gastronômica da minha vida. Ver o preparo de perto e ouvir a história de cada ingrediente... sem palavras."</p>
+        <div class="tdiv"></div>
+        <div class="tname">Marcelo Teixeira</div><div class="trole">Empresário · São Paulo</div>
+      </div>
+      <div class="testi">
+        <div class="tquote">"</div>
+        <p>"Trouxe clientes internacionais e o Âme superou qualquer expectativa. Um restaurante que coloca São Paulo no mapa gastronômico mundial."</p>
+        <div class="tdiv"></div>
+        <div class="tname">Isabela Ramos</div><div class="trole">CEO · Consultoria Internacional</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-s" id="reservas">
+  <div class="cta-img"><img src="https://images.unsplash.com/photo-1424847651672-bf20a4b0982b?w=1400&h=500&fit=crop&crop=center&q=80" alt="Âme Restaurant ambiente"/></div>
+  <div class="cta-inner r">
+    <div class="lbl" style="justify-content:center"><div class="ll"></div><span>Reserve sua mesa</span></div>
+    <h2>Uma noite <em>inesquecível</em><br>começa aqui</h2>
+    <p>Reservas com até 30 dias de antecedência. Atendemos de terça a sábado, das 19h às 23h.</p>
+    <div class="cta-btns">
+      <a href="https://wa.me/5511999999999" class="btn-copper">Reservar pelo WhatsApp</a>
+      <a href="tel:+5511999999999" class="btn-g">Ligar agora</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="ft">
+    <div class="ft-top">
+      <div><div class="ft-logo">Âme</div><p class="ft-desc">Fine dining contemporâneo em São Paulo. Ingredientes sazonais, técnica precisa, experiência inesquecível.</p></div>
+      <div class="ft-col"><div class="ftct">Restaurante</div><ul><li><a href="#">Menu degustação</a></li><li><a href="#">Chef's Table</a></li><li><a href="#">Sala privativa</a></li><li><a href="#">Carta de vinhos</a></li></ul></div>
+      <div class="ft-col"><div class="ftct">Sobre</div><ul><li><a href="#">Nossa história</a></li><li><a href="#">O chef</a></li><li><a href="#">Imprensa</a></li><li><a href="#">Sustentabilidade</a></li></ul></div>
+      <div class="ft-col"><div class="ftct">Contato</div><ul><li><a href="#">Reservas</a></li><li><a href="#">WhatsApp</a></li><li><a href="#">Localização</a></li><li><a href="#">Eventos</a></li></ul></div>
+    </div>
+    <div class="ft-bottom">
+      <span class="ftcopy">© 2025 Âme Restaurant. Todos os direitos reservados.</span>
+      <span class="ftk">Site por <a href="https://kynovia.com.br" target="_blank">Kynovia</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('v')}),{threshold:.12});
+document.querySelectorAll('.r').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

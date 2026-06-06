@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WIA — Kynovia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #09070F;
+  --bg2: #0D0B16;
+  --bg3: #151624;
+  --blue: #2563EB;
+  --blue-h: #1D4ED8;
+  --blue-l: #3B82F6;
+  --blue-xl: #60A5FA;
+  --blue-2xl: #93C5FD;
+  --border: rgba(255,255,255,0.08);
+  --border-b: rgba(59,130,246,0.18);
+  --text: #F4F4F5;
+  --text2: #A1A1AA;
+  --text3: #52525B;
+  --font: 'Inter', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+nav {
+  position: sticky; top: 0; z-index: 30;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px; padding: 0 32px;
+  background: rgba(9,7,15,0.84);
+  backdrop-filter: blur(24px) saturate(180%);
+  border-bottom: 1px solid var(--border);
+}
+.logo { font-size: 16px; font-weight: 700; color: var(--text); text-decoration: none; }
+.logo b { color: var(--blue-l); }
+.nav-links { display: flex; gap: 6px; list-style: none; }
+.nav-links a {
+  font-size: 13.5px; color: var(--text3); text-decoration: none;
+  padding: 6px 14px; border-radius: 6px; transition: .15s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--text2); background: rgba(255,255,255,0.04); }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 32px 72px; }
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding-top: 96px;
+  padding-bottom: 44px;
+  border-bottom: 1px solid var(--border);
+}
+.hero > * { position: relative; z-index: 1; }
+#canvas-bg {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  z-index: 0; opacity: 0.5;
+}
+.hero-grid-overlay {
+  position: absolute; inset: 0; z-index: 0;
+  background-image:
+    linear-gradient(rgba(59,130,246,0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59,130,246,0.045) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 70% 80% at 50% 40%, black 20%, transparent 80%);
+}
+.hero-glow {
+  position: absolute; z-index: 0; border-radius: 50%; filter: blur(110px); pointer-events: none;
+}
+.hero-glow-1 { width: 520px; height: 360px; top: -120px; right: -80px; background: radial-gradient(circle, rgba(37,99,235,0.16) 0%, transparent 65%); }
+.hero-glow-2 { width: 340px; height: 280px; bottom: 10px; left: -60px; background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%); }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 10px;
+  border-radius: 100px;
+  border: 1px solid rgba(59,130,246,0.22);
+  background: rgba(37,99,235,0.1);
+  padding: 6px 14px 6px 10px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--blue-2xl);
+}
+.badge-dot {
+  width: 7px; height: 7px; border-radius: 999px;
+  background: var(--blue-xl);
+  box-shadow: 0 0 14px rgba(96,165,250,.82);
+}
+.hero-grid {
+  display: grid;
+  gap: 26px;
+  align-items: start;
+  margin-top: 28px;
+  grid-template-columns: minmax(0, 1.08fr) minmax(300px, 0.92fr);
+}
+h1 {
+  font-size: clamp(42px, 5.6vw, 72px);
+  line-height: 1.02;
+  letter-spacing: -2.8px;
+  margin-bottom: 20px;
+}
+.hero-copy p {
+  max-width: 700px;
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--text2);
+}
+.hero-copy b,
+.hero-card b,
+.section-title b { color: var(--blue-xl); font-weight: 600; }
+.cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 48px;
+  padding: 12px 20px;
+  border-radius: 14px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  transition: .18s;
+}
+.btn-primary {
+  border: 1px solid rgba(255,255,255,.16);
+  background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+  color: #fff;
+  box-shadow: 0 18px 40px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.14);
+}
+.btn-primary:hover {
+  background: linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08));
+}
+.btn-outline {
+  border: 1px solid var(--border);
+  background: rgba(0,0,0,.22);
+  color: var(--text);
+}
+.btn-outline:hover {
+  border-color: rgba(255,255,255,.15);
+  background: rgba(255,255,255,.04);
+}
+.hero-points {
+  display: grid;
+  gap: 12px;
+  margin-top: 28px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.point {
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: rgba(0,0,0,.2);
+  padding: 16px;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text2);
+}
+.point strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .01em;
+  color: var(--text);
+}
+.hero-stack { display: grid; gap: 12px; }
+.hero-card {
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: rgba(0,0,0,.18);
+  padding: 22px;
+}
+.hero-card p:first-child,
+.micro-label,
+.kb-eyebrow,
+.step-number,
+.card-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.hero-card p:first-child,
+.micro-label,
+.kb-eyebrow,
+.card-eyebrow { color: var(--text3); }
+.hero-card p:last-child {
+  margin-top: 12px;
+  font-size: 17px;
+  line-height: 1.75;
+  color: rgba(250,250,250,.82);
+}
+.hero-card ul {
+  margin-top: 14px;
+  padding-left: 18px;
+  color: var(--text2);
+  display: grid;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 1.7;
+}
+.hero-card li::marker { color: var(--blue-xl); }
+.section {
+  margin-top: 24px;
+  border: 1px solid var(--border);
+  border-radius: 30px;
+  background: rgba(255,255,255,.03);
+  overflow: hidden;
+}
+.section-inner { padding: 30px; }
+.section-title { max-width: 690px; }
+.section-title .eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 16px;
+}
+.section-title h2 {
+  font-size: clamp(28px, 3.6vw, 42px);
+  line-height: 1.08;
+  letter-spacing: -1.6px;
+}
+.section-title p {
+  margin-top: 14px;
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--text2);
+}
+.demo-grid {
+  display: grid;
+  grid-template-columns: minmax(0,.88fr) minmax(0,1.12fr);
+}
+.demo-copy { padding: 30px; }
+.micro-chat { margin-top: 28px; display: grid; gap: 14px; }
+.chat-bubble {
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 16px;
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--text2);
+  background: rgba(0,0,0,.18);
+}
+.chat-bubble.is-ia {
+  border-color: rgba(52,211,153,.2);
+  background: rgba(16,185,129,.08);
+  color: rgba(231,255,245,.88);
+}
+.demo-kanban {
+  border-left: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(5,6,12,.82), rgba(5,6,12,.98));
+  padding: 30px;
+}
+.kb-top {
+  display: flex; align-items: center; justify-content: space-between; gap: 18px;
+}
+.kb-top h3 { font-size: 22px; line-height: 1.3; }
+.kb-live {
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.1);
+  background: rgba(255,255,255,.05);
+  padding: 7px 12px;
+  font-size: 11px;
+  color: var(--text2);
+}
+.kb-stage {
+  position: relative;
+  margin-top: 28px;
+}
+.kb-overlay {
+  position: absolute;
+  left: 0;
+  top: 66px;
+  z-index: 3;
+  width: calc((100% - 2rem)/3);
+  animation: move-card 6.2s ease-in-out infinite;
+}
+.kb-moving {
+  border-radius: 20px;
+  border: 1px solid rgba(110,231,183,.18);
+  background: linear-gradient(180deg, rgba(31,41,55,.92), rgba(13,18,29,.82));
+  padding: 16px;
+  box-shadow: 0 22px 46px rgba(0,0,0,.42);
+}
+.kb-moving strong,
+.kb-card strong { color: #fff; font-size: 15px; }
+.kb-moving p,
+.kb-card p { margin-top: 6px; font-size: 13px; line-height: 1.6; color: var(--text2); }
+.kb-chip {
+  display: inline-block;
+  margin-top: 10px;
+  border-radius: 999px;
+  padding: 6px 9px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #d1fae5;
+  background: rgba(52,211,153,.14);
+}
+.kb-columns {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+}
+.kb-col {
+  min-height: 240px;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: rgba(255,255,255,.04);
+  padding: 16px;
+}
+.kb-col-head {
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 11px; text-transform: uppercase; letter-spacing: .16em; color: var(--text3);
+}
+.kb-status {
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.1);
+  padding: 5px 8px;
+  font-size: 10px;
+  color: rgba(255,255,255,.74);
+}
+.kb-card {
+  margin-top: 14px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.05));
+  padding: 16px;
+  box-shadow: 0 14px 34px rgba(0,0,0,.24);
+}
+.kb-bar {
+  display: flex; align-items: center; gap: 10px;
+  margin-top: 18px;
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+}
+.kb-bar-dot {
+  width: 10px; height: 10px; border-radius: 999px;
+  background: var(--blue-xl);
+  box-shadow: 0 0 14px rgba(96,165,250,.8);
+}
+.kb-bar span { color: var(--text2); font-size: 14px; }
+@keyframes move-card {
+  0% { transform: translateX(0%); opacity: 0; }
+  10% { transform: translateX(0%); opacity: 1; }
+  45% { transform: translateX(103%); opacity: 1; }
+  78% { transform: translateX(206%); opacity: 1; }
+  100% { transform: translateX(206%); opacity: 0; }
+}
+.feature-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+}
+.feature-intro { margin-bottom: 24px; }
+.feature-card {
+  border: 1px solid var(--border);
+  border-radius: 26px;
+  background: rgba(255,255,255,.04);
+  padding: 26px;
+}
+.feature-card h3 { margin-top: 16px; font-size: 28px; line-height: 1.18; }
+.feature-card p { margin-top: 16px; font-size: 14px; line-height: 1.8; color: var(--text2); }
+.flow-grid {
+  display: grid;
+  gap: 28px;
+  grid-template-columns: minmax(280px,.88fr) minmax(0,1.12fr);
+}
+.flow-list { display: grid; gap: 14px; }
+.flow-step {
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  background: rgba(0,0,0,.2);
+  padding: 20px;
+}
+.step-head { display: flex; align-items: center; gap: 12px; }
+.step-number { color: var(--text3); }
+.step-line { flex: 1; height: 1px; background: rgba(255,255,255,.1); }
+.flow-step h3 { margin-top: 14px; font-size: 22px; line-height: 1.28; }
+.flow-step p { margin-top: 12px; font-size: 14px; line-height: 1.78; color: var(--text2); }
+.audience {
+  background: linear-gradient(135deg, rgba(124,58,237,.18), rgba(8,9,15,.92) 55%, rgba(8,9,15,.98));
+}
+.audience-grid {
+  display: grid;
+  gap: 16px;
+  margin-top: 28px;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+}
+.audience-card {
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 20px;
+  background: rgba(0,0,0,.2);
+  padding: 18px;
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--text2);
+}
+.final-cta {
+  text-align: left;
+}
+.footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--border);
+  margin-top: 30px;
+  padding-top: 24px;
+  color: var(--text3);
+  font-size: 13px;
+}
+.footer-links { display: flex; gap: 16px; flex-wrap: wrap; }
+.footer-links a { color: var(--text2); text-decoration: none; }
+.footer-links a:hover { color: #fff; }
+@media (max-width: 980px) {
+  .hero-grid,
+  .demo-grid,
+  .flow-grid,
+  .feature-grid,
+  .audience-grid,
+  .kb-columns { grid-template-columns: 1fr; }
+  .demo-kanban { border-left: 0; border-top: 1px solid var(--border); }
+  .hero-points { grid-template-columns: 1fr; }
+  .kb-overlay { display: none; }
+}
+@media (max-width: 900px) {
+  nav { padding: 0 20px; }
+  .nav-links li:not(:last-child) { display: none; }
+  .wrap { padding: 0 20px 56px; }
+  .hero { padding-top: 80px; }
+  .section-inner, .demo-copy, .demo-kanban { padding: 24px 20px; }
+  .hero-card p:last-child { font-size: 16px; }
+}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../" class="logo">Kynov<b>ia</b></a>
+  <ul class="nav-links">
+    <li><a href="../../#servicos">Serviços</a></li>
+    <li><a href="../" class="active">Produtos</a></li>
+    <li><a href="../../modelos/">Modelos</a></li>
+    <li><a href="../../#sobre">Sobre</a></li>
+    <li><a href="../../#contato">Contato</a></li>
+  </ul>
+</nav>
+
+<main class="wrap">
+  <section class="hero">
+    <canvas id="canvas-bg"></canvas>
+    <div class="hero-grid-overlay"></div>
+    <div class="hero-glow hero-glow-1"></div>
+    <div class="hero-glow hero-glow-2"></div>
+
+    <div class="hero-badge"><span class="badge-dot"></span>Agente comercial com IA para WhatsApp</div>
+
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <h1>Suas vendas com <b>IA no WhatsApp</b>, 24 horas por dia.</h1>
+        <p>
+          A Kynovia atende o lead no minuto em que ele chama, conduz a conversa
+          inicial, faz a qualificação e leva adiante o follow-up até a hora
+          certa de envolver o vendedor.
+        </p>
+        <div class="cta-row">
+          <a href="../../#contato" class="btn btn-primary">Solicitar demonstração</a>
+          <a href="../" class="btn btn-outline">Ver outros produtos</a>
+        </div>
+        <div class="hero-points">
+          <div class="point"><strong>Canal real</strong>Opera direto no WhatsApp, sem depender de outro canal no MVP.</div>
+          <div class="point"><strong>Qualificação</strong>Identifica perfil, urgência, interesse e momento da compra ao longo da conversa.</div>
+          <div class="point"><strong>Passagem limpa</strong>Entrega contexto, histórico e próximo passo já organizados para o time comercial.</div>
+        </div>
+      </div>
+
+      <div class="hero-stack">
+        <div class="hero-card">
+          <p>O que faz</p>
+          <p>Prospecta leads, responde no WhatsApp, qualifica com perguntas progressivas e entrega para o vendedor humano <b>só o que merece atenção</b>.</p>
+          <ul>
+            <li>Responde em segundos no primeiro contato.</li>
+            <li>Conduz a conversa sem parecer formulário engessado.</li>
+            <li>Atualiza o pipeline conforme a operação avança.</li>
+          </ul>
+        </div>
+        <div class="hero-card">
+          <p>O que não é</p>
+          <p>Não é CRM. Não é chatbot genérico. Não substitui o vendedor. Ele elimina o trabalho manual do <b>primeiro contato, da qualificação e do follow-up</b> <b>e, melhor, não deixa seu cliente esperando</b>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="demo-grid">
+      <div class="demo-copy">
+        <div class="section-title">
+          <div class="eyebrow">Operação</div>
+          <h2>A IA conversa, qualifica e <b>move a oportunidade no pipeline</b></h2>
+          <p>O Kanban acompanha a operação em tempo real, sem atualização manual. À medida que a conversa avança, a oportunidade muda de etapa com contexto pronto para o time comercial.</p>
+        </div>
+
+        <div class="micro-chat">
+          <div class="chat-bubble">Lead: “Quero entender se funciona para a minha operação comercial.”</div>
+          <div class="chat-bubble is-ia">IA: “Claro. Hoje seus leads entram pelo WhatsApp e o time consegue responder rápido no primeiro contato?”</div>
+          <div class="chat-bubble">A conversa continua com perguntas sobre momento, urgência e perfil. Se fizer sentido avançar, a IA agenda a próxima etapa e entrega o histórico pronto.</div>
+        </div>
+      </div>
+
+      <div class="demo-kanban">
+        <div class="kb-top">
+          <div>
+            <div class="kb-eyebrow">Kanban automático</div>
+            <h3>Pipeline atualizado pela operação da IA</h3>
+          </div>
+          <div class="kb-live">ao vivo</div>
+        </div>
+
+        <div class="kb-stage">
+          <div class="kb-overlay">
+            <div class="kb-moving">
+              <strong>Clínica Master</strong>
+              <p>Qualificado pela IA e encaminhado para vendas</p>
+              <span class="kb-chip">em movimento</span>
+            </div>
+          </div>
+
+          <div class="kb-columns">
+            <div class="kb-col">
+              <div class="kb-col-head"><span>Novos</span><span class="kb-status">entrada</span></div>
+              <div class="kb-card"><strong>Clínica Master</strong><p>Perfil compatível com a operação comercial</p><span class="kb-chip">pronto</span></div>
+              <div class="kb-card"><strong>Viva Ensino</strong><p>Perfil compatível com a operação comercial</p><span class="kb-chip">pronto</span></div>
+            </div>
+            <div class="kb-col">
+              <div class="kb-col-head"><span>Qualificados</span><span class="kb-status">ia</span></div>
+              <div class="kb-card"><strong>Lead movido pela IA</strong><p>Perfil compatível com a operação comercial</p><span class="kb-chip">pronto</span></div>
+            </div>
+            <div class="kb-col">
+              <div class="kb-col-head"><span>Demo agendada</span><span class="kb-status">vendas</span></div>
+              <div class="kb-card"><strong>Grupo Prisma</strong><p>Perfil compatível com a operação comercial</p><span class="kb-chip">pronto</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="kb-bar"><span class="kb-bar-dot"></span><span>IA qualificando Grupo Nativa</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-inner">
+      <div class="section-title feature-intro">
+        <div class="eyebrow">Recursos</div>
+        <h2>O que o WIA faz para <b>tirar peso da operação comercial</b></h2>
+        <p>Sem inflar promessa. O produto ataca os pontos que mais travam o primeiro contato, a qualificação e a continuidade da conversa.</p>
+      </div>
+      <div class="feature-grid">
+        <article class="feature-card">
+          <div class="card-eyebrow">WhatsApp</div>
+          <h3>Responde em segundos no canal onde o lead já está</h3>
+          <p>A Kynovia opera direto no WhatsApp. O lead recebe retorno rápido, com mensagem útil e contexto desde o primeiro contato.</p>
+        </article>
+        <article class="feature-card">
+          <div class="card-eyebrow">Qualificação</div>
+          <h3>Faz perguntas progressivas antes de chamar o vendedor</h3>
+          <p>A IA identifica dor, urgência, perfil e interesse real. O vendedor entra quando já existe uma oportunidade com contexto pronto.</p>
+        </article>
+        <article class="feature-card">
+          <div class="card-eyebrow">Pipeline</div>
+          <h3>Atualiza o Kanban conforme a operação acontece</h3>
+          <p>Não é CRM. Não é chatbot genérico. É um agente comercial que tira o trabalho manual do primeiro contato, da qualificação e do follow-up.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-inner flow-grid">
+      <div class="section-title">
+        <div class="eyebrow">Fluxo</div>
+        <h2>O vendedor entra <b>na hora certa</b></h2>
+        <p>A Kynovia responde, qualifica, conduz o follow-up inicial e, quando faz sentido, agenda a próxima reunião automaticamente. O time humano entra com contexto pronto e o próximo passo já organizado.</p>
+      </div>
+
+      <div class="flow-list">
+        <article class="flow-step">
+          <div class="step-head"><span class="step-number">01</span><div class="step-line"></div></div>
+          <h3>O lead chama no WhatsApp e recebe resposta imediata</h3>
+          <p>A conversa começa na hora. A Kynovia responde sem fila humana, entende a demanda e conduz o primeiro contato com contexto.</p>
+        </article>
+        <article class="flow-step">
+          <div class="step-head"><span class="step-number">02</span><div class="step-line"></div></div>
+          <h3>A IA qualifica com perguntas progressivas</h3>
+          <p>Ela faz as perguntas certas ao longo da conversa, identifica perfil, urgência e interesse real, e separa curiosos de oportunidades concretas.</p>
+        </article>
+        <article class="flow-step">
+          <div class="step-head"><span class="step-number">03</span><div class="step-line"></div></div>
+          <h3>A IA agenda uma reunião com o lead diretamente no Google Calendar</h3>
+          <p>Quando faz sentido avançar, a IA consulta sua agenda, confirma o melhor horário com o lead e deixa a reunião agendada de forma automática.</p>
+        </article>
+        <article class="flow-step">
+          <div class="step-head"><span class="step-number">04</span><div class="step-line"></div></div>
+          <h3>O vendedor recebe a oportunidade com contexto pronto</h3>
+          <p>O time comercial entra no momento certo, com histórico da conversa, motivo do contato e próximo passo já organizados.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section audience">
+    <div class="section-inner">
+      <div class="section-title">
+        <div class="eyebrow">Para quem</div>
+        <h2>Equipes que perdem oportunidade por <b>demora ou falta de consistência</b></h2>
+        <p>Se o lead entra no WhatsApp e o time não consegue responder com rapidez, qualificar bem e sustentar o follow-up, a operação perde consistência. A Kynovia entra exatamente nesse ponto.</p>
+      </div>
+      <div class="audience-grid">
+        <div class="audience-card">Recebem leads e demoram para responder.</div>
+        <div class="audience-card">Dependem de vendedor para fazer triagem inicial.</div>
+        <div class="audience-card">Perdem consistência no follow-up comercial.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-inner final-cta">
+      <div class="section-title">
+        <div class="eyebrow">Próximo passo</div>
+        <h2>Veja como a Kynovia opera <b>no seu fluxo comercial</b></h2>
+        <p>Se você quer ver o WIA operando no seu contexto, solicite uma demonstração e converse com o nosso time sobre o seu fluxo atual.</p>
+      </div>
+      <div class="cta-row">
+        <a href="../../#contato" class="btn btn-primary">Solicitar demonstração</a>
+        <a href="../" class="btn btn-outline">Ver outros produtos</a>
+      </div>
+
+      <div class="footer">
+        <div>
+          <strong style="display:block;color:var(--text);margin-bottom:4px">Kynovia</strong>
+          <span>Agente comercial com IA para operação via WhatsApp.</span>
+        </div>
+        <div class="footer-links">
+          <a href="../../privacidade/">Política de privacidade</a>
+          <a href="../../termos/">Termos de uso</a>
+          <a href="../../#contato">Contato</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+(function(){
+  const cv = document.getElementById('canvas-bg');
+  if(!cv) return;
+  const ctx = cv.getContext('2d');
+  let W, H, nodes = [], RAF;
+  const N = 55, MAX_DIST = 160, BLUE = '59,130,246';
+
+  function resize(){
+    W = cv.width = cv.offsetWidth;
+    H = cv.height = cv.offsetHeight;
+  }
+
+  function mkNode(){
+    return {
+      x: Math.random()*W, y: Math.random()*H,
+      vx:(Math.random()-.5)*.35, vy:(Math.random()-.5)*.35,
+      r: Math.random()*1.4+.4
+    };
+  }
+
+  function init(){ resize(); nodes=[]; for(let i=0;i<N;i++) nodes.push(mkNode()); }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    nodes.forEach(n=>{
+      n.x+=n.vx; n.y+=n.vy;
+      if(n.x<0||n.x>W) n.vx*=-1;
+      if(n.y<0||n.y>H) n.vy*=-1;
+    });
+    for(let i=0;i<N;i++){
+      for(let j=i+1;j<N;j++){
+        const dx=nodes[i].x-nodes[j].x, dy=nodes[i].y-nodes[j].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<MAX_DIST){
+          ctx.beginPath();
+          ctx.strokeStyle=`rgba(${BLUE},${.18*(1-d/MAX_DIST)})`;
+          ctx.lineWidth=.6;
+          ctx.moveTo(nodes[i].x,nodes[i].y);
+          ctx.lineTo(nodes[j].x,nodes[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    nodes.forEach(n=>{
+      ctx.beginPath();
+      ctx.fillStyle=`rgba(${BLUE},.55)`;
+      ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+      ctx.fill();
+    });
+    RAF=requestAnimationFrame(draw);
+  }
+
+  init(); draw();
+  window.addEventListener('resize', ()=>{ cancelAnimationFrame(RAF); init(); draw(); });
+})();
+</script>
+</body>
+</html>

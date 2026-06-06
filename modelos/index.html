@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modelos de Websites — Kynovia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0A0A0B;--bg2:#111112;--bg3:#18181A;--blue:#2563EB;--blue-h:#1D4ED8;--blue-l:#3B82F6;--blue-xl:#60A5FA;--blue-2xl:#93C5FD;--border:rgba(255,255,255,.06);--border-b:rgba(59,130,246,.18);--text:#F4F4F5;--text2:#A1A1AA;--text3:#52525B;--font:'Inter',system-ui,sans-serif;--mono:'JetBrains Mono',monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 48px;background:rgba(10,10,11,.8);backdrop-filter:blur(24px) saturate(180%);border-bottom:1px solid var(--border)}
+.logo{font-weight:700;font-size:16px;letter-spacing:-.2px}.logo b{color:var(--blue-l)}
+.nav-links{display:flex;align-items:center;gap:6px;list-style:none}.nav-links a{font-size:13.5px;font-weight:500;color:var(--text3);padding:9px 13px;border-radius:7px;transition:.18s}.nav-links a:hover{color:var(--text2);background:rgba(255,255,255,.04)}
+.nav-cta{background:var(--blue)!important;color:#fff!important}.nav-cta:hover{background:var(--blue-h)!important}
+.hero{padding:144px 48px 88px;border-bottom:1px solid var(--border)}
+.wrap{max-width:1080px;margin:0 auto}
+.lbl{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:20px}
+h1{font-size:clamp(44px,5.2vw,76px);line-height:.96;letter-spacing:-3px;margin-bottom:22px}
+h1 b,h2 b{color:var(--blue-l)}
+.lead{max-width:660px;color:var(--text2);font-size:17px;line-height:1.7}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:52px;border:1px solid var(--border);border-radius:14px;overflow:hidden;background:var(--border)}
+.card{min-height:230px;background:var(--bg2);padding:28px;display:flex;flex-direction:column;justify-content:space-between;transition:.22s}
+.card:hover{background:var(--bg3)}
+.tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--blue-2xl);margin-bottom:20px}
+.card h2{font-size:20px;letter-spacing:-.5px;margin-bottom:10px}
+.card p{font-size:13.5px;line-height:1.65;color:var(--text2);max-width:29ch}
+.open{display:inline-flex;align-items:center;gap:8px;margin-top:24px;font-size:13px;color:var(--text);font-weight:500}
+footer{border-top:1px solid var(--border);padding:34px 48px;color:var(--text3);font-size:13px}
+.foot{max-width:1080px;margin:0 auto;display:flex;justify-content:space-between;gap:24px}
+@media(max-width:900px){nav{padding:0 24px}.nav-links{gap:0}.nav-links a:not(.nav-cta){display:none}.hero{padding:120px 24px 64px}.grid{grid-template-columns:1fr}footer{padding:28px 24px}.foot{flex-direction:column}h1{letter-spacing:-2px}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="logo" href="../">Kynov<b>ia</b></a>
+  <ul class="nav-links">
+    <li><a href="../#servicos">Serviços</a></li>
+    <li><a href="../produtos/">Produtos</a></li>
+    <li><a href="./">Modelos</a></li>
+    <li><a href="../#contato" class="nav-cta">Falar com a equipe</a></li>
+  </ul>
+</nav>
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div class="lbl">// Portfólio de websites</div>
+      <h1>Modelos prontos para <b>adaptar</b> ao seu negócio</h1>
+      <p class="lead">Exemplos navegáveis de páginas completas para clínicas, restaurantes, imobiliárias, escritórios e negócios locais. Cada modelo pode virar um site real com conteúdo, marca e integrações do cliente.</p>
+      <div class="grid">
+        <a class="card" href="./clinica-estetica/"><div><div class="tag">Estética</div><h2>Élise Clínica</h2><p>Modelo feminino para estética, bem-estar e procedimentos faciais.</p></div><span class="open">Abrir modelo -></span></a>
+        <a class="card" href="./clinica-estetica-premium/"><div><div class="tag">Premium</div><h2>Aurore</h2><p>Experiência editorial para estética, longevidade e posicionamento sofisticado.</p></div><span class="open">Abrir modelo -></span></a>
+        <a class="card" href="./clinica/"><div><div class="tag">Clínica</div><h2>Lumina</h2><p>Landing page completa para clínicas de estética com serviços e processo.</p></div><span class="open">Abrir modelo -></span></a>
+        <a class="card" href="./restaurante/"><div><div class="tag">Restaurante</div><h2>Âme Restaurant</h2><p>Fine dining, menu, chef, experiência e reservas em uma página.</p></div><span class="open">Abrir modelo -></span></a>
+        <a class="card" href="./imobiliaria/"><div><div class="tag">Imobiliária</div><h2>Meridian</h2><p>Curadoria de imóveis, processo comercial e contato com consultor.</p></div><span class="open">Abrir modelo -></span></a>
+        <a class="card" href="./advocacia/"><div><div class="tag">Advocacia</div><h2>Monteiro & Associados</h2><p>Presença institucional para escritório jurídico de alto padrão.</p></div><span class="open">Abrir modelo -></span></a>
+        <a class="card" href="./academia/"><div><div class="tag">Academia</div><h2>APEX Performance</h2><p>Modelo forte e direto para treino, performance e captação por WhatsApp.</p></div><span class="open">Abrir modelo -></span></a>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>
+  <div class="foot"><span>© 2026 Kynovia. Todos os direitos reservados.</span><a href="../">Voltar para o site institucional</a></div>
+</footer>
+</body>
+</html>
