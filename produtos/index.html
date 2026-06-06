@@ -96,7 +96,7 @@ h1 {
   color: var(--blue-xl); font-weight: 600;
 }
 .grid {
-  display: grid; grid-template-columns: repeat(3, 1fr);
+  display: grid; grid-template-columns: repeat(4, 1fr);
   gap: 16px; margin-top: 48px;
 }
 .card-link {
@@ -192,6 +192,9 @@ footer {
   .nav-links li:not(:last-child) { display: none; }
   .wrap { padding: 0 20px 56px; }
 }
+@media (max-width: 1180px) and (min-width: 901px) {
+  .grid { grid-template-columns: repeat(2, 1fr); }
+}
 </style>
 </head>
 <body>
@@ -272,6 +275,23 @@ footer {
           <li>Objetivos e KRs em cascata por time.</li>
           <li>Check-ins com confiança e bloqueios.</li>
           <li>Alertas para risco e atraso de execução.</li>
+        </ul>
+        <span class="tag">Produto ativo</span>
+      </article>
+    </a>
+
+    <a class="card-link" href="./riskhub/">
+      <article class="card">
+        <div class="num">04</div>
+        <h2>K-RiskHub</h2>
+        <p>
+          Gestão de riscos em projetos com inventário, planos de resposta,
+          dashboards executivos e relatórios prontos para decisão.
+        </p>
+        <ul>
+          <li>Matriz de probabilidade e impacto.</li>
+          <li>Governança por perfil, cliente e projeto.</li>
+          <li>Relatórios executivos e planos 5W2H.</li>
         </ul>
         <span class="tag">Produto ativo</span>
       </article>

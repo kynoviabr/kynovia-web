@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K-RiskHub — Kynovia</title>
+<meta name="description" content="Gestão de riscos em projetos com governança, dashboards executivos e relatórios prontos para decisão.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --kyn-bg: #09070f;
+  --kyn-bg-2: #0d0b16;
+  --kyn-bg-3: #151624;
+  --kyn-text: #f4f4f5;
+  --kyn-text-2: #a1a1aa;
+  --kyn-text-3: #52525b;
+  --kyn-blue: #2563eb;
+  --kyn-blue-hover: #1d4ed8;
+  --kyn-blue-light: #3b82f6;
+  --kyn-blue-xl: #60a5fa;
+  --kyn-blue-2xl: #93c5fd;
+  --kyn-border: rgba(255, 255, 255, 0.08);
+  --kyn-border-strong: rgba(59, 130, 246, 0.18);
+  --kyn-font: "Inter", system-ui, -apple-system, sans-serif;
+  --kyn-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  min-height: 100vh;
+  background: var(--kyn-bg);
+  color: var(--kyn-text);
+  font-family: var(--kyn-font), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+.krh-lp b { color: var(--kyn-blue-xl); font-weight: 700; }
+.krh-wrap { width: min(1120px, calc(100% - 64px)); margin: 0 auto; }
+.krh-nav {
+  position: sticky; top: 0; z-index: 40;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px; padding: 0 32px;
+  background: rgba(9, 7, 15, 0.84);
+  backdrop-filter: blur(24px) saturate(180%);
+  border-bottom: 1px solid var(--kyn-border);
+}
+.krh-logo { color: var(--kyn-text); font-size: 16px; font-weight: 700; text-decoration: none; }
+.krh-logo b { color: var(--kyn-blue-light); }
+.krh-nav-links { display: flex; align-items: center; gap: 6px; list-style: none; }
+.krh-nav-links a {
+  display: inline-flex; align-items: center; min-height: 34px;
+  padding: 0 14px; border-radius: 7px;
+  color: var(--kyn-text-3); font-size: 13.5px; font-weight: 500;
+  transition: background .18s ease, color .18s ease;
+}
+.krh-nav-links a:hover { background: rgba(255,255,255,.04); color: var(--kyn-text-2); }
+.krh-nav-links .krh-nav-cta { background: var(--kyn-blue); color: #fff; }
+.krh-nav-links .krh-nav-cta:hover { background: var(--kyn-blue-hover); color: #fff; }
+.krh-hero {
+  position: relative; overflow: hidden;
+  padding: 96px 0 64px;
+  border-bottom: 1px solid var(--kyn-border);
+  background: linear-gradient(180deg, rgba(37,99,235,.08), transparent 42%), var(--kyn-bg);
+}
+.krh-grid-overlay {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(59,130,246,.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59,130,246,.045) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 70% 80% at 50% 40%, black 20%, transparent 80%);
+}
+.krh-hero > .krh-wrap { position: relative; z-index: 1; }
+.krh-hero-badge {
+  display: inline-flex; align-items: center; gap: 10px;
+  margin-bottom: 28px; padding: 6px 14px 6px 10px;
+  border: 1px solid rgba(59,130,246,.22); border-radius: 999px;
+  background: rgba(37,99,235,.1); color: var(--kyn-blue-2xl);
+  font-family: var(--kyn-mono), monospace; font-size: 11px; font-weight: 500;
+  letter-spacing: .08em; text-transform: uppercase;
+}
+.krh-badge-dot {
+  width: 7px; height: 7px; border-radius: 999px;
+  background: var(--kyn-blue-xl);
+  box-shadow: 0 0 14px rgba(96,165,250,.82);
+}
+.krh-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(360px, .95fr);
+  gap: 32px; align-items: center;
+}
+.krh-hero-copy h1 {
+  max-width: 760px; margin: 0 0 20px;
+  color: var(--kyn-text); font-size: 64px; line-height: 1.02; letter-spacing: 0;
+}
+.krh-hero-copy p {
+  max-width: 690px; color: var(--kyn-text-2);
+  font-size: 17px; line-height: 1.75;
+}
+.krh-cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.krh-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 48px; padding: 0 20px; border-radius: 8px;
+  font-size: 14px; font-weight: 600; transition: transform .18s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+.krh-btn svg { width: 16px; height: 16px; }
+.krh-btn-primary { border: 1px solid rgba(255,255,255,.16); background: var(--kyn-blue); color: #fff; }
+.krh-btn-primary:hover {
+  transform: translateY(-1px); background: var(--kyn-blue-hover);
+  box-shadow: 0 0 0 4px rgba(37,99,235,.18), 0 8px 24px rgba(37,99,235,.28);
+}
+.krh-btn-outline { border: 1px solid var(--kyn-border); background: rgba(0,0,0,.22); color: var(--kyn-text); }
+.krh-btn-outline:hover { border-color: rgba(255,255,255,.15); background: rgba(255,255,255,.04); }
+.krh-hero-points { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 28px; }
+.krh-hero-points span {
+  min-height: 76px; padding: 16px; border: 1px solid var(--kyn-border);
+  border-radius: 12px; background: rgba(0,0,0,.2);
+  color: var(--kyn-text-2); font-size: 13.5px; line-height: 1.55;
+}
+.krh-hero-points b { display: block; margin-bottom: 4px; color: var(--kyn-text); }
+.krh-product-visual {
+  border: 1px solid var(--kyn-border); border-radius: 14px; overflow: hidden;
+  background: rgba(0,0,0,.22); box-shadow: 0 24px 70px rgba(0,0,0,.42);
+}
+.krh-browser-bar {
+  display: flex; align-items: center; gap: 7px; height: 42px; padding: 0 16px;
+  border-bottom: 1px solid var(--kyn-border); background: rgba(255,255,255,.03);
+}
+.krh-browser-bar span { width: 8px; height: 8px; border-radius: 999px; background: rgba(255,255,255,.24); }
+.krh-browser-bar strong {
+  margin-left: 8px; color: var(--kyn-text-3);
+  font-family: var(--kyn-mono), monospace; font-size: 10.5px; font-weight: 500;
+  letter-spacing: .08em; text-transform: uppercase;
+}
+.krh-dashboard-shot { padding: 20px; background: var(--kyn-bg-2); }
+.krh-shot-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
+.krh-shot-header p, .krh-shot-pill, .krh-risk-list p, .krh-section-title span, .krh-cta-box span {
+  color: var(--kyn-text-3); font-family: var(--kyn-mono), monospace; font-size: 10.5px;
+  font-weight: 500; letter-spacing: .12em; text-transform: uppercase;
+}
+.krh-shot-header h2 { margin-top: 4px; color: var(--kyn-text); font-size: 24px; line-height: 1.1; letter-spacing: 0; }
+.krh-shot-pill {
+  padding: 7px 10px; border: 1px solid rgba(59,130,246,.18);
+  border-radius: 999px; background: rgba(37,99,235,.09); color: var(--kyn-blue-xl);
+}
+.krh-shot-metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-bottom: 16px; }
+.krh-shot-metrics div, .krh-risk-list, .krh-governance-panel, .krh-roadmap-list article {
+  border: 1px solid var(--kyn-border); border-radius: 10px; background: rgba(255,255,255,.035);
+}
+.krh-shot-metrics div { min-height: 78px; padding: 12px; }
+.krh-shot-metrics span { display: block; color: var(--kyn-text-3); font-size: 11px; font-weight: 600; }
+.krh-shot-metrics strong { display: block; margin-top: 8px; color: var(--kyn-text); font-size: 26px; line-height: 1; }
+.krh-shot-main { display: grid; grid-template-columns: 1fr .88fr; gap: 12px; }
+.krh-risk-matrix {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px;
+  padding: 12px; border: 1px solid var(--kyn-border);
+  border-radius: 10px; background: rgba(0,0,0,.2);
+}
+.krh-cell { aspect-ratio: 1; border-radius: 6px; border: 1px solid rgba(255,255,255,.05); }
+.krh-cell-0, .krh-cell-1, .krh-cell-2 { background: rgba(16,185,129,.36); }
+.krh-cell-3, .krh-cell-4, .krh-cell-5 { background: rgba(245,158,11,.42); }
+.krh-cell-6, .krh-cell-7, .krh-cell-8 { background: rgba(239,68,68,.44); }
+.krh-risk-list { padding: 14px; }
+.krh-risk-list p { margin-bottom: 12px; }
+.krh-risk-list div { display: grid; gap: 2px; padding: 10px 0; border-top: 1px solid var(--kyn-border); }
+.krh-risk-list strong { color: var(--kyn-blue-xl); font-family: var(--kyn-mono), monospace; font-size: 11px; font-weight: 500; }
+.krh-risk-list span { color: var(--kyn-text-2); font-size: 12.5px; }
+.krh-section { padding: 88px 0; border-top: 1px solid var(--kyn-border); background: var(--kyn-bg); }
+.krh-section-tight { padding-top: 72px; }
+.krh-section-title { max-width: 760px; }
+.krh-section-title h2, .krh-cta-box h2 {
+  margin: 16px 0 0; color: var(--kyn-text);
+  font-size: 42px; line-height: 1.08; letter-spacing: 0;
+}
+.krh-section-title p, .krh-cta-box p {
+  margin: 16px 0 0; color: var(--kyn-text-2); font-size: 15.5px; line-height: 1.75;
+}
+.krh-pain-grid, .krh-cap-grid, .krh-audience-grid {
+  display: grid; gap: 1px; margin-top: 32px;
+  border: 1px solid var(--kyn-border); border-radius: 14px; overflow: hidden; background: var(--kyn-border);
+}
+.krh-pain-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.krh-pain-grid article, .krh-cap-card, .krh-audience-grid article { background: var(--kyn-bg-2); transition: background .2s ease; }
+.krh-pain-grid article:hover, .krh-cap-card:hover, .krh-audience-grid article:hover { background: var(--kyn-bg-3); }
+.krh-pain-grid article { min-height: 178px; padding: 26px 22px; }
+.krh-ico { width: 32px; height: 32px; color: var(--kyn-blue-xl); stroke-width: 1.35; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; }
+.krh-pain-grid p { margin: 20px 0 0; color: var(--kyn-text-2); font-size: 13.5px; line-height: 1.65; }
+.krh-cap-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.krh-cap-card { min-height: 260px; padding: 28px; }
+.krh-cap-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
+.krh-cap-top span, .krh-roadmap-list span {
+  color: var(--kyn-blue-xl); font-family: var(--kyn-mono), monospace; font-size: 11px; font-weight: 500;
+}
+.krh-cap-card h3, .krh-audience-grid h3 { color: var(--kyn-text); font-size: 15px; line-height: 1.3; }
+.krh-cap-card p, .krh-audience-grid p { margin-top: 12px; color: var(--kyn-text-2); font-size: 13.5px; line-height: 1.7; }
+.krh-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, .8fr); gap: 48px; align-items: center; }
+.krh-governance-panel { display: grid; gap: 1px; overflow: hidden; background: var(--kyn-border); }
+.krh-governance-panel article { display: grid; grid-template-columns: 42px 1fr; gap: 14px; padding: 22px; background: var(--kyn-bg-2); }
+.krh-governance-panel strong { display: block; color: var(--kyn-text); font-size: 14px; }
+.krh-governance-panel span { display: block; margin-top: 6px; color: var(--kyn-text-2); font-size: 13px; line-height: 1.55; }
+.krh-audience-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.krh-audience-grid article { min-height: 170px; padding: 26px; }
+.krh-roadmap { display: grid; grid-template-columns: minmax(0, .9fr) minmax(320px, 1fr); gap: 42px; align-items: start; }
+.krh-roadmap-list { display: grid; gap: 12px; }
+.krh-roadmap-list article { display: grid; grid-template-columns: 40px 1fr; gap: 16px; padding: 20px; }
+.krh-roadmap-list p { color: var(--kyn-text-2); font-size: 14px; line-height: 1.6; }
+.krh-cta-section { padding: 88px 0; border-top: 1px solid var(--kyn-border); background: var(--kyn-bg-2); }
+.krh-cta-box {
+  display: flex; align-items: center; justify-content: space-between; gap: 32px;
+  padding: 34px; border: 1px solid var(--kyn-border); border-radius: 14px;
+  background: linear-gradient(135deg, rgba(37,99,235,.16), rgba(255,255,255,.03)), var(--kyn-bg-3);
+}
+.krh-cta-box div { max-width: 680px; }
+.krh-footer { padding: 44px 0; border-top: 1px solid var(--kyn-border); background: var(--kyn-bg); }
+.krh-footer-inner { display: flex; align-items: flex-start; justify-content: space-between; gap: 28px; }
+.krh-footer p { max-width: 430px; margin-top: 12px; color: var(--kyn-text-3); font-size: 13px; line-height: 1.6; }
+.krh-footer-links { display: flex; gap: 18px; flex-wrap: wrap; }
+.krh-footer-links a { color: var(--kyn-text-2); font-size: 13px; }
+.krh-footer-links a:hover { color: var(--kyn-text); }
+@media (max-width: 980px) {
+  .krh-wrap { width: min(100% - 48px, 1120px); }
+  .krh-nav { padding: 0 24px; }
+  .krh-nav-links li:not(:last-child) { display: none; }
+  .krh-hero { padding: 72px 0 48px; }
+  .krh-hero-grid, .krh-split, .krh-roadmap { grid-template-columns: 1fr; }
+  .krh-hero-copy h1 { font-size: 48px; }
+  .krh-pain-grid, .krh-cap-grid, .krh-audience-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .krh-cta-box, .krh-footer-inner { align-items: flex-start; flex-direction: column; }
+}
+@media (max-width: 640px) {
+  .krh-wrap { width: min(100% - 32px, 1120px); }
+  .krh-hero-copy h1 { font-size: 40px; }
+  .krh-hero-copy p { font-size: 16px; }
+  .krh-hero-points, .krh-shot-metrics, .krh-shot-main, .krh-pain-grid, .krh-cap-grid, .krh-audience-grid { grid-template-columns: 1fr; }
+  .krh-section, .krh-cta-section { padding: 64px 0; }
+  .krh-section-title h2, .krh-cta-box h2 { font-size: 32px; }
+  .krh-product-visual { border-radius: 12px; }
+  .krh-dashboard-shot { padding: 14px; }
+}
+</style>
+</head>
+<body>
+<main class="krh-lp">
+  <nav class="krh-nav">
+    <a class="krh-logo" href="../../" aria-label="Kynovia">Kynov<b>ia</b></a>
+    <ul class="krh-nav-links">
+      <li><a href="../">Produtos</a></li>
+      <li><a href="#produto">Produto</a></li>
+      <li><a href="#governanca">Governança</a></li>
+      <li><a href="#roadmap">Roadmap</a></li>
+      <li><a class="krh-nav-cta" href="#contato">Solicitar demo</a></li>
+    </ul>
+  </nav>
+
+  <section class="krh-hero" id="top">
+    <div class="krh-grid-overlay"></div>
+    <div class="krh-wrap">
+      <div class="krh-hero-badge"><span class="krh-badge-dot"></span>Project Risk Management SaaS</div>
+      <div class="krh-hero-grid">
+        <div class="krh-hero-copy">
+          <h1>Gestão de riscos em projetos com <b>visão executiva</b> e rastreabilidade.</h1>
+          <p>O K-RiskHub organiza riscos, planos de resposta, dashboards e relatórios em um único hub para PMOs, gerentes de projeto, clientes e lideranças que precisam decidir com clareza.</p>
+          <div class="krh-cta-row">
+            <a class="krh-btn krh-btn-primary" href="#contato">Solicitar demonstração <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            <a class="krh-btn krh-btn-outline" href="#produto">Ver capacidades</a>
+          </div>
+          <div class="krh-hero-points">
+            <span><b>Riscos</b> priorizados por matriz</span>
+            <span><b>Relatórios</b> Word/PDF editáveis</span>
+            <span><b>Acesso</b> por perfil e cliente</span>
+          </div>
+        </div>
+
+        <div class="krh-product-visual" aria-label="Previa visual do dashboard K-RiskHub">
+          <div class="krh-browser-bar"><span></span><span></span><span></span><strong>K-RiskHub</strong></div>
+          <div class="krh-dashboard-shot">
+            <div class="krh-shot-header">
+              <div><p>// Dashboard</p><h2>Portfólio</h2></div>
+              <div class="krh-shot-pill">Todos os projetos</div>
+            </div>
+            <div class="krh-shot-metrics">
+              <div><span>Projetos ativos</span><strong>12</strong></div>
+              <div><span>Riscos altos</span><strong>31</strong></div>
+              <div><span>Planos em atraso</span><strong>9</strong></div>
+            </div>
+            <div class="krh-shot-main">
+              <div class="krh-risk-matrix">
+                <span class="krh-cell krh-cell-0"></span><span class="krh-cell krh-cell-1"></span><span class="krh-cell krh-cell-2"></span><span class="krh-cell krh-cell-3"></span><span class="krh-cell krh-cell-4"></span>
+                <span class="krh-cell krh-cell-1"></span><span class="krh-cell krh-cell-2"></span><span class="krh-cell krh-cell-3"></span><span class="krh-cell krh-cell-4"></span><span class="krh-cell krh-cell-5"></span>
+                <span class="krh-cell krh-cell-2"></span><span class="krh-cell krh-cell-3"></span><span class="krh-cell krh-cell-4"></span><span class="krh-cell krh-cell-5"></span><span class="krh-cell krh-cell-6"></span>
+                <span class="krh-cell krh-cell-3"></span><span class="krh-cell krh-cell-4"></span><span class="krh-cell krh-cell-5"></span><span class="krh-cell krh-cell-6"></span><span class="krh-cell krh-cell-7"></span>
+                <span class="krh-cell krh-cell-4"></span><span class="krh-cell krh-cell-5"></span><span class="krh-cell krh-cell-6"></span><span class="krh-cell krh-cell-7"></span><span class="krh-cell krh-cell-8"></span>
+              </div>
+              <div class="krh-risk-list">
+                <p>Riscos prioritários</p>
+                <div><strong>R-014</strong><span>Go-live fiscal</span></div>
+                <div><strong>R-021</strong><span>Integração legado</span></div>
+                <div><strong>R-033</strong><span>Disponibilidade GP</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="krh-section" id="produto">
+    <div class="krh-wrap">
+      <div class="krh-section-title">
+        <span>// Problema</span>
+        <h2>Quando risco fica em planilha, <b>a decisão chega tarde</b></h2>
+        <p>O K-RiskHub foi desenhado para transformar a gestão de riscos em uma rotina objetiva, consultável e pronta para reporte executivo.</p>
+      </div>
+      <div class="krh-pain-grid">
+        <article><svg class="krh-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 7 10 18l-5-5"/></svg><p>Riscos importantes ficam espalhados em planilhas, atas e conversas.</p></article>
+        <article><svg class="krh-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 7 10 18l-5-5"/></svg><p>Planos de resposta perdem rastreabilidade depois das reuniões.</p></article>
+        <article><svg class="krh-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 7 10 18l-5-5"/></svg><p>Diretoria e cliente recebem status tarde demais para agir.</p></article>
+        <article><svg class="krh-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 7 10 18l-5-5"/></svg><p>Relatórios executivos consomem tempo e saem diferentes a cada ciclo.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="krh-section krh-section-tight">
+    <div class="krh-wrap">
+      <div class="krh-section-title">
+        <span>// Produto em ação</span>
+        <h2>Do cadastro do risco ao <b>relatório para decisão</b></h2>
+      </div>
+      <div class="krh-cap-grid">
+        <article class="krh-cap-card">
+          <div class="krh-cap-top"><span>01</span><svg class="krh-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4M12 17h.01"/></svg></div>
+          <h3>Inventário de riscos</h3>
+          <p>Registre riscos com probabilidade, impacto, estratégia de resposta, responsável, status e plano 5W2H.</p>
+        </article>
+        <article class="krh-cap-card">
+          <div class="krh-cap-top"><span>02</span><svg class="krh-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg></div>
+          <h3>Dashboard executivo</h3>
+          <p>Veja portfólio ou projeto específico com indicadores, matriz probabilidade x impacto e riscos prioritários.</p>
+        </article>
+        <article class="krh-cap-card">
+          <div class="krh-cap-top"><span>03</span><svg class="krh-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M8 13h8M8 17h6"/></svg></div>
+          <h3>Relatórios editáveis</h3>
+          <p>Gere relatórios executivos, detalhados ou planos de gestão com textos sugeridos e campos ajustáveis.</p>
+        </article>
+        <article class="krh-cap-card">
+          <div class="krh-cap-top"><span>04</span><svg class="krh-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></svg></div>
+          <h3>Governança por perfil</h3>
+          <p>Controle acesso por perfil, aprovação administrativa, usuários, clientes, projetos e trilha de auditoria.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="krh-section" id="governanca">
+    <div class="krh-wrap krh-split">
+      <div class="krh-section-title">
+        <span>// Governança</span>
+        <h2>Segurança e acesso pensados para <b>ambientes com múltiplos clientes</b></h2>
+        <p>Login aberto não significa acesso aberto. O K-RiskHub separa autenticação de autorização, com onboarding aprovado por administradores e visões diferentes por perfil.</p>
+      </div>
+      <div class="krh-governance-panel">
+        <article><svg class="krh-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><div><strong>Aprovação administrativa</strong><span>Novos usuários entram em fila antes de acessar dados.</span></div></article>
+        <article><svg class="krh-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3v12M18 9v12M6 15a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3V9"/><circle cx="6" cy="3" r="2"/><circle cx="18" cy="9" r="2"/><circle cx="18" cy="21" r="2"/></svg><div><strong>Escopo por cliente e projeto</strong><span>Cada perfil enxerga apenas o que faz sentido para sua função.</span></div></article>
+        <article><svg class="krh-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 14v4M4.93 19.07A10 10 0 1 1 19.07 4.93"/><path d="m16 8-4 4"/></svg><div><strong>Indicadores por contexto</strong><span>Portfólio, cliente ou projeto sem duplicar dashboards.</span></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="krh-section krh-section-tight">
+    <div class="krh-wrap">
+      <div class="krh-section-title">
+        <span>// Para quem</span>
+        <h2>Uma mesma base, <b>visões diferentes por papel</b></h2>
+      </div>
+      <div class="krh-audience-grid">
+        <article><h3>PMO</h3><p>Padroniza ritos de gestão, indicadores e relatórios entre projetos.</p></article>
+        <article><h3>Gerente de projeto</h3><p>Centraliza riscos, planos e status em uma rotina simples de acompanhamento.</p></article>
+        <article><h3>Diretoria</h3><p>Enxerga exposição, prioridade e tendência sem abrir planilhas operacionais.</p></article>
+        <article><h3>Cliente</h3><p>Consulta seus projetos com transparência e sem acessar dados de outras contas.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="krh-section" id="roadmap">
+    <div class="krh-wrap krh-roadmap">
+      <div class="krh-section-title">
+        <span>// Evolução</span>
+        <h2>Roadmap orientado a <b>produtividade e inteligência</b></h2>
+        <p>A base atual prioriza governança, dashboards e relatórios. As próximas evoluções conectam o K-RiskHub ao fluxo real de execução dos times.</p>
+      </div>
+      <div class="krh-roadmap-list">
+        <article><span>01</span><p>Exportação no modelo Excel oficial</p></article>
+        <article><span>02</span><p>Integração com Asana e Microsoft Planner</p></article>
+        <article><span>03</span><p>IA Advisor para sugerir riscos, planos e textos de relatório</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="krh-cta-section" id="contato">
+    <div class="krh-wrap">
+      <div class="krh-cta-box">
+        <div>
+          <span>// Demonstração</span>
+          <h2>Veja como o K-RiskHub se encaixa na sua rotina de projetos.</h2>
+          <p>Uma conversa objetiva para avaliar projetos, perfis, relatórios e exportações necessárias.</p>
+        </div>
+        <a class="krh-btn krh-btn-primary" href="mailto:contato@kynovia.com.br?subject=Demonstracao%20K-RiskHub">Falar com a Kynovia <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="krh-footer">
+    <div class="krh-wrap krh-footer-inner">
+      <div>
+        <a class="krh-logo" href="../../">Kynov<b>ia</b></a>
+        <p>Produtos digitais, IA e automação para operações que precisam crescer com controle.</p>
+      </div>
+      <div class="krh-footer-links">
+        <a href="../">Produtos</a>
+        <a href="#produto">Produto</a>
+        <a href="#governanca">Governança</a>
+        <a href="#roadmap">Roadmap</a>
+      </div>
+    </div>
+  </footer>
+</main>
+</body>
+</html>
