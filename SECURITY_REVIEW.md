@@ -40,14 +40,32 @@ O dominio `vitrineweb.kynovia.com.br` publica uma aplicacao client-side com rota
 
 O bundle publico referencia Supabase. Isso e normal quando se usa Supabase no frontend, mas exige Row Level Security bem configurado.
 
+## Auditoria local encontrada para VitrineWeb
+
+Foi localizado em `/Users/dempas/Downloads/auditoria-seguranca-vitrineweb.md` um relatorio especifico para o projeto Supabase `utnezxtsvxhxwthwkrlf`, datado de 2026-05-08. Ele indica que algumas correcoes de frontend ja haviam sido aplicadas, mas que ainda havia correcoes criticas pendentes no banco.
+
+Principais achados desse relatorio:
+
+- `vitrineweb_pedidos` permitia `UPDATE` amplo para cliente, criando risco de privilege escalation por alteracao de campos administrativos como etapa, valor, plano, status e contrato assinado.
+- A autorizacao dependia de comparacao por e-mail (`jwt.email = pedido.email`), o que abre risco de email squatting/account takeover para pedidos ainda nao vinculados a um `auth.uid()`.
+- Havia XSS armazenado em telas administrativas por uso de `innerHTML` sem escape; o relatorio indica que isso foi corrigido em `portal-admin`, `portal-cliente` e `contrato`.
+- `vitrineweb_contratos` nao tinha garantia de contrato unico por `pedido_id`, permitindo assinaturas duplicadas/conflitantes.
+- A RPC `save_vitrineweb_onboarding` usava `SECURITY DEFINER` e tambem dependia do modelo antigo de ownership por e-mail.
+- O bucket `vitrineweb-assets` era publico; isso pode ser aceitavel para imagens comerciais, mas nao para documentos sensiveis.
+
+Ponto de cautela: o SQL de hardening encontrado no relatorio local contem uma secao incompleta para `save_vitrineweb_onboarding`, com instrucao para reutilizar o corpo vigente da RPC. Portanto, esse SQL nao deve ser executado integralmente sem antes recuperar a definicao atual da funcao no Supabase.
+
 ## Checklist recomendado para VitrineWeb
 
 Prioridade alta:
 
+- Obter acesso ao projeto Supabase `utnezxtsvxhxwthwkrlf`; ele nao apareceu no conector Supabase desta sessao.
 - Confirmar que RLS esta habilitado em todas as tabelas com dados de clientes, pedidos, onboarding, diagnosticos e usuarios.
-- Confirmar que nenhuma policy permite `select`, `insert`, `update` ou `delete` amplo usando apenas a chave `anon`.
-- Validar que o portal admin checa perfil/permissao no banco, nao apenas no frontend.
-- Revisar Storage buckets do Supabase para garantir que arquivos privados nao estejam publicos.
+- Substituir ownership por e-mail por ownership por `auth.uid()`/`auth_user_id`, mantendo e-mail apenas como etapa de claim com `email_verified = true`.
+- Bloquear `UPDATE` de cliente em campos administrativos de `vitrineweb_pedidos`.
+- Adicionar `UNIQUE(pedido_id)` em `vitrineweb_contratos` e normalizar dados do contrato a partir do pedido oficial.
+- Recuperar a definicao atual de `save_vitrineweb_onboarding` antes de alterar a RPC.
+- Revisar Storage buckets do Supabase para garantir que arquivos privados nao estejam publicos e que uploads sejam restritos ao dono do pedido ou admin.
 - Confirmar que nao existe service role key exposta em bundle, HTML, logs ou variaveis publicas.
 
 Prioridade media:
@@ -59,7 +77,7 @@ Prioridade media:
 
 ## Proximo passo tecnico
 
-Auditar diretamente o projeto Supabase da VitrineWeb:
+Auditar diretamente o projeto Supabase da VitrineWeb. O projeto esperado e `utnezxtsvxhxwthwkrlf`, mas ele nao apareceu entre os projetos Supabase conectados nesta sessao.
 
 ```sql
 select schemaname, tablename, rowsecurity
@@ -73,3 +91,15 @@ where schemaname = 'public'
 order by tablename, policyname;
 ```
 
+Tambem recuperar a definicao das funcoes criticas:
+
+```sql
+select
+  n.nspname as schema,
+  p.proname as function_name,
+  pg_get_functiondef(p.oid) as definition
+from pg_proc p
+join pg_namespace n on n.oid = p.pronamespace
+where n.nspname = 'public'
+  and p.proname in ('is_admin', 'save_vitrineweb_onboarding', 'claim_vitrineweb_pedido');
+```
