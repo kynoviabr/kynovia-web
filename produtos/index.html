@@ -47,6 +47,7 @@ nav {
   padding: 6px 14px; border-radius: 6px; transition: .15s;
 }
 .nav-links a:hover, .nav-links a.active { color: var(--text2); background: rgba(255,255,255,0.04); }
+.mobile-menu-check, .mobile-menu-button { display: none; }
 .wrap { max-width: 1120px; margin: 0 auto; padding: 0 32px 72px; }
 
 .hero {
@@ -188,12 +189,13 @@ footer {
 @media (max-width: 900px) {
   .grid { grid-template-columns: 1fr; }
   .hero { padding-top: 80px; }
-  nav { height:auto;min-height:64px;padding:10px 20px;align-items:flex-start;flex-wrap:wrap;gap:8px; }
-  .logo{height:34px;display:flex;align-items:center;}
-  .nav-links{order:2;width:100%;display:flex;gap:6px;overflow-x:auto;padding:2px 0 6px;scrollbar-width:none;}
-  .nav-links::-webkit-scrollbar{display:none;}
+  nav { height:64px;padding:0 20px;align-items:center;flex-wrap:nowrap;gap:12px; }
+  .logo{display:inline-flex;align-items:center;}
+  .mobile-menu-button{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:0 14px;border:1px solid var(--border);border-radius:999px;background:rgba(255,255,255,.045);color:var(--text2);font-size:13px;font-weight:600;cursor:pointer;backdrop-filter:blur(12px);}
+  .nav-links{position:absolute;top:72px;left:20px;right:20px;display:none;flex-direction:column;align-items:stretch;gap:6px;width:auto;padding:10px;border:1px solid var(--border);border-radius:14px;background:rgba(9,7,15,.96);box-shadow:0 18px 48px rgba(0,0,0,.34);backdrop-filter:blur(22px) saturate(180%);}
+  .mobile-menu-check:checked ~ .nav-links{display:flex;}
   .nav-links li:not(:last-child) { display: block; }
-  .nav-links a{white-space:nowrap;background:rgba(255,255,255,.035);border:1px solid var(--border);}
+  .nav-links a{display:flex;align-items:center;justify-content:space-between;min-height:42px;width:100%;white-space:normal;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.055);}
   .wrap { padding: 0 20px 56px; }
 }
 @media (max-width: 1180px) and (min-width: 901px) {
@@ -204,6 +206,8 @@ footer {
 <body>
 <nav>
   <a href="../" class="logo">Kynov<b>ia</b></a>
+  <input class="mobile-menu-check" type="checkbox" id="mobile-menu">
+  <label class="mobile-menu-button" for="mobile-menu" aria-label="Abrir menu">Menu</label>
   <ul class="nav-links">
     <li><a href="../#servicos">Serviços</a></li>
     <li><a href="./" class="active">Produtos</a></li>

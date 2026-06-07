@@ -57,6 +57,7 @@ a { color: inherit; text-decoration: none; }
 .krh-nav-links a:hover { background: rgba(255,255,255,.04); color: var(--kyn-text-2); }
 .krh-nav-links .krh-nav-cta { background: var(--kyn-blue); color: #fff; }
 .krh-nav-links .krh-nav-cta:hover { background: var(--kyn-blue-hover); color: #fff; }
+.krh-mobile-menu-check, .krh-mobile-menu-button { display: none; }
 .krh-hero {
   position: relative; overflow: hidden;
   padding: 96px 0 64px;
@@ -262,12 +263,14 @@ a { color: inherit; text-decoration: none; }
 .krh-footer-links a:hover { color: var(--kyn-text); }
 @media (max-width: 980px) {
   .krh-wrap { width: min(100% - 48px, 1120px); }
-  .krh-nav { height:auto;min-height:64px;padding:10px 24px;align-items:flex-start;flex-wrap:wrap;gap:8px; }
-  .krh-logo{height:34px;display:flex;align-items:center;}
-  .krh-nav-links{order:2;width:100%;display:flex;gap:6px;overflow-x:auto;padding:2px 0 6px;scrollbar-width:none;}
-  .krh-nav-links::-webkit-scrollbar{display:none;}
+  .krh-nav { height:64px;padding:0 24px;align-items:center;flex-wrap:nowrap;gap:12px; }
+  .krh-logo{display:inline-flex;align-items:center;}
+  .krh-mobile-menu-button{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:0 14px;border:1px solid var(--kyn-border);border-radius:999px;background:rgba(255,255,255,.045);color:var(--kyn-text-2);font-size:13px;font-weight:600;cursor:pointer;backdrop-filter:blur(12px);}
+  .krh-nav-links{position:absolute;top:72px;left:24px;right:24px;display:none;flex-direction:column;align-items:stretch;gap:6px;width:auto;padding:10px;border:1px solid var(--kyn-border);border-radius:14px;background:rgba(9,7,15,.96);box-shadow:0 18px 48px rgba(0,0,0,.34);backdrop-filter:blur(22px) saturate(180%);}
+  .krh-mobile-menu-check:checked ~ .krh-nav-links{display:flex;}
   .krh-nav-links li:not(:last-child) { display: block; }
-  .krh-nav-links a{white-space:nowrap;background:rgba(255,255,255,.035);border:1px solid var(--kyn-border);}
+  .krh-nav-links a{display:flex;align-items:center;justify-content:space-between;min-height:42px;width:100%;white-space:normal;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.055);}
+  .krh-nav-links .krh-nav-cta{justify-content:center;}
   .krh-hero { padding: 72px 0 48px; }
   .krh-hero-grid, .krh-split, .krh-roadmap { grid-template-columns: 1fr; }
   .krh-hero-copy h1 { font-size: 48px; }
@@ -290,6 +293,8 @@ a { color: inherit; text-decoration: none; }
 <main class="krh-lp">
   <nav class="krh-nav">
     <a class="krh-logo" href="../../" aria-label="Kynovia">Kynov<b>ia</b></a>
+    <input class="krh-mobile-menu-check" type="checkbox" id="krh-mobile-menu">
+    <label class="krh-mobile-menu-button" for="krh-mobile-menu" aria-label="Abrir menu">Menu</label>
     <ul class="krh-nav-links">
       <li><a href="../">Produtos</a></li>
       <li><a href="#produto">Produto</a></li>
