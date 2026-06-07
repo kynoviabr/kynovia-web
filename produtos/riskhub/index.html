@@ -63,6 +63,14 @@ a { color: inherit; text-decoration: none; }
   border-bottom: 1px solid var(--kyn-border);
   background: linear-gradient(180deg, rgba(37,99,235,.08), transparent 42%), var(--kyn-bg);
 }
+#canvas-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  opacity: .5;
+}
 .krh-grid-overlay {
   position: absolute; inset: 0; pointer-events: none;
   background-image:
@@ -70,6 +78,27 @@ a { color: inherit; text-decoration: none; }
     linear-gradient(90deg, rgba(59,130,246,.045) 1px, transparent 1px);
   background-size: 56px 56px;
   mask-image: radial-gradient(ellipse 70% 80% at 50% 40%, black 20%, transparent 80%);
+}
+.krh-hero-glow {
+  position: absolute;
+  z-index: 0;
+  border-radius: 50%;
+  filter: blur(110px);
+  pointer-events: none;
+}
+.krh-hero-glow-1 {
+  width: 520px;
+  height: 360px;
+  top: -120px;
+  right: -80px;
+  background: radial-gradient(circle, rgba(37,99,235,.18) 0%, transparent 65%);
+}
+.krh-hero-glow-2 {
+  width: 340px;
+  height: 280px;
+  bottom: 20px;
+  left: -60px;
+  background: radial-gradient(circle, rgba(59,130,246,.1) 0%, transparent 70%);
 }
 .krh-hero > .krh-wrap { position: relative; z-index: 1; }
 .krh-hero-badge {
@@ -84,7 +113,9 @@ a { color: inherit; text-decoration: none; }
   width: 7px; height: 7px; border-radius: 999px;
   background: var(--kyn-blue-xl);
   box-shadow: 0 0 14px rgba(96,165,250,.82);
+  animation: krh-pulse-dot 2s ease-in-out infinite;
 }
+@keyframes krh-pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.82)} }
 .krh-hero-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(360px, .95fr);
@@ -122,7 +153,9 @@ a { color: inherit; text-decoration: none; }
 .krh-product-visual {
   border: 1px solid var(--kyn-border); border-radius: 14px; overflow: hidden;
   background: rgba(0,0,0,.22); box-shadow: 0 24px 70px rgba(0,0,0,.42);
+  animation: krh-float 6.5s ease-in-out infinite;
 }
+@keyframes krh-float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
 .krh-browser-bar {
   display: flex; align-items: center; gap: 7px; height: 42px; padding: 0 16px;
   border-bottom: 1px solid var(--kyn-border); background: rgba(255,255,255,.03);
@@ -143,7 +176,9 @@ a { color: inherit; text-decoration: none; }
 .krh-shot-pill {
   padding: 7px 10px; border: 1px solid rgba(59,130,246,.18);
   border-radius: 999px; background: rgba(37,99,235,.09); color: var(--kyn-blue-xl);
+  animation: krh-soft-glow 3s ease-in-out infinite;
 }
+@keyframes krh-soft-glow { 0%,100%{box-shadow:0 0 0 rgba(96,165,250,0)} 50%{box-shadow:0 0 24px rgba(96,165,250,.16)} }
 .krh-shot-metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-bottom: 16px; }
 .krh-shot-metrics div, .krh-risk-list, .krh-governance-panel, .krh-roadmap-list article {
   border: 1px solid var(--kyn-border); border-radius: 10px; background: rgba(255,255,255,.035);
@@ -161,9 +196,16 @@ a { color: inherit; text-decoration: none; }
 .krh-cell-0, .krh-cell-1, .krh-cell-2 { background: rgba(16,185,129,.36); }
 .krh-cell-3, .krh-cell-4, .krh-cell-5 { background: rgba(245,158,11,.42); }
 .krh-cell-6, .krh-cell-7, .krh-cell-8 { background: rgba(239,68,68,.44); }
+.krh-cell-6, .krh-cell-7, .krh-cell-8 { animation: krh-risk-pulse 2.8s ease-in-out infinite; }
+.krh-cell-7 { animation-delay: .35s; }
+.krh-cell-8 { animation-delay: .7s; }
+@keyframes krh-risk-pulse { 0%,100%{box-shadow:inset 0 0 0 rgba(239,68,68,0)} 50%{box-shadow:inset 0 0 20px rgba(239,68,68,.22), 0 0 16px rgba(239,68,68,.14)} }
 .krh-risk-list { padding: 14px; }
 .krh-risk-list p { margin-bottom: 12px; }
-.krh-risk-list div { display: grid; gap: 2px; padding: 10px 0; border-top: 1px solid var(--kyn-border); }
+.krh-risk-list div { display: grid; gap: 2px; padding: 10px 0; border-top: 1px solid var(--kyn-border); animation: krh-risk-slide 5.4s ease-in-out infinite; }
+.krh-risk-list div:nth-child(3) { animation-delay: .4s; }
+.krh-risk-list div:nth-child(4) { animation-delay: .8s; }
+@keyframes krh-risk-slide { 0%,100%{transform:translateX(0);opacity:1} 50%{transform:translateX(4px);opacity:.82} }
 .krh-risk-list strong { color: var(--kyn-blue-xl); font-family: var(--kyn-mono), monospace; font-size: 11px; font-weight: 500; }
 .krh-risk-list span { color: var(--kyn-text-2); font-size: 12.5px; }
 .krh-section { padding: 88px 0; border-top: 1px solid var(--kyn-border); background: var(--kyn-bg); }
@@ -258,7 +300,10 @@ a { color: inherit; text-decoration: none; }
   </nav>
 
   <section class="krh-hero" id="top">
+    <canvas id="canvas-bg"></canvas>
     <div class="krh-grid-overlay"></div>
+    <div class="krh-hero-glow krh-hero-glow-1"></div>
+    <div class="krh-hero-glow krh-hero-glow-2"></div>
     <div class="krh-wrap">
       <div class="krh-hero-badge"><span class="krh-badge-dot"></span>Project Risk Management SaaS</div>
       <div class="krh-hero-grid">
@@ -429,5 +474,71 @@ a { color: inherit; text-decoration: none; }
     </div>
   </footer>
 </main>
+<script>
+(function(){
+  const cv = document.getElementById('canvas-bg');
+  if(!cv) return;
+  const ctx = cv.getContext('2d');
+  let W, H, nodes = [], RAF;
+  const N = 55, MAX_DIST = 160, BLUE = '59,130,246';
+
+  function resize(){
+    W = cv.width = cv.offsetWidth;
+    H = cv.height = cv.offsetHeight;
+  }
+
+  function mkNode(){
+    return {
+      x: Math.random()*W,
+      y: Math.random()*H,
+      vx: (Math.random()-.5)*.35,
+      vy: (Math.random()-.5)*.35,
+      r: Math.random()*1.4+.4
+    };
+  }
+
+  function init(){
+    resize();
+    nodes = [];
+    for(let i=0;i<N;i++) nodes.push(mkNode());
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    nodes.forEach(n=>{
+      n.x += n.vx;
+      n.y += n.vy;
+      if(n.x<0 || n.x>W) n.vx *= -1;
+      if(n.y<0 || n.y>H) n.vy *= -1;
+    });
+    for(let i=0;i<N;i++){
+      for(let j=i+1;j<N;j++){
+        const dx = nodes[i].x-nodes[j].x;
+        const dy = nodes[i].y-nodes[j].y;
+        const d = Math.sqrt(dx*dx+dy*dy);
+        if(d<MAX_DIST){
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(${BLUE},${.18*(1-d/MAX_DIST)})`;
+          ctx.lineWidth = .6;
+          ctx.moveTo(nodes[i].x,nodes[i].y);
+          ctx.lineTo(nodes[j].x,nodes[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    nodes.forEach(n=>{
+      ctx.beginPath();
+      ctx.fillStyle = `rgba(${BLUE},.55)`;
+      ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+      ctx.fill();
+    });
+    RAF = requestAnimationFrame(draw);
+  }
+
+  init();
+  draw();
+  window.addEventListener('resize', ()=>{ cancelAnimationFrame(RAF); init(); draw(); });
+})();
+</script>
 </body>
 </html>
